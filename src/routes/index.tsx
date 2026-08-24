@@ -153,9 +153,55 @@ function StickerDoctor() {
           Sticker Doctor <span className="inline-block animate-wiggle">🧸</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          Drag a sticker onto Sam to make him feel better. Tap a sticker on Sam to take it off.
+          Build your friend, then drag stickers on to make {NAMES[gender]} feel better. Tap a
+          sticker to take it off.
         </p>
       </header>
+
+      <section aria-label="Choose your character" className="toy-card p-3 sm:p-4">
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-muted-foreground">Who?</span>
+            {(["boy", "girl"] as Gender[]).map((g) => (
+              <button
+                key={g}
+                onClick={() => {
+                  setGender(g);
+                  playSound("pick");
+                }}
+                aria-pressed={gender === g}
+                className={`rounded-full px-4 py-1.5 text-sm font-bold transition-transform active:scale-95 ${
+                  gender === g
+                    ? "bg-primary text-primary-foreground shadow-[var(--shadow-sticker)]"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {g === "boy" ? "👦 Sam" : "👧 Mia"}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-muted-foreground">Pajamas</span>
+            {PAJAMAS.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => {
+                  setPajama(p.id);
+                  playSound("star");
+                }}
+                aria-pressed={pajama === p.id}
+                className={`${p.bg} flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold text-foreground/80 transition-transform active:scale-95 ${
+                  pajama === p.id ? "ring-4 ring-primary/50" : "opacity-70"
+                }`}
+              >
+                <span aria-hidden>{p.emoji}</span>
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section
         ref={boardRef}
@@ -165,12 +211,14 @@ function StickerDoctor() {
         }`}
       >
         <img
-          src={avatarChild}
-          alt="Cartoon child named Sam standing and smiling"
+          key={`${gender}-${pajama}`}
+          src={AVATARS[gender][pajama]}
+          alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
           width={768}
           height={1024}
-          className="pointer-events-none mx-auto block h-auto w-full max-h-[52vh] object-contain"
+          className="animate-pop-in pointer-events-none mx-auto block h-auto w-full max-h-[52vh] object-contain"
         />
+
 
         {placed.map((s) => (
           <button
