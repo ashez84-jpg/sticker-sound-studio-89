@@ -86,7 +86,7 @@ function StickerDoctor() {
           const key = keyRef.current;
           setPlaced((p) => [...p, { key, kind: current.kind, x, y }]);
           playSound(current.kind.sound);
-          setPraise({ id: key, text: PRAISE[key % PRAISE.length] });
+          setPraise({ id: key, text: PRAISE[key % PRAISE.length] ?? "Great job!" });
         }
         return null;
       });
