@@ -1,7 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import avatarChild from "@/assets/avatar-child.png";
+import boyStars from "@/assets/boy-stars.png";
+import boyDino from "@/assets/boy-dino.png";
+import boyHearts from "@/assets/boy-hearts.png";
+import girlStars from "@/assets/girl-stars.png";
+import girlDino from "@/assets/girl-dino.png";
+import girlHearts from "@/assets/girl-hearts.png";
 import { playSound, type SoundName } from "@/lib/sfx";
 
 export const Route = createFileRoute("/")({
@@ -48,14 +53,33 @@ const STICKERS: StickerKind[] = [
 type Placed = { key: number; kind: StickerKind; x: number; y: number };
 type DragState = { kind: StickerKind; x: number; y: number; over: boolean };
 
+type Gender = "boy" | "girl";
+type PajamaId = "stars" | "dino" | "hearts";
+
+const PAJAMAS: { id: PajamaId; label: string; emoji: string; bg: string }[] = [
+  { id: "stars", label: "Starry", emoji: "⭐", bg: "bg-sky" },
+  { id: "dino", label: "Dino", emoji: "🦕", bg: "bg-mint" },
+  { id: "hearts", label: "Hearts", emoji: "💗", bg: "bg-bubblegum" },
+];
+
+const AVATARS: Record<Gender, Record<PajamaId, string>> = {
+  boy: { stars: boyStars, dino: boyDino, hearts: boyHearts },
+  girl: { stars: girlStars, dino: girlDino, hearts: girlHearts },
+};
+
+const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
+
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
 function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const keyRef = useRef(0);
+  const [gender, setGender] = useState<Gender>("boy");
+  const [pajama, setPajama] = useState<PajamaId>("stars");
   const [placed, setPlaced] = useState<Placed[]>([]);
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
+
 
   const isOverBoard = useCallback((x: number, y: number) => {
     const rect = boardRef.current?.getBoundingClientRect();
@@ -129,9 +153,55 @@ function StickerDoctor() {
           Sticker Doctor <span className="inline-block animate-wiggle">🧸</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          Drag a sticker onto Sam to make him feel better. Tap a sticker on Sam to take it off.
+          Build your friend, then drag stickers on to make {NAMES[gender]} feel better. Tap a
+          sticker to take it off.
         </p>
       </header>
+
+      <section aria-label="Choose your character" className="toy-card p-3 sm:p-4">
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-muted-foreground">Who?</span>
+            {(["boy", "girl"] as Gender[]).map((g) => (
+              <button
+                key={g}
+                onClick={() => {
+                  setGender(g);
+                  playSound("pick");
+                }}
+                aria-pressed={gender === g}
+                className={`rounded-full px-4 py-1.5 text-sm font-bold transition-transform active:scale-95 ${
+                  gender === g
+                    ? "bg-primary text-primary-foreground shadow-[var(--shadow-sticker)]"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {g === "boy" ? "👦 Sam" : "👧 Mia"}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-muted-foreground">Pajamas</span>
+            {PAJAMAS.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => {
+                  setPajama(p.id);
+                  playSound("star");
+                }}
+                aria-pressed={pajama === p.id}
+                className={`${p.bg} flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold text-foreground/80 transition-transform active:scale-95 ${
+                  pajama === p.id ? "ring-4 ring-primary/50" : "opacity-70"
+                }`}
+              >
+                <span aria-hidden>{p.emoji}</span>
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section
         ref={boardRef}
@@ -141,12 +211,14 @@ function StickerDoctor() {
         }`}
       >
         <img
-          src={avatarChild}
-          alt="Cartoon child named Sam standing and smiling"
+          key={`${gender}-${pajama}`}
+          src={AVATARS[gender][pajama]}
+          alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
           width={768}
           height={1024}
-          className="pointer-events-none mx-auto block h-auto w-full max-h-[52vh] object-contain"
+          className="animate-pop-in pointer-events-none mx-auto block h-auto w-full max-h-[52vh] object-contain"
         />
+
 
         {placed.map((s) => (
           <button
