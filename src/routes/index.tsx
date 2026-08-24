@@ -1,7 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import avatarChild from "@/assets/avatar-child.png";
+import boyStars from "@/assets/boy-stars.png";
+import boyDino from "@/assets/boy-dino.png";
+import boyHearts from "@/assets/boy-hearts.png";
+import girlStars from "@/assets/girl-stars.png";
+import girlDino from "@/assets/girl-dino.png";
+import girlHearts from "@/assets/girl-hearts.png";
 import { playSound, type SoundName } from "@/lib/sfx";
 
 export const Route = createFileRoute("/")({
