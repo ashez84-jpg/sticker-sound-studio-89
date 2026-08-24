@@ -53,14 +53,33 @@ const STICKERS: StickerKind[] = [
 type Placed = { key: number; kind: StickerKind; x: number; y: number };
 type DragState = { kind: StickerKind; x: number; y: number; over: boolean };
 
+type Gender = "boy" | "girl";
+type PajamaId = "stars" | "dino" | "hearts";
+
+const PAJAMAS: { id: PajamaId; label: string; emoji: string; bg: string }[] = [
+  { id: "stars", label: "Starry", emoji: "⭐", bg: "bg-sky" },
+  { id: "dino", label: "Dino", emoji: "🦕", bg: "bg-mint" },
+  { id: "hearts", label: "Hearts", emoji: "💗", bg: "bg-bubblegum" },
+];
+
+const AVATARS: Record<Gender, Record<PajamaId, string>> = {
+  boy: { stars: boyStars, dino: boyDino, hearts: boyHearts },
+  girl: { stars: girlStars, dino: girlDino, hearts: girlHearts },
+};
+
+const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
+
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
 function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const keyRef = useRef(0);
+  const [gender, setGender] = useState<Gender>("boy");
+  const [pajama, setPajama] = useState<PajamaId>("stars");
   const [placed, setPlaced] = useState<Placed[]>([]);
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
+
 
   const isOverBoard = useCallback((x: number, y: number) => {
     const rect = boardRef.current?.getBoundingClientRect();
