@@ -34,21 +34,47 @@ export const Route = createFileRoute("/")({
 type StickerKind = {
   id: string;
   label: string;
+  sub: string;
   emoji: string;
   sound: SoundName;
   bg: string;
 };
 
 const STICKERS: StickerKind[] = [
-  { id: "bandage", label: "Bandage", emoji: "🩹", sound: "bandage", bg: "bg-bubblegum" },
-  { id: "plaster", label: "Cast", emoji: "🧻", sound: "plaster", bg: "bg-sky" },
-  { id: "heart", label: "Heart", emoji: "❤️", sound: "heart", bg: "bg-accent" },
-  { id: "star", label: "Star", emoji: "⭐", sound: "star", bg: "bg-sunshine" },
-  { id: "thermometer", label: "Thermometer", emoji: "🌡️", sound: "thermometer", bg: "bg-mint" },
-  { id: "shot", label: "Shot", emoji: "💉", sound: "shot", bg: "bg-sky" },
-  { id: "stethoscope", label: "Heartbeat", emoji: "🩺", sound: "stethoscope", bg: "bg-mint" },
-  { id: "pill", label: "Vitamin", emoji: "💊", sound: "plaster", bg: "bg-bubblegum" },
+  {
+    id: "belt",
+    label: "The Elastic Hug Band",
+    sub: "Chest & belly belts",
+    emoji: "🎗️",
+    sound: "plaster",
+    bg: "bg-sky",
+  },
+  {
+    id: "ekg",
+    label: "EKG & EMG Sensors",
+    sub: "Heart & leg stickers",
+    emoji: "❤️",
+    sound: "heart",
+    bg: "bg-bubblegum",
+  },
+  {
+    id: "eeg",
+    label: "EEG & EOG Electrodes",
+    sub: "Head & face stickers",
+    emoji: "🩹",
+    sound: "bandage",
+    bg: "bg-mint",
+  },
+  {
+    id: "cannula",
+    label: "Airflow & Pulse Oximeter",
+    sub: "Nose cannula & finger light",
+    emoji: "💡",
+    sound: "star",
+    bg: "bg-sunshine",
+  },
 ];
+
 
 type Placed = { key: number; kind: StickerKind; x: number; y: number };
 type DragState = { kind: StickerKind; x: number; y: number; over: boolean };
@@ -259,19 +285,23 @@ function StickerDoctor() {
             Start over
           </button>
         </div>
-        <div className="grid grid-cols-4 gap-2 sm:grid-cols-8 sm:gap-3">
-          {STICKERS.map((kind) => (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+          {STICKERS.map((kind, i) => (
             <button
               key={kind.id}
               onPointerDown={(e) => startDrag(kind, e)}
               aria-label={`Drag ${kind.label} sticker`}
-              className={`${kind.bg} flex touch-none flex-col items-center gap-0.5 rounded-2xl py-2.5 shadow-[var(--shadow-sticker)] transition-transform hover:-translate-y-1 active:scale-95`}
+              className={`${kind.bg} flex touch-none flex-col items-center gap-0.5 rounded-2xl px-2 py-3 text-center shadow-[var(--shadow-sticker)] transition-transform hover:-translate-y-1 active:scale-95`}
             >
               <span aria-hidden className="text-3xl">
                 {kind.emoji}
               </span>
-              <span className="text-[10px] font-bold text-foreground/70">{kind.label}</span>
+              <span className="text-xs font-extrabold leading-tight text-foreground/80">
+                {i + 1}. {kind.label}
+              </span>
+              <span className="text-[10px] font-bold text-foreground/60">{kind.sub}</span>
             </button>
+
           ))}
         </div>
       </section>
