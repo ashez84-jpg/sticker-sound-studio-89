@@ -300,33 +300,75 @@ function StickerDoctor() {
       </section>
 
       <section
-        ref={boardRef}
         aria-label="Cartoon child to decorate with stickers"
-        className={`toy-card relative mx-auto w-full max-w-md overflow-hidden transition-all duration-200 ${
-          drag?.over ? "ring-8 ring-primary/40 scale-[1.01]" : "ring-0"
+        className={`toy-card relative mx-auto w-full max-w-md overflow-hidden p-2 transition-all duration-200 ${
+          drag?.over ? "ring-8 ring-primary/40" : "ring-0"
         }`}
       >
-        <img
-          key={`${gender}-${pajama}`}
-          src={AVATARS[gender][pajama]}
-          alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
-          width={768}
-          height={1024}
-          className="animate-pop-in pointer-events-none mx-auto block h-auto w-full max-h-[52vh] object-contain"
-        />
+        <div ref={boardRef} className="relative mx-auto w-fit">
+          <img
+            key={`${gender}-${pajama}`}
+            src={AVATARS[gender][pajama]}
+            alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
+            width={768}
+            height={1024}
+            className="animate-pop-in pointer-events-none block h-[52vh] max-h-[560px] w-auto object-contain"
+          />
 
+          {/* Target outlines for the sticker being dragged */}
+          {drag &&
+            slots
+              .filter((s) => s.stickerId === drag.kind.id)
+              .map((s) => (
+                <span
+                  key={s.id}
+                  aria-hidden
+                  className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed transition-all ${
+                    drag.slotId === s.id
+                      ? "border-primary bg-primary/20 scale-110"
+                      : "border-primary/50 bg-primary/5"
+                  }`}
+                  style={{
+                    left: `${s.x}%`,
+                    top: `${s.y}%`,
+                    width: s.band ? `${s.band}%` : `${s.size ?? 22}px`,
+                    height: s.band ? "16px" : `${s.size ?? 22}px`,
+                    borderRadius: s.band ? "9999px" : undefined,
+                  }}
+                />
+              ))}
 
-        {placed.map((s) => (
-          <button
-            key={s.key}
-            onClick={() => removeSticker(s.key)}
-            aria-label={`Remove ${s.kind.label} sticker`}
-            className="animate-pop-in absolute -translate-x-1/2 -translate-y-1/2 text-4xl sticker-shadow transition-transform hover:scale-110 active:scale-95"
-            style={{ left: `${s.x}%`, top: `${s.y}%` }}
-          >
-            <span aria-hidden>{s.kind.emoji}</span>
-          </button>
-        ))}
+          {placed.map((s) =>
+            s.slot.band ? (
+              <button
+                key={s.key}
+                onClick={() => removeSticker(s.key)}
+                aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
+                className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-foreground/20 bg-secondary/90 sticker-shadow transition-transform hover:scale-105 active:scale-95"
+                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 16 }}
+              >
+                <span aria-hidden className="text-[11px]">
+                  {s.kind.emoji}
+                </span>
+              </button>
+            ) : (
+              <button
+                key={s.key}
+                onClick={() => removeSticker(s.key)}
+                aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
+                className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center sticker-shadow transition-transform hover:scale-110 active:scale-95"
+                style={{
+                  left: `${s.slot.x}%`,
+                  top: `${s.slot.y}%`,
+                  fontSize: `${s.slot.size ?? 22}px`,
+                  lineHeight: 1,
+                }}
+              >
+                <span aria-hidden>{s.kind.emoji}</span>
+              </button>
+            ),
+          )}
+        </div>
 
         {praise && (
           <span
@@ -338,11 +380,12 @@ function StickerDoctor() {
         )}
 
         {placed.length === 0 && !drag && (
-          <p className="pointer-events-none absolute inset-x-0 bottom-3 text-center text-sm font-semibold text-muted-foreground">
-            Drop stickers here!
+          <p className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-sm font-semibold text-muted-foreground">
+            Pick a sticker — the right spots light up!
           </p>
         )}
       </section>
+
 
       <section aria-label="Sticker tray" className="toy-card p-3 sm:p-4">
         <div className="mb-2 flex items-center justify-between px-1">
