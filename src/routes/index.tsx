@@ -145,37 +145,62 @@ function StickerDoctor() {
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
 
+  const slots = SLOTS[gender];
 
-  const isOverBoard = useCallback((x: number, y: number) => {
-    const rect = boardRef.current?.getBoundingClientRect();
-    if (!rect) return false;
-    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-  }, []);
+  /** Nearest valid slot for this sticker, in avatar-relative % space. */
+  const findSlot = useCallback(
+    (kind: StickerKind, clientX: number, clientY: number) => {
+      const rect = boardRef.current?.getBoundingClientRect();
+      if (!rect || rect.width === 0) return null;
+      const x = ((clientX - rect.left) / rect.width) * 100;
+      const y = ((clientY - rect.top) / rect.height) * 100;
+      if (x < -8 || x > 108 || y < -8 || y > 108) return null;
+      const candidates = slots.filter((s) => s.stickerId === kind.id);
+      let best: Slot | null = null;
+      let bestD = Infinity;
+      for (const s of candidates) {
+        const d = (s.x - x) ** 2 + (s.y - y) ** 2;
+        if (d < bestD) {
+          bestD = d;
+          best = s;
+        }
+      }
+      return best;
+    },
+    [slots],
+  );
 
   const startDrag = (kind: StickerKind, e: React.PointerEvent) => {
     e.preventDefault();
     playSound("pick");
-    setDrag({ kind, x: e.clientX, y: e.clientY, over: false });
+    setDrag({ kind, x: e.clientX, y: e.clientY, over: false, slotId: null });
   };
 
   useEffect(() => {
     if (!drag) return;
 
     const move = (e: PointerEvent) => {
-      setDrag((d) => (d ? { ...d, x: e.clientX, y: e.clientY, over: isOverBoard(e.clientX, e.clientY) } : d));
+      setDrag((d) => {
+        if (!d) return d;
+        const slot = findSlot(d.kind, e.clientX, e.clientY);
+        return { ...d, x: e.clientX, y: e.clientY, over: !!slot, slotId: slot?.id ?? null };
+      });
     };
 
     const up = (e: PointerEvent) => {
-      const rect = boardRef.current?.getBoundingClientRect();
       setDrag((current) => {
-        if (current && rect && isOverBoard(e.clientX, e.clientY)) {
-          const x = ((e.clientX - rect.left) / rect.width) * 100;
-          const y = ((e.clientY - rect.top) / rect.height) * 100;
-          keyRef.current += 1;
-          const key = keyRef.current;
-          setPlaced((p) => [...p, { key, kind: current.kind, x, y }]);
-          playSound(current.kind.sound);
-          setPraise({ id: key, text: PRAISE[key % PRAISE.length] ?? "Great job!" });
+        if (current) {
+          const slot = findSlot(current.kind, e.clientX, e.clientY);
+          if (slot) {
+            keyRef.current += 1;
+            const key = keyRef.current;
+            setPlaced((p) => [
+              ...p.filter((s) => s.slot.id !== slot.id),
+              { key, kind: current.kind, slot },
+            ]);
+            playSound(current.kind.sound);
+            setPraise({ id: key, text: PRAISE[key % PRAISE.length] ?? "Great job!" });
+          }
         }
         return null;
       });
@@ -189,7 +214,7 @@ function StickerDoctor() {
       window.removeEventListener("pointerup", up);
       window.removeEventListener("pointercancel", up);
     };
-  }, [drag, isOverBoard]);
+  }, [drag, findSlot]);
 
   useEffect(() => {
     if (!praise) return;
@@ -198,8 +223,13 @@ function StickerDoctor() {
   }, [praise]);
 
   useEffect(() => {
-    if (placed.length === 6) playSound("cheer");
-  }, [placed.length]);
+    if (placed.length === slots.length) playSound("cheer");
+  }, [placed.length, slots.length]);
+
+  // Slot positions shift between boy and girl, so start fresh on a swap.
+  useEffect(() => {
+    setPlaced([]);
+  }, [gender]);
 
   const removeSticker = (key: number) => {
     playSound("pick");
@@ -210,6 +240,7 @@ function StickerDoctor() {
     playSound("clear");
     setPlaced([]);
   };
+
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 px-4 py-6">
