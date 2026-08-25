@@ -75,12 +75,50 @@ const STICKERS: StickerKind[] = [
   },
 ];
 
-
-type Placed = { key: number; kind: StickerKind; x: number; y: number };
-type DragState = { kind: StickerKind; x: number; y: number; over: boolean };
-
 type Gender = "boy" | "girl";
 type PajamaId = "stars" | "dino" | "hearts";
+
+/** A precise landing spot on the avatar, in % of the avatar image box. */
+type Slot = {
+  id: string;
+  stickerId: string;
+  x: number;
+  y: number;
+  /** width % — set for band-style stickers drawn as a strap */
+  band?: number;
+  size?: number;
+  hint: string;
+};
+
+const buildSlots = (headY: number): Slot[] => [
+  // 1. Elastic hug bands around the torso
+  { id: "belt-chest", stickerId: "belt", x: 50, y: 48, band: 30, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 28, hint: "Belly band" },
+  // 2. EKG on the chest, EMG on the legs
+  { id: "ekg-l", stickerId: "ekg", x: 43, y: 41, size: 30, hint: "Chest (EKG)" },
+  { id: "ekg-r", stickerId: "ekg", x: 57, y: 41, size: 30, hint: "Chest (EKG)" },
+  { id: "emg-l", stickerId: "ekg", x: 42, y: 80, size: 28, hint: "Leg (EMG)" },
+  { id: "emg-r", stickerId: "ekg", x: 58, y: 80, size: 28, hint: "Leg (EMG)" },
+  // 3. EEG on the head, EOG by the eyes
+  { id: "eeg-l", stickerId: "eeg", x: 44, y: headY, size: 28, hint: "Head (EEG)" },
+  { id: "eeg-r", stickerId: "eeg", x: 56, y: headY, size: 28, hint: "Head (EEG)" },
+  { id: "eog-l", stickerId: "eeg", x: 40, y: headY + 7, size: 24, hint: "Eye (EOG)" },
+  { id: "eog-r", stickerId: "eeg", x: 60, y: headY + 7, size: 24, hint: "Eye (EOG)" },
+  // 4. Cannula under the nose, pulse ox on hand or toe
+  { id: "cannula", stickerId: "cannula", x: 50, y: headY + 15, size: 30, hint: "Under the nose" },
+  { id: "ox-hand-l", stickerId: "cannula", x: 25, y: 62, size: 28, hint: "Hand (pulse ox)" },
+  { id: "ox-hand-r", stickerId: "cannula", x: 75, y: 62, size: 28, hint: "Hand (pulse ox)" },
+  { id: "ox-toe-l", stickerId: "cannula", x: 38, y: 94, size: 24, hint: "Toe (pulse ox)" },
+  { id: "ox-toe-r", stickerId: "cannula", x: 60, y: 94, size: 24, hint: "Toe (pulse ox)" },
+];
+
+const SLOTS: Record<Gender, Slot[]> = {
+  boy: buildSlots(17),
+  girl: buildSlots(19),
+};
+
+type Placed = { key: number; kind: StickerKind; slot: Slot };
+type DragState = { kind: StickerKind; x: number; y: number; over: boolean; slotId: string | null };
 
 const PAJAMAS: { id: PajamaId; label: string; emoji: string; bg: string }[] = [
   { id: "stars", label: "Starry", emoji: "⭐", bg: "bg-sky" },
@@ -97,6 +135,7 @@ const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
 
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
+
 function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const keyRef = useRef(0);
@@ -106,37 +145,62 @@ function StickerDoctor() {
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
 
+  const slots = SLOTS[gender];
 
-  const isOverBoard = useCallback((x: number, y: number) => {
-    const rect = boardRef.current?.getBoundingClientRect();
-    if (!rect) return false;
-    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-  }, []);
+  /** Nearest valid slot for this sticker, in avatar-relative % space. */
+  const findSlot = useCallback(
+    (kind: StickerKind, clientX: number, clientY: number) => {
+      const rect = boardRef.current?.getBoundingClientRect();
+      if (!rect || rect.width === 0) return null;
+      const x = ((clientX - rect.left) / rect.width) * 100;
+      const y = ((clientY - rect.top) / rect.height) * 100;
+      if (x < -8 || x > 108 || y < -8 || y > 108) return null;
+      const candidates = slots.filter((s) => s.stickerId === kind.id);
+      let best: Slot | null = null;
+      let bestD = Infinity;
+      for (const s of candidates) {
+        const d = (s.x - x) ** 2 + (s.y - y) ** 2;
+        if (d < bestD) {
+          bestD = d;
+          best = s;
+        }
+      }
+      return best;
+    },
+    [slots],
+  );
 
   const startDrag = (kind: StickerKind, e: React.PointerEvent) => {
     e.preventDefault();
     playSound("pick");
-    setDrag({ kind, x: e.clientX, y: e.clientY, over: false });
+    setDrag({ kind, x: e.clientX, y: e.clientY, over: false, slotId: null });
   };
 
   useEffect(() => {
     if (!drag) return;
 
     const move = (e: PointerEvent) => {
-      setDrag((d) => (d ? { ...d, x: e.clientX, y: e.clientY, over: isOverBoard(e.clientX, e.clientY) } : d));
+      setDrag((d) => {
+        if (!d) return d;
+        const slot = findSlot(d.kind, e.clientX, e.clientY);
+        return { ...d, x: e.clientX, y: e.clientY, over: !!slot, slotId: slot?.id ?? null };
+      });
     };
 
     const up = (e: PointerEvent) => {
-      const rect = boardRef.current?.getBoundingClientRect();
       setDrag((current) => {
-        if (current && rect && isOverBoard(e.clientX, e.clientY)) {
-          const x = ((e.clientX - rect.left) / rect.width) * 100;
-          const y = ((e.clientY - rect.top) / rect.height) * 100;
-          keyRef.current += 1;
-          const key = keyRef.current;
-          setPlaced((p) => [...p, { key, kind: current.kind, x, y }]);
-          playSound(current.kind.sound);
-          setPraise({ id: key, text: PRAISE[key % PRAISE.length] ?? "Great job!" });
+        if (current) {
+          const slot = findSlot(current.kind, e.clientX, e.clientY);
+          if (slot) {
+            keyRef.current += 1;
+            const key = keyRef.current;
+            setPlaced((p) => [
+              ...p.filter((s) => s.slot.id !== slot.id),
+              { key, kind: current.kind, slot },
+            ]);
+            playSound(current.kind.sound);
+            setPraise({ id: key, text: PRAISE[key % PRAISE.length] ?? "Great job!" });
+          }
         }
         return null;
       });
@@ -150,7 +214,7 @@ function StickerDoctor() {
       window.removeEventListener("pointerup", up);
       window.removeEventListener("pointercancel", up);
     };
-  }, [drag, isOverBoard]);
+  }, [drag, findSlot]);
 
   useEffect(() => {
     if (!praise) return;
@@ -159,8 +223,13 @@ function StickerDoctor() {
   }, [praise]);
 
   useEffect(() => {
-    if (placed.length === 6) playSound("cheer");
-  }, [placed.length]);
+    if (placed.length === slots.length) playSound("cheer");
+  }, [placed.length, slots.length]);
+
+  // Slot positions shift between boy and girl, so start fresh on a swap.
+  useEffect(() => {
+    setPlaced([]);
+  }, [gender]);
 
   const removeSticker = (key: number) => {
     playSound("pick");
@@ -171,6 +240,7 @@ function StickerDoctor() {
     playSound("clear");
     setPlaced([]);
   };
+
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 px-4 py-6">
@@ -230,33 +300,75 @@ function StickerDoctor() {
       </section>
 
       <section
-        ref={boardRef}
         aria-label="Cartoon child to decorate with stickers"
-        className={`toy-card relative mx-auto w-full max-w-md overflow-hidden transition-all duration-200 ${
-          drag?.over ? "ring-8 ring-primary/40 scale-[1.01]" : "ring-0"
+        className={`toy-card relative mx-auto w-full max-w-md overflow-hidden p-2 transition-all duration-200 ${
+          drag?.over ? "ring-8 ring-primary/40" : "ring-0"
         }`}
       >
-        <img
-          key={`${gender}-${pajama}`}
-          src={AVATARS[gender][pajama]}
-          alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
-          width={768}
-          height={1024}
-          className="animate-pop-in pointer-events-none mx-auto block h-auto w-full max-h-[52vh] object-contain"
-        />
+        <div ref={boardRef} className="relative mx-auto w-fit">
+          <img
+            key={`${gender}-${pajama}`}
+            src={AVATARS[gender][pajama]}
+            alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
+            width={768}
+            height={1024}
+            className="animate-pop-in pointer-events-none block h-[52vh] max-h-[560px] w-auto object-contain"
+          />
 
+          {/* Target outlines for the sticker being dragged */}
+          {drag &&
+            slots
+              .filter((s) => s.stickerId === drag.kind.id)
+              .map((s) => (
+                <span
+                  key={s.id}
+                  aria-hidden
+                  className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed transition-all ${
+                    drag.slotId === s.id
+                      ? "border-primary bg-primary/20 scale-110"
+                      : "border-primary/50 bg-primary/5"
+                  }`}
+                  style={{
+                    left: `${s.x}%`,
+                    top: `${s.y}%`,
+                    width: s.band ? `${s.band}%` : `${s.size ?? 22}px`,
+                    height: s.band ? "16px" : `${s.size ?? 22}px`,
+                    borderRadius: s.band ? "9999px" : undefined,
+                  }}
+                />
+              ))}
 
-        {placed.map((s) => (
-          <button
-            key={s.key}
-            onClick={() => removeSticker(s.key)}
-            aria-label={`Remove ${s.kind.label} sticker`}
-            className="animate-pop-in absolute -translate-x-1/2 -translate-y-1/2 text-4xl sticker-shadow transition-transform hover:scale-110 active:scale-95"
-            style={{ left: `${s.x}%`, top: `${s.y}%` }}
-          >
-            <span aria-hidden>{s.kind.emoji}</span>
-          </button>
-        ))}
+          {placed.map((s) =>
+            s.slot.band ? (
+              <button
+                key={s.key}
+                onClick={() => removeSticker(s.key)}
+                aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
+                className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-foreground/20 bg-secondary/90 sticker-shadow transition-transform hover:scale-105 active:scale-95"
+                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 16 }}
+              >
+                <span aria-hidden className="text-[11px]">
+                  {s.kind.emoji}
+                </span>
+              </button>
+            ) : (
+              <button
+                key={s.key}
+                onClick={() => removeSticker(s.key)}
+                aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
+                className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center sticker-shadow transition-transform hover:scale-110 active:scale-95"
+                style={{
+                  left: `${s.slot.x}%`,
+                  top: `${s.slot.y}%`,
+                  fontSize: `${s.slot.size ?? 22}px`,
+                  lineHeight: 1,
+                }}
+              >
+                <span aria-hidden>{s.kind.emoji}</span>
+              </button>
+            ),
+          )}
+        </div>
 
         {praise && (
           <span
@@ -268,11 +380,12 @@ function StickerDoctor() {
         )}
 
         {placed.length === 0 && !drag && (
-          <p className="pointer-events-none absolute inset-x-0 bottom-3 text-center text-sm font-semibold text-muted-foreground">
-            Drop stickers here!
+          <p className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-sm font-semibold text-muted-foreground">
+            Pick a sticker — the right spots light up!
           </p>
         )}
       </section>
+
 
       <section aria-label="Sticker tray" className="toy-card p-3 sm:p-4">
         <div className="mb-2 flex items-center justify-between px-1">
