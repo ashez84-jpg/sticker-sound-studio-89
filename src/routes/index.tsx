@@ -34,21 +34,47 @@ export const Route = createFileRoute("/")({
 type StickerKind = {
   id: string;
   label: string;
+  sub: string;
   emoji: string;
   sound: SoundName;
   bg: string;
 };
 
 const STICKERS: StickerKind[] = [
-  { id: "bandage", label: "Bandage", emoji: "🩹", sound: "bandage", bg: "bg-bubblegum" },
-  { id: "plaster", label: "Cast", emoji: "🧻", sound: "plaster", bg: "bg-sky" },
-  { id: "heart", label: "Heart", emoji: "❤️", sound: "heart", bg: "bg-accent" },
-  { id: "star", label: "Star", emoji: "⭐", sound: "star", bg: "bg-sunshine" },
-  { id: "thermometer", label: "Thermometer", emoji: "🌡️", sound: "thermometer", bg: "bg-mint" },
-  { id: "shot", label: "Shot", emoji: "💉", sound: "shot", bg: "bg-sky" },
-  { id: "stethoscope", label: "Heartbeat", emoji: "🩺", sound: "stethoscope", bg: "bg-mint" },
-  { id: "pill", label: "Vitamin", emoji: "💊", sound: "plaster", bg: "bg-bubblegum" },
+  {
+    id: "belt",
+    label: "The Elastic Hug Band",
+    sub: "Chest & belly belts",
+    emoji: "🎗️",
+    sound: "plaster",
+    bg: "bg-sky",
+  },
+  {
+    id: "ekg",
+    label: "EKG & EMG Sensors",
+    sub: "Heart & leg stickers",
+    emoji: "❤️",
+    sound: "heart",
+    bg: "bg-bubblegum",
+  },
+  {
+    id: "eeg",
+    label: "EEG & EOG Electrodes",
+    sub: "Head & face stickers",
+    emoji: "🩹",
+    sound: "bandage",
+    bg: "bg-mint",
+  },
+  {
+    id: "cannula",
+    label: "Airflow & Pulse Oximeter",
+    sub: "Nose cannula & finger light",
+    emoji: "💡",
+    sound: "star",
+    bg: "bg-sunshine",
+  },
 ];
+
 
 type Placed = { key: number; kind: StickerKind; x: number; y: number };
 type DragState = { kind: StickerKind; x: number; y: number; over: boolean };
