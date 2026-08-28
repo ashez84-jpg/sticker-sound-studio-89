@@ -349,17 +349,18 @@ function StickerDoctor() {
                 key={s.key}
                 onClick={() => removeSticker(s.key)}
                 aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
-                className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-foreground/20 bg-secondary/90 sticker-shadow transition-transform hover:scale-105 active:scale-95"
-                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 16 }}
+                className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center transition-transform hover:scale-105 active:scale-95"
+                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 26 }}
               >
                 <img
                   src={s.kind.img}
                   alt=""
                   aria-hidden
                   loading="lazy"
-                  className="h-5 w-5 object-contain"
+                  className="h-full w-full object-fill drop-shadow"
                 />
               </button>
+
             ) : (
               <button
                 key={s.key}
