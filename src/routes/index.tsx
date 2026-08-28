@@ -7,6 +7,10 @@ import boyHearts from "@/assets/boy-hearts.png";
 import girlStars from "@/assets/girl-stars.png";
 import girlDino from "@/assets/girl-dino.png";
 import girlHearts from "@/assets/girl-hearts.png";
+import stickerBelt from "@/assets/sticker-belt.png";
+import stickerEkg from "@/assets/sticker-ekg.png";
+import stickerEeg from "@/assets/sticker-eeg.png";
+import stickerCannula from "@/assets/sticker-cannula.png";
 import { playSound, type SoundName } from "@/lib/sfx";
 
 export const Route = createFileRoute("/")({
@@ -35,7 +39,7 @@ type StickerKind = {
   id: string;
   label: string;
   sub: string;
-  emoji: string;
+  img: string;
   sound: SoundName;
   bg: string;
 };
@@ -45,7 +49,7 @@ const STICKERS: StickerKind[] = [
     id: "belt",
     label: "The Elastic Hug Band",
     sub: "Chest & belly belts",
-    emoji: "🎗️",
+    img: stickerBelt,
     sound: "plaster",
     bg: "bg-sky",
   },
@@ -53,7 +57,7 @@ const STICKERS: StickerKind[] = [
     id: "ekg",
     label: "EKG & EMG Sensors",
     sub: "Heart & leg stickers",
-    emoji: "❤️",
+    img: stickerEkg,
     sound: "heart",
     bg: "bg-bubblegum",
   },
@@ -61,7 +65,7 @@ const STICKERS: StickerKind[] = [
     id: "eeg",
     label: "EEG & EOG Electrodes",
     sub: "Head & face stickers",
-    emoji: "🩹",
+    img: stickerEeg,
     sound: "bandage",
     bg: "bg-mint",
   },
@@ -69,7 +73,7 @@ const STICKERS: StickerKind[] = [
     id: "cannula",
     label: "Airflow & Pulse Oximeter",
     sub: "Nose cannula & finger light",
-    emoji: "💡",
+    img: stickerCannula,
     sound: "star",
     bg: "bg-sunshine",
   },
@@ -348,9 +352,13 @@ function StickerDoctor() {
                 className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-foreground/20 bg-secondary/90 sticker-shadow transition-transform hover:scale-105 active:scale-95"
                 style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 16 }}
               >
-                <span aria-hidden className="text-[11px]">
-                  {s.kind.emoji}
-                </span>
+                <img
+                  src={s.kind.img}
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                  className="h-5 w-5 object-contain"
+                />
               </button>
             ) : (
               <button
@@ -361,11 +369,11 @@ function StickerDoctor() {
                 style={{
                   left: `${s.slot.x}%`,
                   top: `${s.slot.y}%`,
-                  fontSize: `${s.slot.size ?? 22}px`,
-                  lineHeight: 1,
+                  width: `${s.slot.size ?? 22}px`,
+                  height: `${s.slot.size ?? 22}px`,
                 }}
               >
-                <span aria-hidden>{s.kind.emoji}</span>
+                <img src={s.kind.img} alt="" aria-hidden loading="lazy" className="h-full w-full object-contain" />
               </button>
             ),
           )}
@@ -407,9 +415,13 @@ function StickerDoctor() {
               aria-label={`Drag ${kind.label} sticker`}
               className={`${kind.bg} flex touch-none flex-col items-center gap-0.5 rounded-2xl px-2 py-3 text-center shadow-[var(--shadow-sticker)] transition-transform hover:-translate-y-1 active:scale-95`}
             >
-              <span aria-hidden className="text-3xl">
-                {kind.emoji}
-              </span>
+              <img
+                src={kind.img}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="pointer-events-none h-12 w-12 object-contain drop-shadow"
+              />
               <span className="text-xs font-extrabold leading-tight text-foreground/80">
                 {i + 1}. {kind.label}
               </span>
@@ -426,11 +438,11 @@ function StickerDoctor() {
 
       {drag && (
         <span
-          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 text-5xl sticker-shadow"
+          className="pointer-events-none fixed z-50 block h-14 w-14 -translate-x-1/2 -translate-y-1/2 sticker-shadow"
           style={{ left: drag.x, top: drag.y, transform: `translate(-50%,-50%) scale(${drag.over ? 1.2 : 1})` }}
           aria-hidden
         >
-          {drag.kind.emoji}
+          <img src={drag.kind.img} alt="" className="h-full w-full object-contain" />
         </span>
       )}
     </main>
