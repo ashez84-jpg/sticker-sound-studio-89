@@ -360,7 +360,7 @@ function StickerDoctor() {
                 onClick={() => removeSticker(s.key)}
                 aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
                 className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center transition-transform hover:scale-105 active:scale-95"
-                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 26 }}
+                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 18 }}
               >
                 <img
                   src={s.kind.img}
@@ -418,7 +418,7 @@ function StickerDoctor() {
             Start over
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 sm:gap-3">
           {STICKERS.map((kind, i) => (
             <button
               key={kind.id}
