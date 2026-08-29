@@ -11,6 +11,7 @@ import stickerBelt from "@/assets/sticker-belt.png";
 import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
 import stickerCannula from "@/assets/sticker-cannula.png";
+import stickerPulseox from "@/assets/sticker-pulseox.png";
 import { playSound, type SoundName } from "@/lib/sfx";
 
 export const Route = createFileRoute("/")({
@@ -71,11 +72,19 @@ const STICKERS: StickerKind[] = [
   },
   {
     id: "cannula",
-    label: "Airflow & Pulse Oximeter",
-    sub: "Nose cannula & finger light",
+    label: "Nasal Cannula",
+    sub: "Airflow tube under the nose",
     img: stickerCannula,
     sound: "star",
     bg: "bg-sunshine",
+  },
+  {
+    id: "pulseox",
+    label: "Pulse Oximeter",
+    sub: "Finger or toe light",
+    img: stickerPulseox,
+    sound: "heart",
+    bg: "bg-bubblegum",
   },
 ];
 
@@ -96,8 +105,8 @@ type Slot = {
 
 const buildSlots = (eyeY: number): Slot[] => [
   // 1. Elastic hug bands around the torso
-  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 26, hint: "Chest band" },
-  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 24, hint: "Belly band" },
+  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 21, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 19, hint: "Belly band" },
   // 2. EKG on the chest, EMG on the legs
   { id: "ekg-l", stickerId: "ekg", x: 45, y: 44, size: 30, hint: "Chest (EKG)" },
   { id: "ekg-r", stickerId: "ekg", x: 55, y: 44, size: 30, hint: "Chest (EKG)" },
@@ -108,12 +117,13 @@ const buildSlots = (eyeY: number): Slot[] => [
   { id: "eeg-r", stickerId: "eeg", x: 54, y: eyeY - 5, size: 26, hint: "Head (EEG)" },
   { id: "eog-l", stickerId: "eeg", x: 44, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
   { id: "eog-r", stickerId: "eeg", x: 56, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
-  // 4. Cannula under the nose, pulse ox on hand or toe
-  { id: "cannula", stickerId: "cannula", x: 50, y: eyeY + 5, size: 28, hint: "Under the nose" },
-  { id: "ox-hand-l", stickerId: "cannula", x: 38, y: 64, size: 26, hint: "Hand (pulse ox)" },
-  { id: "ox-hand-r", stickerId: "cannula", x: 62, y: 64, size: 26, hint: "Hand (pulse ox)" },
-  { id: "ox-toe-l", stickerId: "cannula", x: 45, y: 93, size: 22, hint: "Toe (pulse ox)" },
-  { id: "ox-toe-r", stickerId: "cannula", x: 56, y: 93, size: 22, hint: "Toe (pulse ox)" },
+  // 4. Cannula snug under the nose
+  { id: "cannula", stickerId: "cannula", x: 50, y: eyeY + 4, size: 26, hint: "Under the nose" },
+  // 5. Pulse ox on a hand or toe
+  { id: "ox-hand-l", stickerId: "pulseox", x: 38, y: 64, size: 26, hint: "Hand (pulse ox)" },
+  { id: "ox-hand-r", stickerId: "pulseox", x: 62, y: 64, size: 26, hint: "Hand (pulse ox)" },
+  { id: "ox-toe-l", stickerId: "pulseox", x: 45, y: 93, size: 22, hint: "Toe (pulse ox)" },
+  { id: "ox-toe-r", stickerId: "pulseox", x: 56, y: 93, size: 22, hint: "Toe (pulse ox)" },
 ];
 
 const SLOTS: Record<Gender, Slot[]> = {
