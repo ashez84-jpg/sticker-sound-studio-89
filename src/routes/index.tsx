@@ -109,8 +109,8 @@ type Slot = {
 
 const buildSlots = (eyeY: number): Slot[] => [
   // 1. Elastic hug bands around the torso
-  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 21, hint: "Chest band" },
-  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 19, hint: "Belly band" },
+  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 21, stretch: true, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 19, stretch: true, hint: "Belly band" },
   // 2. EKG on the chest, EMG on the legs
   { id: "ekg-l", stickerId: "ekg", x: 45, y: 44, size: 30, hint: "Chest (EKG)" },
   { id: "ekg-r", stickerId: "ekg", x: 55, y: 44, size: 30, hint: "Chest (EKG)" },
@@ -122,7 +122,7 @@ const buildSlots = (eyeY: number): Slot[] => [
   { id: "eog-l", stickerId: "eeg", x: 44, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
   { id: "eog-r", stickerId: "eeg", x: 56, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
   // 4. Cannula snug under the nose
-  { id: "cannula", stickerId: "cannula", x: 50, y: eyeY + 4, size: 26, hint: "Under the nose" },
+  { id: "cannula", stickerId: "cannula", x: 50, y: eyeY + 4.5, band: 15, bandH: 16, hint: "Under the nose" },
   // 5. Pulse ox on a hand or toe
   { id: "ox-hand-l", stickerId: "pulseox", x: 38, y: 64, size: 26, hint: "Hand (pulse ox)" },
   { id: "ox-hand-r", stickerId: "pulseox", x: 62, y: 64, size: 26, hint: "Hand (pulse ox)" },
@@ -351,7 +351,7 @@ function StickerDoctor() {
                     left: `${s.x}%`,
                     top: `${s.y}%`,
                     width: s.band ? `${s.band}%` : `${s.size ?? 22}px`,
-                    height: s.band ? "16px" : `${s.size ?? 22}px`,
+                    height: s.band ? `${s.bandH ?? 16}px` : `${s.size ?? 22}px`,
                     borderRadius: s.band ? "9999px" : undefined,
                   }}
                 />
@@ -364,14 +364,14 @@ function StickerDoctor() {
                 onClick={() => removeSticker(s.key)}
                 aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
                 className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center transition-transform hover:scale-105 active:scale-95"
-                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: 18 }}
+                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: s.slot.bandH ?? 18 }}
               >
                 <img
                   src={s.kind.img}
                   alt=""
                   aria-hidden
                   loading="lazy"
-                  className="h-full w-full object-fill drop-shadow"
+                  className={`h-full w-full drop-shadow ${s.slot.stretch ? "object-fill" : "object-contain"}`}
                 />
               </button>
 
