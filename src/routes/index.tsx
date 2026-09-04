@@ -121,8 +121,8 @@ const buildSlots = (eyeY: number): Slot[] => [
   { id: "eeg-r", stickerId: "eeg", x: 54, y: eyeY - 5, size: 26, hint: "Head (EEG)" },
   { id: "eog-l", stickerId: "eeg", x: 44, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
   { id: "eog-r", stickerId: "eeg", x: 56, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
-  // 4. Cannula snug under the nose
-  { id: "cannula", stickerId: "cannula", x: 50, y: eyeY + 5.5, band: 26, bandH: 20, stretch: true, hint: "Under the nose" },
+  // 4. Cannula centered below the nostrils and stretched from ear to ear
+  { id: "cannula", stickerId: "cannula", x: 50, y: eyeY + 9, band: 28, bandH: 20, stretch: true, hint: "Under the nose" },
   // 5. Pulse ox on a hand or toe
   { id: "ox-hand-l", stickerId: "pulseox", x: 38, y: 64, size: 26, hint: "Hand (pulse ox)" },
   { id: "ox-hand-r", stickerId: "pulseox", x: 62, y: 64, size: 26, hint: "Hand (pulse ox)" },
