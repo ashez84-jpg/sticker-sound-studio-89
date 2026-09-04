@@ -99,6 +99,10 @@ type Slot = {
   y: number;
   /** width % — set for band-style stickers drawn as a strap */
   band?: number;
+  /** px height for band-style stickers */
+  bandH?: number;
+  /** stretch the band artwork instead of preserving its aspect ratio */
+  stretch?: boolean;
   size?: number;
   hint: string;
 };
