@@ -107,7 +107,7 @@ type Slot = {
   hint: string;
 };
 
-const buildSlots = (eyeY: number, cannulaY: number): Slot[] => [
+const buildSlots = (eyeY: number, cannulaX: number, cannulaY: number, cannulaWidth: number): Slot[] => [
   // 1. Elastic hug bands around the torso
   { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 21, stretch: true, hint: "Chest band" },
   { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 19, stretch: true, hint: "Belly band" },
@@ -122,7 +122,7 @@ const buildSlots = (eyeY: number, cannulaY: number): Slot[] => [
   { id: "eog-l", stickerId: "eeg", x: 44, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
   { id: "eog-r", stickerId: "eeg", x: 56, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
   // 4. Cannula centered below the nostrils and stretched from ear to ear
-  { id: "cannula", stickerId: "cannula", x: 50, y: cannulaY, band: 30, bandH: 18, stretch: true, hint: "Between the nose and mouth" },
+  { id: "cannula", stickerId: "cannula", x: cannulaX, y: cannulaY, band: cannulaWidth, bandH: 16, stretch: true, hint: "Between the nose and mouth" },
   // 5. Pulse ox on a hand or toe
   { id: "ox-hand-l", stickerId: "pulseox", x: 38, y: 64, size: 26, hint: "Hand (pulse ox)" },
   { id: "ox-hand-r", stickerId: "pulseox", x: 62, y: 64, size: 26, hint: "Hand (pulse ox)" },
@@ -131,8 +131,8 @@ const buildSlots = (eyeY: number, cannulaY: number): Slot[] => [
 ];
 
 const SLOTS: Record<Gender, Slot[]> = {
-  boy: buildSlots(28, 42),
-  girl: buildSlots(26, 41),
+  boy: buildSlots(24, 45.5, 28.6, 18.5),
+  girl: buildSlots(23, 45.5, 28.1, 19),
 };
 
 
