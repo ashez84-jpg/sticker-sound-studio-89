@@ -109,8 +109,8 @@ type Slot = {
 
 const buildSlots = (eyeY: number, cannulaX: number, cannulaY: number, cannulaWidth: number): Slot[] => [
   // 1. Elastic hug bands around the torso
-  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 21, stretch: true, hint: "Chest band" },
-  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 19, stretch: true, hint: "Belly band" },
+  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 15, bandH: 9, stretch: true, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 13.5, bandH: 8, stretch: true, hint: "Belly band" },
   // 2. EKG on the chest, EMG on the legs
   { id: "ekg-l", stickerId: "ekg", x: 45, y: 44, size: 30, hint: "Chest (EKG)" },
   { id: "ekg-r", stickerId: "ekg", x: 55, y: 44, size: 30, hint: "Chest (EKG)" },
