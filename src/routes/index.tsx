@@ -12,6 +12,8 @@ import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
 import stickerCannula from "@/assets/sticker-cannula.png";
 import stickerPulseox from "@/assets/sticker-pulseox.png";
+import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
+
 import { playSound, type SoundName } from "@/lib/sfx";
 
 export const Route = createFileRoute("/")({
@@ -108,24 +110,27 @@ type Slot = {
 };
 
 const buildSlots = (eyeY: number, cannulaX: number, cannulaY: number, cannulaWidth: number): Slot[] => [
-  // 1. Elastic hug bands around the torso
-  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 15, bandH: 9, stretch: true, hint: "Chest band" },
-  { id: "belt-belly", stickerId: "belt", x: 50, y: 58, band: 13.5, bandH: 8, stretch: true, hint: "Belly band" },
-  // 2. EKG on the chest, EMG on the legs
-  { id: "ekg-l", stickerId: "ekg", x: 45, y: 44, size: 30, hint: "Chest (EKG)" },
-  { id: "ekg-r", stickerId: "ekg", x: 55, y: 44, size: 30, hint: "Chest (EKG)" },
-  { id: "emg-l", stickerId: "ekg", x: 46, y: 78, size: 26, hint: "Leg (EMG)" },
-  { id: "emg-r", stickerId: "ekg", x: 54, y: 78, size: 26, hint: "Leg (EMG)" },
-  // 3. EEG on the head, EOG by the eyes
-  { id: "eeg-l", stickerId: "eeg", x: 46, y: eyeY - 5, size: 26, hint: "Head (EEG)" },
-  { id: "eeg-r", stickerId: "eeg", x: 54, y: eyeY - 5, size: 26, hint: "Head (EEG)" },
-  { id: "eog-l", stickerId: "eeg", x: 44, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
-  { id: "eog-r", stickerId: "eeg", x: 56, y: eyeY + 1, size: 22, hint: "Eye (EOG)" },
-  // 4. Cannula centered below the nostrils and stretched from ear to ear
+  // 1. Respiratory effort belts: one at the nipple line, one over the navel
+  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 16, bandH: 14, stretch: true, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50, y: 58.5, band: 14.5, bandH: 13, stretch: true, hint: "Belly band" },
+  // 2. ECG below the collarbones, chin EMG under the jaw, leg EMG on the shins
+  { id: "ekg-l", stickerId: "ekg", x: 45.5, y: 45, size: 28, hint: "Chest (ECG)" },
+  { id: "ekg-r", stickerId: "ekg", x: 54.5, y: 45, size: 28, hint: "Chest (ECG)" },
+  { id: "chin-emg", stickerId: "ekg", x: 50, y: eyeY + 7, size: 22, hint: "Under the chin (EMG)" },
+  { id: "emg-l", stickerId: "ekg", x: 46.5, y: 80, size: 24, hint: "Shin (leg EMG)" },
+  { id: "emg-r", stickerId: "ekg", x: 53.5, y: 80, size: 24, hint: "Shin (leg EMG)" },
+  // 3. EEG on the forehead and top of the head, EOG at the outer eye corners
+  { id: "eeg-top-l", stickerId: "eeg", x: 47.5, y: eyeY - 8.5, size: 22, hint: "Top of head (EEG)" },
+  { id: "eeg-top-r", stickerId: "eeg", x: 52.5, y: eyeY - 8.5, size: 22, hint: "Top of head (EEG)" },
+  { id: "eeg-l", stickerId: "eeg", x: 47, y: eyeY - 4, size: 24, hint: "Forehead (EEG)" },
+  { id: "eeg-r", stickerId: "eeg", x: 53, y: eyeY - 4, size: 24, hint: "Forehead (EEG)" },
+  { id: "eog-l", stickerId: "eeg", x: 43.5, y: eyeY + 0.5, size: 20, hint: "Outer eye corner (EOG)" },
+  { id: "eog-r", stickerId: "eeg", x: 56.5, y: eyeY + 0.5, size: 20, hint: "Outer eye corner (EOG)" },
+  // 4. Cannula centered below the nostrils and stretched from cheek to cheek
   { id: "cannula", stickerId: "cannula", x: cannulaX, y: cannulaY, band: cannulaWidth, bandH: 16, stretch: true, hint: "Between the nose and mouth" },
-  // 5. Pulse ox on a hand or toe
-  { id: "ox-hand-l", stickerId: "pulseox", x: 38, y: 64, size: 26, hint: "Hand (pulse ox)" },
-  { id: "ox-hand-r", stickerId: "pulseox", x: 62, y: 64, size: 26, hint: "Hand (pulse ox)" },
+  // 5. Pulse ox on a finger or toe
+  { id: "ox-hand-l", stickerId: "pulseox", x: 38, y: 64, size: 26, hint: "Finger (pulse ox)" },
+  { id: "ox-hand-r", stickerId: "pulseox", x: 62, y: 64, size: 26, hint: "Finger (pulse ox)" },
   { id: "ox-toe-l", stickerId: "pulseox", x: 45, y: 93, size: 22, hint: "Toe (pulse ox)" },
   { id: "ox-toe-r", stickerId: "pulseox", x: 56, y: 93, size: 22, hint: "Toe (pulse ox)" },
 ];
@@ -134,6 +139,7 @@ const SLOTS: Record<Gender, Slot[]> = {
   boy: buildSlots(39, 50, 40.2, 21),
   girl: buildSlots(38, 50, 39.2, 21),
 };
+
 
 
 type Placed = { key: number; kind: StickerKind; slot: Slot };
@@ -163,6 +169,8 @@ function StickerDoctor() {
   const [placed, setPlaced] = useState<Placed[]>([]);
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
+  const [showReference, setShowReference] = useState(false);
+
 
   const slots = SLOTS[gender];
 
@@ -317,6 +325,39 @@ function StickerDoctor() {
           </div>
         </div>
       </section>
+
+      <section aria-label="Real sleep study reference" className="toy-card p-3 sm:p-4">
+        <button
+          onClick={() => {
+            setShowReference((v) => !v);
+            playSound("pick");
+          }}
+          aria-expanded={showReference}
+          className="flex w-full items-center justify-between gap-2 rounded-2xl px-1 text-left"
+        >
+          <span className="text-lg font-bold text-foreground">
+            📋 Real sleep study map {showReference ? "" : "— peek inside"}
+          </span>
+          <span aria-hidden className="text-xl">{showReference ? "▴" : "▾"}</span>
+        </button>
+        {showReference && (
+          <figure className="animate-pop-in mt-3">
+            <img
+              src={sleepStudyReference}
+              alt="Diagram of a child set up for a sleep study, labelling EEG on the forehead and top of head, EOG at the outer eye corners, chin EMG, nasal cannula under the nose, ECG on the chest, effort belts around the chest and belly, leg EMG on the shins and a pulse oximeter on a finger"
+              width={1024}
+              height={1024}
+              loading="lazy"
+              className="mx-auto w-full max-w-sm rounded-2xl"
+            />
+            <figcaption className="mt-2 text-center text-xs font-semibold text-muted-foreground">
+              Every glowing spot in the game matches these real sensor positions.
+            </figcaption>
+          </figure>
+        )}
+      </section>
+
+
 
       <section
         aria-label="Cartoon child to decorate with stickers"
