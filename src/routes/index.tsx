@@ -12,6 +12,8 @@ import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
 import stickerCannula from "@/assets/sticker-cannula.png";
 import stickerPulseox from "@/assets/sticker-pulseox.png";
+import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
+
 import { playSound, type SoundName } from "@/lib/sfx";
 
 export const Route = createFileRoute("/")({
