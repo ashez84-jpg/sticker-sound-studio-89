@@ -109,36 +109,45 @@ type Slot = {
   hint: string;
 };
 
-const buildSlots = (eyeY: number, cannulaX: number, cannulaY: number, cannulaWidth: number): Slot[] => [
-  // 1. Respiratory effort belts: one at the nipple line, one over the navel
-  { id: "belt-chest", stickerId: "belt", x: 50, y: 50, band: 16, bandH: 14, stretch: true, hint: "Chest band" },
-  { id: "belt-belly", stickerId: "belt", x: 50, y: 58.5, band: 14.5, bandH: 13, stretch: true, hint: "Belly band" },
-  // 2. ECG below the collarbones, chin EMG under the jaw, leg EMG on the shins
-  { id: "ekg-l", stickerId: "ekg", x: 45.5, y: 45, size: 28, hint: "Chest (ECG)" },
-  { id: "ekg-r", stickerId: "ekg", x: 54.5, y: 45, size: 28, hint: "Chest (ECG)" },
-  { id: "chin-emg", stickerId: "ekg", x: 50, y: eyeY + 7, size: 22, hint: "Under the chin (EMG)" },
-  { id: "emg-l", stickerId: "ekg", x: 46.5, y: 80, size: 24, hint: "Shin (leg EMG)" },
-  { id: "emg-r", stickerId: "ekg", x: 53.5, y: 80, size: 24, hint: "Shin (leg EMG)" },
-  // 3. EEG on the forehead and top of the head, EOG at the outer eye corners
-  { id: "eeg-top-l", stickerId: "eeg", x: 47.5, y: eyeY - 8.5, size: 22, hint: "Top of head (EEG)" },
-  { id: "eeg-top-r", stickerId: "eeg", x: 52.5, y: eyeY - 8.5, size: 22, hint: "Top of head (EEG)" },
-  { id: "eeg-l", stickerId: "eeg", x: 47, y: eyeY - 4, size: 24, hint: "Forehead (EEG)" },
-  { id: "eeg-r", stickerId: "eeg", x: 53, y: eyeY - 4, size: 24, hint: "Forehead (EEG)" },
-  { id: "eog-l", stickerId: "eeg", x: 43.5, y: eyeY + 0.5, size: 20, hint: "Outer eye corner (EOG)" },
-  { id: "eog-r", stickerId: "eeg", x: 56.5, y: eyeY + 0.5, size: 20, hint: "Outer eye corner (EOG)" },
-  // 4. Cannula centered below the nostrils and stretched from cheek to cheek
-  { id: "cannula", stickerId: "cannula", x: cannulaX, y: cannulaY, band: cannulaWidth, bandH: 16, stretch: true, hint: "Between the nose and mouth" },
-  // 5. Pulse ox on a finger or toe
-  { id: "ox-hand-l", stickerId: "pulseox", x: 38, y: 64, size: 26, hint: "Finger (pulse ox)" },
-  { id: "ox-hand-r", stickerId: "pulseox", x: 62, y: 64, size: 26, hint: "Finger (pulse ox)" },
-  { id: "ox-toe-l", stickerId: "pulseox", x: 45, y: 93, size: 22, hint: "Toe (pulse ox)" },
-  { id: "ox-toe-r", stickerId: "pulseox", x: 56, y: 93, size: 22, hint: "Toe (pulse ox)" },
+/**
+ * The avatar artwork is a wide canvas (1264x848) displayed with object-cover in a
+ * tall box, so the visible horizontal window is artwork 24.06%..75.94%.
+ * fx() converts an artwork x% into a box x%.
+ */
+const fx = (a: number) => (a - 24.06) / 0.5187;
+
+/** dy nudges every head landmark for slightly different face heights. */
+const buildSlots = (dy: number): Slot[] => [
+  // Respiratory effort belts: nipple line and over the navel
+  { id: "belt-chest", stickerId: "belt", x: 50, y: 52, band: 35, bandH: 16, stretch: true, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50, y: 59.5, band: 33, bandH: 15, stretch: true, hint: "Belly band" },
+  // ECG below the collarbones, chin EMG under the jaw, leg EMG on the shins
+  { id: "ekg-l", stickerId: "ekg", x: fx(46.5), y: 47, size: 26, hint: "Chest (ECG)" },
+  { id: "ekg-r", stickerId: "ekg", x: fx(53.5), y: 47, size: 26, hint: "Chest (ECG)" },
+  { id: "chin-emg", stickerId: "ekg", x: 50, y: 37 + dy, size: 20, hint: "Under the chin (EMG)" },
+  { id: "emg-l", stickerId: "ekg", x: fx(47), y: 80, size: 22, hint: "Shin (leg EMG)" },
+  { id: "emg-r", stickerId: "ekg", x: fx(53), y: 80, size: 22, hint: "Shin (leg EMG)" },
+  // EEG on the forehead and top of the head, EOG at the outer eye corners
+  { id: "eeg-top-l", stickerId: "eeg", x: fx(47), y: 11 + dy, size: 20, hint: "Top of head (EEG)" },
+  { id: "eeg-top-r", stickerId: "eeg", x: fx(53), y: 11 + dy, size: 20, hint: "Top of head (EEG)" },
+  { id: "eeg-l", stickerId: "eeg", x: fx(46.5), y: 19.5 + dy, size: 22, hint: "Forehead (EEG)" },
+  { id: "eeg-r", stickerId: "eeg", x: fx(53.5), y: 19.5 + dy, size: 22, hint: "Forehead (EEG)" },
+  { id: "eog-l", stickerId: "eeg", x: fx(44.3), y: 26.5 + dy, size: 18, hint: "Outer eye corner (EOG)" },
+  { id: "eog-r", stickerId: "eeg", x: fx(55.7), y: 26.5 + dy, size: 18, hint: "Outer eye corner (EOG)" },
+  // Cannula centered in the gap between the nostrils and the mouth
+  { id: "cannula", stickerId: "cannula", x: 50, y: 32 + dy, band: 31, bandH: 14, stretch: true, hint: "Between the nose and mouth" },
+  // Pulse ox on a finger or toe
+  { id: "ox-hand-l", stickerId: "pulseox", x: fx(38), y: 62, size: 24, hint: "Finger (pulse ox)" },
+  { id: "ox-hand-r", stickerId: "pulseox", x: fx(62.5), y: 62, size: 24, hint: "Finger (pulse ox)" },
+  { id: "ox-toe-l", stickerId: "pulseox", x: fx(46), y: 92, size: 20, hint: "Toe (pulse ox)" },
+  { id: "ox-toe-r", stickerId: "pulseox", x: fx(54), y: 92, size: 20, hint: "Toe (pulse ox)" },
 ];
 
 const SLOTS: Record<Gender, Slot[]> = {
-  boy: buildSlots(39, 50, 40.2, 21),
-  girl: buildSlots(38, 50, 39.2, 21),
+  boy: buildSlots(0),
+  girl: buildSlots(-0.8),
 };
+
 
 
 
@@ -365,15 +374,16 @@ function StickerDoctor() {
           drag?.over ? "ring-8 ring-primary/40" : "ring-0"
         }`}
       >
-        <div ref={boardRef} className="relative mx-auto w-fit">
+        <div ref={boardRef} className="relative mx-auto aspect-[54/70] w-full max-w-[432px]">
           <img
             key={`${gender}-${pajama}`}
             src={AVATARS[gender][pajama]}
             alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
-            width={768}
-            height={1024}
-            className="animate-pop-in pointer-events-none block h-[52vh] max-h-[560px] w-auto object-contain"
+            width={1264}
+            height={848}
+            className="animate-pop-in pointer-events-none block h-full w-full object-cover"
           />
+
 
           {/* Target outlines for the sticker being dragged */}
           {drag &&
