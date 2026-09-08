@@ -169,6 +169,8 @@ function StickerDoctor() {
   const [placed, setPlaced] = useState<Placed[]>([]);
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
+  const [showReference, setShowReference] = useState(false);
+
 
   const slots = SLOTS[gender];
 
