@@ -374,15 +374,16 @@ function StickerDoctor() {
           drag?.over ? "ring-8 ring-primary/40" : "ring-0"
         }`}
       >
-        <div ref={boardRef} className="relative mx-auto w-fit">
+        <div ref={boardRef} className="relative mx-auto aspect-[54/70] w-full max-w-[432px]">
           <img
             key={`${gender}-${pajama}`}
             src={AVATARS[gender][pajama]}
             alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
-            width={768}
-            height={1024}
-            className="animate-pop-in pointer-events-none block h-[52vh] max-h-[560px] w-auto object-contain"
+            width={1264}
+            height={848}
+            className="animate-pop-in pointer-events-none block h-full w-full object-cover"
           />
+
 
           {/* Target outlines for the sticker being dragged */}
           {drag &&
