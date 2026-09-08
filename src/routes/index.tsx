@@ -324,6 +324,39 @@ function StickerDoctor() {
         </div>
       </section>
 
+      <section aria-label="Real sleep study reference" className="toy-card p-3 sm:p-4">
+        <button
+          onClick={() => {
+            setShowReference((v) => !v);
+            playSound("pick");
+          }}
+          aria-expanded={showReference}
+          className="flex w-full items-center justify-between gap-2 rounded-2xl px-1 text-left"
+        >
+          <span className="text-lg font-bold text-foreground">
+            📋 Real sleep study map {showReference ? "" : "— peek inside"}
+          </span>
+          <span aria-hidden className="text-xl">{showReference ? "▴" : "▾"}</span>
+        </button>
+        {showReference && (
+          <figure className="animate-pop-in mt-3">
+            <img
+              src={sleepStudyReference}
+              alt="Diagram of a child set up for a sleep study, labelling EEG on the forehead and top of head, EOG at the outer eye corners, chin EMG, nasal cannula under the nose, ECG on the chest, effort belts around the chest and belly, leg EMG on the shins and a pulse oximeter on a finger"
+              width={1024}
+              height={1024}
+              loading="lazy"
+              className="mx-auto w-full max-w-sm rounded-2xl"
+            />
+            <figcaption className="mt-2 text-center text-xs font-semibold text-muted-foreground">
+              Every glowing spot in the game matches these real sensor positions.
+            </figcaption>
+          </figure>
+        )}
+      </section>
+
+
+
       <section
         aria-label="Cartoon child to decorate with stickers"
         className={`toy-card relative mx-auto w-full max-w-md overflow-hidden p-2 transition-all duration-200 ${
