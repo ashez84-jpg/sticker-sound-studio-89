@@ -117,7 +117,7 @@ type Slot = {
 const fx = (a: number) => (a - 24.06) / 0.5187;
 
 /** dy nudges every head landmark for slightly different face heights. */
-const buildSlots = (dy: number): Slot[] => [
+const buildSlots = (dy: number, cannulaY: number): Slot[] => [
   // Respiratory effort belts: nipple line and over the navel
   { id: "belt-chest", stickerId: "belt", x: 50.3, y: 49, band: 41, bandH: 24, stretch: true, hint: "Chest band" },
   { id: "belt-belly", stickerId: "belt", x: 50.3, y: 59, band: 36, bandH: 22, stretch: true, hint: "Belly band" },
