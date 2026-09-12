@@ -117,7 +117,7 @@ type Slot = {
 const fx = (a: number) => (a - 24.06) / 0.5187;
 
 /** dy nudges every head landmark for slightly different face heights. */
-const buildSlots = (dy: number): Slot[] => [
+const buildSlots = (dy: number, cannulaY: number): Slot[] => [
   // Respiratory effort belts: nipple line and over the navel
   { id: "belt-chest", stickerId: "belt", x: 50.3, y: 49, band: 41, bandH: 24, stretch: true, hint: "Chest band" },
   { id: "belt-belly", stickerId: "belt", x: 50.3, y: 59, band: 36, bandH: 22, stretch: true, hint: "Belly band" },
@@ -136,7 +136,7 @@ const buildSlots = (dy: number): Slot[] => [
   { id: "eog-l", stickerId: "eeg", x: fx(44.3), y: 26.5 + dy, size: 18, hint: "Outer eye corner (EOG)" },
   { id: "eog-r", stickerId: "eeg", x: fx(55.7), y: 26.5 + dy, size: 18, hint: "Outer eye corner (EOG)" },
   // Cannula centered in the gap between the nostrils and the mouth
-  { id: "cannula", stickerId: "cannula", x: 50, y: 32 + dy, band: 31, bandH: 14, stretch: true, hint: "Between the nose and mouth" },
+  { id: "cannula", stickerId: "cannula", x: 50, y: cannulaY, band: 31, bandH: 14, stretch: true, hint: "Between the nose and mouth" },
   // Pulse ox on a finger or toe
   { id: "ox-hand-l", stickerId: "pulseox", x: fx(38), y: 62, size: 24, hint: "Finger (pulse ox)" },
   { id: "ox-hand-r", stickerId: "pulseox", x: fx(62.5), y: 62, size: 24, hint: "Finger (pulse ox)" },
@@ -145,8 +145,8 @@ const buildSlots = (dy: number): Slot[] => [
 ];
 
 const SLOTS: Record<Gender, Slot[]> = {
-  boy: buildSlots(0),
-  girl: buildSlots(-0.8),
+  boy: buildSlots(0, 32),
+  girl: buildSlots(-0.8, 30.4),
 };
 
 
