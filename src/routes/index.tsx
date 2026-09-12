@@ -119,11 +119,12 @@ const fx = (a: number) => (a - 24.06) / 0.5187;
 /** dy nudges every head landmark for slightly different face heights. */
 const buildSlots = (dy: number): Slot[] => [
   // Respiratory effort belts: nipple line and over the navel
-  { id: "belt-chest", stickerId: "belt", x: 50, y: 50.5, band: 35, bandH: 34, stretch: true, hint: "Chest band" },
-  { id: "belt-belly", stickerId: "belt", x: 50, y: 59.5, band: 31, bandH: 31, stretch: true, hint: "Belly band" },
+  { id: "belt-chest", stickerId: "belt", x: 50.3, y: 48, band: 41, bandH: 34, stretch: true, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50.3, y: 58.5, band: 35, bandH: 31, stretch: true, hint: "Belly band" },
   // ECG below the collarbones, chin EMG under the jaw, leg EMG on the shins
-  { id: "ekg-l", stickerId: "ekg", x: fx(46.5), y: 47, size: 26, hint: "Chest (ECG)" },
-  { id: "ekg-r", stickerId: "ekg", x: fx(53.5), y: 47, size: 26, hint: "Chest (ECG)" },
+  { id: "ekg-l", stickerId: "ekg", x: fx(46.5), y: 43.5, size: 26, hint: "Chest (ECG)" },
+  { id: "ekg-r", stickerId: "ekg", x: fx(53.5), y: 43.5, size: 26, hint: "Chest (ECG)" },
+
   { id: "chin-emg", stickerId: "ekg", x: 50, y: 37 + dy, size: 20, hint: "Under the chin (EMG)" },
   { id: "emg-l", stickerId: "ekg", x: fx(47), y: 80, size: 22, hint: "Shin (leg EMG)" },
   { id: "emg-r", stickerId: "ekg", x: fx(53), y: 80, size: 22, hint: "Shin (leg EMG)" },
