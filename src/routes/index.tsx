@@ -145,8 +145,8 @@ const buildSlots = (dy: number, cannulaY: number): Slot[] => [
 ];
 
 const SLOTS: Record<Gender, Slot[]> = {
-  boy: buildSlots(0),
-  girl: buildSlots(-0.8),
+  boy: buildSlots(0, 32),
+  girl: buildSlots(-0.8, 30.4),
 };
 
 
