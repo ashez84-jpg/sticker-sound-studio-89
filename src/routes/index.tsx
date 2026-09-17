@@ -128,8 +128,8 @@ type Tune = {
 
 const buildSlots = (t: Tune): Slot[] => [
   // Respiratory effort belts: nipple line and over the navel
-  { id: "belt-chest", stickerId: "belt", x: 50.3, y: t.chestY, band: t.chestW, bandH: 40, hint: "Chest band" },
-  { id: "belt-belly", stickerId: "belt", x: 50.3, y: t.bellyY, band: t.bellyW, bandH: 36, hint: "Belly band" },
+  { id: "belt-chest", stickerId: "belt", x: 50.3, y: t.chestY, band: t.chestW, bandH: 24, hint: "Chest band" },
+  { id: "belt-belly", stickerId: "belt", x: 50.3, y: t.bellyY, band: t.bellyW, bandH: 22, hint: "Belly band" },
   // ECG below the collarbones, chin EMG under the jaw, leg EMG on the shins
   { id: "ekg-l", stickerId: "ekg", x: fx(46.5), y: 43.5, size: 26, hint: "Chest (ECG)" },
   { id: "ekg-r", stickerId: "ekg", x: fx(53.5), y: 43.5, size: 26, hint: "Chest (ECG)" },
@@ -145,7 +145,7 @@ const buildSlots = (t: Tune): Slot[] => [
   { id: "eog-l", stickerId: "eeg", x: fx(44.3), y: 26.5 + t.dy, size: 18, hint: "Outer eye corner (EOG)" },
   { id: "eog-r", stickerId: "eeg", x: fx(55.7), y: 26.5 + t.dy, size: 18, hint: "Outer eye corner (EOG)" },
   // Cannula centered in the gap between the nostrils and the mouth
-  { id: "cannula", stickerId: "cannula", x: 50, y: t.cannulaY, band: 11.5, bandH: 28, hint: "Between the nose and mouth" },
+  { id: "cannula", stickerId: "cannula", x: 50, y: t.cannulaY, band: 26, bandH: 20, stretch: true, hint: "Between the nose and mouth" },
   // Pulse ox on a finger or toe
   { id: "ox-hand-l", stickerId: "pulseox", x: fx(38), y: 62, size: 24, hint: "Finger (pulse ox)" },
   { id: "ox-hand-r", stickerId: "pulseox", x: fx(62.5), y: 62, size: 24, hint: "Finger (pulse ox)" },
@@ -155,14 +155,14 @@ const buildSlots = (t: Tune): Slot[] => [
 
 const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
   boy: {
-    stars: buildSlots({ dy: 0, cannulaY: 33.6, chestY: 50.5, chestW: 27, bellyY: 60, bellyW: 25 }),
-    dino: buildSlots({ dy: 0, cannulaY: 31.4, chestY: 48.5, chestW: 29, bellyY: 57.5, bellyW: 27 }),
-    hearts: buildSlots({ dy: 0, cannulaY: 33.4, chestY: 50.5, chestW: 27, bellyY: 60, bellyW: 25 }),
+    stars: buildSlots({ dy: 0, cannulaY: 33.6, chestY: 49, chestW: 41, bellyY: 59, bellyW: 36 }),
+    dino: buildSlots({ dy: 0, cannulaY: 31.4, chestY: 49, chestW: 41, bellyY: 59, bellyW: 36 }),
+    hearts: buildSlots({ dy: 0, cannulaY: 33.4, chestY: 49, chestW: 41, bellyY: 59, bellyW: 36 }),
   },
   girl: {
-    stars: buildSlots({ dy: -0.8, cannulaY: 31.5, chestY: 53, chestW: 30, bellyY: 64, bellyW: 28 }),
-    dino: buildSlots({ dy: -0.8, cannulaY: 35, chestY: 53, chestW: 30, bellyY: 62.5, bellyW: 28 }),
-    hearts: buildSlots({ dy: -0.8, cannulaY: 31.3, chestY: 53, chestW: 30, bellyY: 63, bellyW: 28 }),
+    stars: buildSlots({ dy: -0.8, cannulaY: 31.5, chestY: 49, chestW: 41, bellyY: 59, bellyW: 36 }),
+    dino: buildSlots({ dy: -0.8, cannulaY: 35, chestY: 49, chestW: 41, bellyY: 59, bellyW: 36 }),
+    hearts: buildSlots({ dy: -0.8, cannulaY: 31.3, chestY: 49, chestW: 41, bellyY: 59, bellyW: 36 }),
   },
 };
 
