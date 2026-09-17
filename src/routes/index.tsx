@@ -12,6 +12,10 @@ import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
 import stickerCannula from "@/assets/sticker-cannula.png";
 import stickerPulseox from "@/assets/sticker-pulseox.png";
+import stickerTeddy from "@/assets/sticker-teddy.png";
+import stickerPuppy from "@/assets/sticker-puppy.png";
+import stickerUnicorn from "@/assets/sticker-unicorn.png";
+import stickerGauze from "@/assets/sticker-gauze.png";
 import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
@@ -89,6 +93,38 @@ const STICKERS: StickerKind[] = [
     sound: "heart",
     bg: "bg-bubblegum",
   },
+  {
+    id: "teddy",
+    label: "Ready Bear",
+    sub: "A brave buddy for the bed",
+    img: stickerTeddy,
+    sound: "star",
+    bg: "bg-sunshine",
+  },
+  {
+    id: "puppy",
+    label: "Puppy Dog",
+    sub: "A cuddly sleep friend",
+    img: stickerPuppy,
+    sound: "heart",
+    bg: "bg-mint",
+  },
+  {
+    id: "unicorn",
+    label: "Unicorn",
+    sub: "A magical stuffed animal",
+    img: stickerUnicorn,
+    sound: "star",
+    bg: "bg-bubblegum",
+  },
+  {
+    id: "gauze",
+    label: "Gauze Hat",
+    sub: "Soft net cap for the head",
+    img: stickerGauze,
+    sound: "bandage",
+    bg: "bg-sky",
+  },
 ];
 
 type Gender = "boy" | "girl";
@@ -152,6 +188,12 @@ const buildSlots = (t: Tune): Slot[] => [
   { id: "ox-hand-r", stickerId: "pulseox", x: fx(62.5), y: 62, size: 24, hint: "Finger (pulse ox)" },
   { id: "ox-toe-l", stickerId: "pulseox", x: fx(46), y: 92, size: 20, hint: "Toe (pulse ox)" },
   { id: "ox-toe-r", stickerId: "pulseox", x: fx(54), y: 92, size: 20, hint: "Toe (pulse ox)" },
+  // Cuddly stuffed animals to keep the child company in bed
+  { id: "teddy", stickerId: "teddy", x: fx(31), y: 72, size: 88, hint: "Beside the bed" },
+  { id: "puppy", stickerId: "puppy", x: fx(69), y: 72, size: 88, hint: "Beside the bed" },
+  { id: "unicorn", stickerId: "unicorn", x: fx(33.5), y: 91, size: 84, hint: "Foot of the bed" },
+  // Soft gauze EEG cap over the top of the head
+  { id: "gauze-hat", stickerId: "gauze", x: 50, y: 9.5 + t.dy, band: 42, bandH: 88, hint: "On top of the head" },
 ];
 
 const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
@@ -500,7 +542,7 @@ function StickerDoctor() {
             Start over
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 sm:gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3 lg:grid-cols-9">
           {STICKERS.map((kind, i) => (
             <button
               key={kind.id}
