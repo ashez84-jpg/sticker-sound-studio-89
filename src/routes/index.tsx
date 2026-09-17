@@ -12,6 +12,10 @@ import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
 import stickerCannula from "@/assets/sticker-cannula.png";
 import stickerPulseox from "@/assets/sticker-pulseox.png";
+import stickerTeddy from "@/assets/sticker-teddy.png";
+import stickerPuppy from "@/assets/sticker-puppy.png";
+import stickerUnicorn from "@/assets/sticker-unicorn.png";
+import stickerGauze from "@/assets/sticker-gauze.png";
 import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
@@ -88,6 +92,38 @@ const STICKERS: StickerKind[] = [
     img: stickerPulseox,
     sound: "heart",
     bg: "bg-bubblegum",
+  },
+  {
+    id: "teddy",
+    label: "Ready Bear",
+    sub: "A brave buddy for the bed",
+    img: stickerTeddy,
+    sound: "star",
+    bg: "bg-sunshine",
+  },
+  {
+    id: "puppy",
+    label: "Puppy Dog",
+    sub: "A cuddly sleep friend",
+    img: stickerPuppy,
+    sound: "heart",
+    bg: "bg-mint",
+  },
+  {
+    id: "unicorn",
+    label: "Unicorn",
+    sub: "A magical stuffed animal",
+    img: stickerUnicorn,
+    sound: "star",
+    bg: "bg-bubblegum",
+  },
+  {
+    id: "gauze",
+    label: "Gauze Hat",
+    sub: "Soft net cap for the head",
+    img: stickerGauze,
+    sound: "bandage",
+    bg: "bg-sky",
   },
 ];
 
