@@ -143,8 +143,8 @@ const buildSlots = (t: Tune): Slot[] => [
   { id: "eeg-top-r", stickerId: "eeg", x: fx(53), y: 11 + t.dy, size: 20, hint: "Top of head (EEG)" },
   { id: "eeg-l", stickerId: "eeg", x: fx(46.5), y: 19.5 + t.dy, size: 22, hint: "Forehead (EEG)" },
   { id: "eeg-r", stickerId: "eeg", x: fx(53.5), y: 19.5 + t.dy, size: 22, hint: "Forehead (EEG)" },
-  { id: "eog-l", stickerId: "eeg", x: fx(44.3), y: 26.5 + t.dy, size: 18, hint: "Outer eye corner (EOG)" },
-  { id: "eog-r", stickerId: "eeg", x: fx(55.7), y: 26.5 + t.dy, size: 18, hint: "Outer eye corner (EOG)" },
+  { id: "eog-l", stickerId: "eeg", x: fx(42.3), y: 25.3 + t.dy, size: 18, hint: "Outer eye corner (EOG)" },
+  { id: "eog-r", stickerId: "eeg", x: fx(57.7), y: 25.3 + t.dy, size: 18, hint: "Outer eye corner (EOG)" },
   // Cannula centered in the gap between the nostrils and the mouth
   { id: "cannula", stickerId: "cannula", x: 50, y: t.cannulaY, band: 26, bandH: 20, stretch: true, hint: "Between the nose and mouth" },
   // Pulse ox on a finger or toe
