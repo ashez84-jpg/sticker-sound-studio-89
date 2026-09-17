@@ -193,7 +193,7 @@ const buildSlots = (t: Tune): Slot[] => [
   { id: "puppy", stickerId: "puppy", x: fx(69), y: 72, size: 88, hint: "Beside the bed" },
   { id: "unicorn", stickerId: "unicorn", x: fx(33.5), y: 91, size: 84, hint: "Foot of the bed" },
   // Soft gauze EEG cap over the top of the head
-  { id: "gauze-hat", stickerId: "gauze", x: 50, y: 7.5 + t.dy, band: 40, bandH: 84, hint: "On top of the head" },
+  { id: "gauze-hat", stickerId: "gauze", x: 50, y: 9.5 + t.dy, band: 42, bandH: 88, hint: "On top of the head" },
 ];
 
 const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
