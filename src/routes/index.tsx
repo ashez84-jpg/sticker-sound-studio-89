@@ -15,7 +15,7 @@ import stickerPulseox from "@/assets/sticker-pulseox.png";
 import stickerTeddy from "@/assets/sticker-teddy.png";
 import stickerPuppy from "@/assets/sticker-puppy.png";
 import stickerUnicorn from "@/assets/sticker-unicorn.png";
-import stickerGauze from "@/assets/sticker-gauze.png";
+import stickerGauze from "@/assets/sticker-gauze-wrap.png";
 import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
@@ -161,9 +161,10 @@ type Tune = {
   chestW: number;
   bellyY: number;
   bellyW: number;
-  /** gauze hat vertical center and width, per avatar */
+  /** gauze wrap center and dimensions, tuned so its ties meet beneath the chin */
   hatY: number;
   hatW: number;
+  hatH: number;
 };
 
 const buildSlots = (t: Tune): Slot[] => [
@@ -195,20 +196,20 @@ const buildSlots = (t: Tune): Slot[] => [
   { id: "teddy", stickerId: "teddy", x: fx(37.5), y: 57, size: 78, hint: "On the arm" },
   { id: "puppy", stickerId: "puppy", x: fx(62.5), y: 57, size: 78, hint: "On the arm" },
   { id: "unicorn", stickerId: "unicorn", x: fx(38.5), y: 68, size: 72, hint: "On the arm" },
-  // Soft gauze EEG cap over the top of the head
-  { id: "gauze-hat", stickerId: "gauze", x: 50, y: t.hatY, band: t.hatW, bandH: 88, hint: "On top of the head" },
+  // Full gauze wrap: crown covered, face open, and side ties meeting under the chin
+  { id: "gauze-hat", stickerId: "gauze", x: 50, y: t.hatY, band: t.hatW, bandH: t.hatH, stretch: true, hint: "Wrapped over the head and tied under the chin" },
 ];
 
 const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
   boy: {
-    stars: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 7.5, hatW: 38 }),
-    dino: buildSlots({ dy: 0, cannulaY: 30.2, chestY: 50, chestW: 31, bellyY: 59, bellyW: 29, hatY: 7.5, hatW: 38 }),
-    hearts: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 7.5, hatW: 38 }),
+    stars: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 20.5, hatW: 31, hatH: 188 }),
+    dino: buildSlots({ dy: 0, cannulaY: 30.2, chestY: 50, chestW: 31, bellyY: 59, bellyW: 29, hatY: 20.5, hatW: 31, hatH: 188 }),
+    hearts: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 20.5, hatW: 31, hatH: 188 }),
   },
   girl: {
-    stars: buildSlots({ dy: -0.8, cannulaY: 30.3, chestY: 52.5, chestW: 32, bellyY: 62.5, bellyW: 29, hatY: 9, hatW: 46 }),
-    dino: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 32, bellyY: 62, bellyW: 30, hatY: 9, hatW: 46 }),
-    hearts: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 31, bellyY: 61.5, bellyW: 29, hatY: 9, hatW: 46 }),
+    stars: buildSlots({ dy: -0.8, cannulaY: 30.3, chestY: 52.5, chestW: 32, bellyY: 62.5, bellyW: 29, hatY: 21, hatW: 40, hatH: 205 }),
+    dino: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 32, bellyY: 62, bellyW: 30, hatY: 21, hatW: 40, hatH: 205 }),
+    hearts: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 31, bellyY: 61.5, bellyW: 29, hatY: 21, hatW: 40, hatH: 205 }),
   },
 };
 
