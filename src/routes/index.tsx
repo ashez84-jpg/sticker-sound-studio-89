@@ -188,6 +188,12 @@ const buildSlots = (t: Tune): Slot[] => [
   { id: "ox-hand-r", stickerId: "pulseox", x: fx(62.5), y: 62, size: 24, hint: "Finger (pulse ox)" },
   { id: "ox-toe-l", stickerId: "pulseox", x: fx(46), y: 92, size: 20, hint: "Toe (pulse ox)" },
   { id: "ox-toe-r", stickerId: "pulseox", x: fx(54), y: 92, size: 20, hint: "Toe (pulse ox)" },
+  // Cuddly stuffed animals to keep the child company in bed
+  { id: "teddy", stickerId: "teddy", x: fx(31), y: 72, size: 88, hint: "Beside the bed" },
+  { id: "puppy", stickerId: "puppy", x: fx(69), y: 72, size: 88, hint: "Beside the bed" },
+  { id: "unicorn", stickerId: "unicorn", x: fx(33.5), y: 91, size: 84, hint: "Foot of the bed" },
+  // Soft gauze EEG cap over the top of the head
+  { id: "gauze-hat", stickerId: "gauze", x: 50, y: 7.5 + t.dy, band: 40, bandH: 84, hint: "On top of the head" },
 ];
 
 const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
@@ -536,7 +542,7 @@ function StickerDoctor() {
             Start over
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 sm:gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3 lg:grid-cols-9">
           {STICKERS.map((kind, i) => (
             <button
               key={kind.id}
