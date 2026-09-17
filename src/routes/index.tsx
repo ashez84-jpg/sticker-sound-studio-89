@@ -13,6 +13,7 @@ import stickerEeg from "@/assets/sticker-eeg.png";
 import stickerCannula from "@/assets/sticker-cannula.png";
 import stickerPulseox from "@/assets/sticker-pulseox.png";
 import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
+import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
 import { playSound, type SoundName } from "@/lib/sfx";
 
@@ -395,12 +396,19 @@ function StickerDoctor() {
       >
         <div ref={boardRef} className="relative mx-auto aspect-[54/70] w-full max-w-[432px]">
           <img
+            src={sleepStudyRoom}
+            alt="A cozy sleep study room with teddy bear, bunny, and dinosaur toys on the bed"
+            width={1088}
+            height={1408}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          />
+          <img
             key={`${gender}-${pajama}`}
             src={AVATARS[gender][pajama]}
             alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
             width={1264}
             height={848}
-            className="animate-pop-in pointer-events-none block h-full w-full object-cover"
+            className="animate-pop-in pointer-events-none relative block h-full w-full object-cover drop-shadow-lg"
           />
 
 
