@@ -200,7 +200,7 @@ function StickerDoctor() {
   const [showReference, setShowReference] = useState(false);
 
 
-  const slots = SLOTS[gender];
+  const slots = SLOTS[gender][pajama];
 
   /** Nearest valid slot for this sticker, in avatar-relative % space. */
   const findSlot = useCallback(
@@ -284,7 +284,7 @@ function StickerDoctor() {
   // Slot positions shift between boy and girl, so start fresh on a swap.
   useEffect(() => {
     setPlaced([]);
-  }, [gender]);
+  }, [gender, pajama]);
 
   const removeSticker = (key: number) => {
     playSound("pick");
