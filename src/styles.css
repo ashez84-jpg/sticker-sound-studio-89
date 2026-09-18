@@ -190,15 +190,18 @@
 
 @keyframes pop-in {
   0% {
-    transform: scale(0.2) rotate(-18deg);
+    scale: 0.2;
+    rotate: -18deg;
     opacity: 0;
   }
   60% {
-    transform: scale(1.18) rotate(6deg);
+    scale: 1.18;
+    rotate: 6deg;
     opacity: 1;
   }
   100% {
-    transform: scale(1) rotate(0deg);
+    scale: 1;
+    rotate: 0deg;
     opacity: 1;
   }
 }
