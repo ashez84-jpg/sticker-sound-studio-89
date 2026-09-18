@@ -245,6 +245,7 @@ const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!"
 
 function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
+  const trayRef = useRef<HTMLDivElement | null>(null);
   const keyRef = useRef(0);
   const [gender, setGender] = useState<Gender>("boy");
   const [pajama, setPajama] = useState<PajamaId>("stars");
@@ -669,15 +670,31 @@ function StickerDoctor() {
 
 
       <section aria-label="Sticker tray" className="toy-card p-3 sm:p-4">
-        <div className="mb-2 flex items-center justify-between px-1">
+        <div className="mb-2 flex items-center justify-between gap-2 px-1">
           <h2 className="text-lg font-bold text-foreground">Sticker Tray</h2>
-          <button
-            onClick={clearAll}
-            disabled={placed.length === 0}
-            className="rounded-full bg-secondary px-4 py-1.5 text-sm font-bold text-secondary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95 disabled:opacity-40"
-          >
-            Start over
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => scrollTray(-1)}
+              aria-label="Scroll stickers left"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-lg font-extrabold text-muted-foreground transition-transform active:scale-90"
+            >
+              <span aria-hidden>‹</span>
+            </button>
+            <button
+              onClick={() => scrollTray(1)}
+              aria-label="Scroll stickers right"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-lg font-extrabold text-muted-foreground transition-transform active:scale-90"
+            >
+              <span aria-hidden>›</span>
+            </button>
+            <button
+              onClick={clearAll}
+              disabled={placed.length === 0}
+              className="rounded-full bg-secondary px-4 py-1.5 text-sm font-bold text-secondary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95 disabled:opacity-40"
+            >
+              Start over
+            </button>
+          </div>
         </div>
         <div className="sticker-tray flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2 sm:gap-3">
           {STICKERS.map((kind, i) => (
