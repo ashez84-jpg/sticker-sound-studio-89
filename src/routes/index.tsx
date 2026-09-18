@@ -235,6 +235,26 @@ const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
 
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
+/** Parent's packing list for the night of the sleep study. */
+type PackingItem = { id: string; label: string; children?: { id: string; label: string }[] };
+
+const PACKING_LIST: PackingItem[] = [
+  { id: "meds", label: "Your child's medication" },
+  { id: "pajamas", label: "Pajamas or two-piece clothing, such as a T-shirt and shorts" },
+  { id: "snacks", label: "Snacks for before and after the sleep study" },
+  { id: "diapers", label: "Diapers and wipes" },
+  { id: "bottles", label: "Bottles and formula, including formula for G-tube feedings" },
+  {
+    id: "equipment",
+    label: "Any medical equipment your child uses at night, such as:",
+    children: [
+      { id: "cpap", label: "A CPAP or BiPAP machine" },
+      { id: "vent", label: "A ventilator, suction supplies, or feeding pumps" },
+    ],
+  },
+  { id: "comfort", label: "Any comfort stuffed animal, toy, sound machine, or blanket" },
+];
+
 
 function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
