@@ -471,7 +471,7 @@ function StickerDoctor() {
         <div className="mb-2 flex items-center justify-between px-1">
           <h2 className="text-lg font-bold text-foreground">🎒 What to Bring Checklist</h2>
           <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
-            {packedCount} of {PACKING_LIST.length} packed
+            {packedCount} of {packingTotal} packed
           </span>
         </div>
         <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
