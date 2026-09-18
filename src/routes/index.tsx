@@ -1,5 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+import {
+  PACKING_LIST,
+  PACKING_STORAGE_KEY,
+  countDone,
+  countTotal,
+  useStoredChecklist,
+} from "@/lib/checklists";
 
 import boyStars from "@/assets/boy-stars.png";
 import boyDino from "@/assets/boy-dino.png";
