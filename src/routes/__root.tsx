@@ -77,11 +77,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Get Ready with Me Sleep Study" },
+      {
+        name: "description",
+        content:
+          "A playful drag-and-drop sleep study sticker game for kids, with a parent's view for checklists and routines.",
+      },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Get Ready with Me Sleep Study" },
+      {
+        property: "og:description",
+        content:
+          "A playful drag-and-drop sleep study sticker game for kids, with a parent's view for checklists and routines.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },

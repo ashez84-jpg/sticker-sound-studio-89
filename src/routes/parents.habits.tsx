@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/parents/habits")({
   head: () => ({
     meta: [
-      { title: "Good Sleep Habits for Children and Teens | Sticker Doctor" },
+      { title: "Good Sleep Habits for Children and Teens | Get Ready with Me Sleep Study" },
       {
         name: "description",
         content:
