@@ -248,6 +248,7 @@ function StickerDoctor() {
 
 
   const slots = SLOTS[gender][pajama];
+  const doneCount = STICKERS.filter((k) => placed.some((p) => p.kind.id === k.id)).length;
 
   /** Nearest valid slot for this sticker, in avatar-relative % space. */
   const findSlot = useCallback(
