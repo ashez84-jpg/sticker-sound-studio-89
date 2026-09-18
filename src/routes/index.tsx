@@ -266,6 +266,8 @@ function StickerDoctor() {
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
   const [showReference, setShowReference] = useState(false);
   const [packed, setPacked] = useState<Set<string>>(new Set());
+  const [showPacking, setShowPacking] = useState(false);
+  const [openEquipment, setOpenEquipment] = useState(false);
 
   const slots = SLOTS[gender][pajama];
   const packedCount = PACKING_LIST.reduce(
