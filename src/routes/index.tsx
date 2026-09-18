@@ -32,13 +32,13 @@ import { playSound, type SoundName } from "@/lib/sfx";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Sticker Doctor - Drag & Drop Medical Sticker Game for Kids" },
+      { title: "Get Ready with Me Sleep Study - Drag & Drop Medical Sticker Game for Kids" },
       {
         name: "description",
         content:
           "A playful drag-and-drop game where kids place bandages, hearts and stars on a cartoon friend, with fun sound effects for every sticker.",
       },
-      { property: "og:title", content: "Sticker Doctor - Drag & Drop Sticker Game for Kids" },
+      { property: "og:title", content: "Get Ready with Me Sleep Study - Drag & Drop Sticker Game for Kids" },
       {
         property: "og:description",
         content:
@@ -364,7 +364,8 @@ function StickerDoctor() {
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 px-4 py-6">
       <header className="text-center">
         <h1 className="text-3xl font-extrabold text-foreground sm:text-5xl">
-          Sticker Doctor <span className="inline-block animate-wiggle">🧸</span>
+          Get Ready with Me Sleep Study{" "}
+          <span className="inline-block animate-wiggle">🧸</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
           Build your friend, then drag stickers on to make {NAMES[gender]} feel better. Tap a

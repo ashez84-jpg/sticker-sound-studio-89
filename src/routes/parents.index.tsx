@@ -14,7 +14,7 @@ import {
 export const Route = createFileRoute("/parents/")({
   head: () => ({
     meta: [
-      { title: "Parent's View - Sleep Study Checklist & Routine | Sticker Doctor" },
+      { title: "Parent's View - Sleep Study Checklist & Routine | Get Ready with Me Sleep Study" },
       {
         name: "description",
         content:
