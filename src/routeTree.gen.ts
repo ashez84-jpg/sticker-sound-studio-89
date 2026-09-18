@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParentsRouteImport } from './routes/parents'
+import { Route as ParentsHabitsRouteImport } from './routes/parents.habits'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,39 @@ const ParentsRoute = ParentsRouteImport.update({
   path: '/parents',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParentsHabitsRoute = ParentsHabitsRouteImport.update({
+  id: '/habits',
+  path: '/habits',
+  getParentRoute: () => ParentsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/parents': typeof ParentsRoute
+  '/parents': typeof ParentsRouteWithChildren
+  '/parents/habits': typeof ParentsHabitsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/parents': typeof ParentsRoute
+  '/parents': typeof ParentsRouteWithChildren
+  '/parents/habits': typeof ParentsHabitsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/parents': typeof ParentsRoute
+  '/parents': typeof ParentsRouteWithChildren
+  '/parents/habits': typeof ParentsHabitsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/parents'
+  fullPaths: '/' | '/parents' | '/parents/habits'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/parents'
-  id: '__root__' | '/' | '/parents'
+  to: '/' | '/parents' | '/parents/habits'
+  id: '__root__' | '/' | '/parents' | '/parents/habits'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ParentsRoute: typeof ParentsRoute
+  ParentsRoute: typeof ParentsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +74,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parents/habits': {
+      id: '/parents/habits'
+      path: '/habits'
+      fullPath: '/parents/habits'
+      preLoaderRoute: typeof ParentsHabitsRouteImport
+      parentRoute: typeof ParentsRoute
+    }
   }
 }
 
+interface ParentsRouteChildren {
+  ParentsHabitsRoute: typeof ParentsHabitsRoute
+}
+
+const ParentsRouteChildren: ParentsRouteChildren = {
+  ParentsHabitsRoute: ParentsHabitsRoute,
+}
+
+const ParentsRouteWithChildren =
+  ParentsRoute._addFileChildren(ParentsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ParentsRoute: ParentsRoute,
+  ParentsRoute: ParentsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
