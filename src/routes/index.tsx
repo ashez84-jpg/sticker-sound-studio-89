@@ -265,10 +265,23 @@ function StickerDoctor() {
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
   const [showReference, setShowReference] = useState(false);
-
+  const [packed, setPacked] = useState<Set<string>>(new Set());
 
   const slots = SLOTS[gender][pajama];
-  const doneCount = STICKERS.filter((k) => placed.some((p) => p.kind.id === k.id)).length;
+  const packedCount = PACKING_LIST.reduce(
+    (n, item) => n + (packed.has(item.id) ? 1 : 0) + (item.children?.some((c) => packed.has(c.id)) ? 1 : 0),
+    0,
+  );
+
+  const togglePacked = (id: string) => {
+    playSound("pick");
+    setPacked((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   /** Nearest valid slot for this sticker, in avatar-relative % space. */
   const findSlot = useCallback(
