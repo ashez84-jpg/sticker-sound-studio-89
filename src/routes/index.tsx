@@ -235,6 +235,26 @@ const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
 
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
+/** Parent's packing list for the night of the sleep study. */
+type PackingItem = { id: string; label: string; children?: { id: string; label: string }[] };
+
+const PACKING_LIST: PackingItem[] = [
+  { id: "meds", label: "Your child's medication" },
+  { id: "pajamas", label: "Pajamas or two-piece clothing, such as a T-shirt and shorts" },
+  { id: "snacks", label: "Snacks for before and after the sleep study" },
+  { id: "diapers", label: "Diapers and wipes" },
+  { id: "bottles", label: "Bottles and formula, including formula for G-tube feedings" },
+  {
+    id: "equipment",
+    label: "Any medical equipment your child uses at night, such as:",
+    children: [
+      { id: "cpap", label: "A CPAP or BiPAP machine" },
+      { id: "vent", label: "A ventilator, suction supplies, or feeding pumps" },
+    ],
+  },
+  { id: "comfort", label: "Any comfort stuffed animal, toy, sound machine, or blanket" },
+];
+
 
 function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
@@ -245,10 +265,24 @@ function StickerDoctor() {
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
   const [showReference, setShowReference] = useState(false);
-
+  const [packed, setPacked] = useState<Set<string>>(new Set());
 
   const slots = SLOTS[gender][pajama];
-  const doneCount = STICKERS.filter((k) => placed.some((p) => p.kind.id === k.id)).length;
+  const packedCount = PACKING_LIST.reduce(
+    (n, item) => n + (packed.has(item.id) ? 1 : 0) + (item.children?.some((c) => packed.has(c.id)) ? 1 : 0),
+    0,
+  );
+  const packingTotal = PACKING_LIST.reduce((n, item) => n + 1 + (item.children?.length ?? 0), 0);
+
+  const togglePacked = (id: string) => {
+    playSound("pick");
+    setPacked((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   /** Nearest valid slot for this sticker, in avatar-relative % space. */
   const findSlot = useCallback(
@@ -433,46 +467,82 @@ function StickerDoctor() {
         )}
       </section>
 
-      <section aria-label="Sleep study checklist" className="toy-card p-3 sm:p-4">
+      <section aria-label="Sleep study packing list" className="toy-card p-3 sm:p-4">
         <div className="mb-2 flex items-center justify-between px-1">
-          <h2 className="text-lg font-bold text-foreground">✅ Sleep Study Checklist</h2>
+          <h2 className="text-lg font-bold text-foreground">🎒 What to Bring Checklist</h2>
           <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
-            {doneCount} of {STICKERS.length} done
+            {packedCount} of {packingTotal} packed
           </span>
         </div>
-        <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-3">
-          {STICKERS.map((kind) => {
-            const done = placed.some((p) => p.kind.id === kind.id);
+        <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+          {PACKING_LIST.map((item) => {
+            const done = packed.has(item.id);
             return (
-              <li
-                key={kind.id}
-                className={`flex items-center gap-2 rounded-2xl px-3 py-2 transition-colors ${
-                  done ? "bg-mint" : "bg-muted"
-                }`}
-              >
-                <span
-                  aria-hidden
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${
-                    done ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
+              <li key={item.id}>
+                <button
+                  onClick={() => togglePacked(item.id)}
+                  aria-pressed={done}
+                  className={`flex w-full items-center gap-2 rounded-2xl px-3 py-2 text-left transition-colors active:scale-[0.99] ${
+                    done ? "bg-mint" : "bg-muted"
                   }`}
                 >
-                  {done ? "✓" : "○"}
-                </span>
-                <img src={kind.img} alt="" aria-hidden loading="lazy" className="h-7 w-7 object-contain" />
-                <span
-                  className={`text-sm font-bold ${
-                    done ? "text-foreground line-through opacity-70" : "text-foreground/80"
-                  }`}
-                >
-                  {kind.label}
-                </span>
+                  <span
+                    aria-hidden
+                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-extrabold transition-colors ${
+                      done ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
+                    }`}
+                  >
+                    {done ? "✓" : "○"}
+                  </span>
+                  <span
+                    className={`text-sm font-bold ${
+                      done ? "text-foreground line-through opacity-70" : "text-foreground/80"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </button>
+                {item.children && (
+                  <ul className="mt-1 ml-8 flex flex-col gap-1">
+                    {item.children.map((child) => {
+                      const childDone = packed.has(child.id);
+                      return (
+                        <li key={child.id}>
+                          <button
+                            onClick={() => togglePacked(child.id)}
+                            aria-pressed={childDone}
+                            className={`flex w-full items-center gap-2 rounded-2xl px-3 py-1.5 text-left transition-colors active:scale-[0.99] ${
+                              childDone ? "bg-mint" : "bg-background"
+                            }`}
+                          >
+                            <span
+                              aria-hidden
+                              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
+                                childDone ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                              }`}
+                            >
+                              {childDone ? "✓" : "○"}
+                            </span>
+                            <span
+                              className={`text-xs font-semibold ${
+                                childDone ? "text-foreground line-through opacity-70" : "text-foreground/70"
+                              }`}
+                            >
+                              {child.label}
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </li>
             );
           })}
         </ul>
-        {doneCount === STICKERS.length && (
+        {packedCount === packingTotal && (
           <p className="animate-pop-in mt-2 text-center text-sm font-extrabold text-primary">
-            🎉 All set for the sleep study — sweet dreams!
+            🎉 All packed and ready for the sleep study — sweet dreams!
           </p>
         )}
       </section>
