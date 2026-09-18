@@ -29,12 +29,12 @@ export const SLEEP_ROUTINE: RoutineItem[] = [
   { id: "no-nap", label: "Skip naps today", hint: "A tired child falls asleep faster at the lab." },
   { id: "no-caffeine", label: "No caffeine after lunch", hint: "That includes chocolate and soda." },
   { id: "wash-hair", label: "Wash hair, skip conditioner and oils", hint: "Clean hair helps the EEG stickers stay on." },
-  { id: "dinner", label: "Eat dinner before arriving", hint: "The lab visit starts with setup, not food." },
+  { id: "dinner", label: "Eat a normal dinner before the study", hint: "No meals will be provided during the study." },
   { id: "meds", label: "Give evening medication as usual", hint: "Bring the medication along too." },
   { id: "pack", label: "Pack the sleep-study bag", hint: "Use the packing checklist above." },
   { id: "pajamas", label: "Dress in pajamas or a T-shirt and shorts", hint: "Two-piece clothing makes sensor placement easy." },
   { id: "comfort", label: "Grab the comfort stuffed animal or blanket", hint: "Familiar things make the new room feel safe." },
-  { id: "arrive", label: "Arrive at the sleep center on time", hint: "Setup takes about an hour before lights out." },
+  { id: "arrive", label: "Arrive at the sleep center on time" },
 ];
 
 export const ROUTINE_STORAGE_KEY = "sleep-study-routine";
