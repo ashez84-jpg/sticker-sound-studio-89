@@ -470,79 +470,111 @@ function StickerDoctor() {
       </section>
 
       <section aria-label="Sleep study packing list" className="toy-card p-3 sm:p-4">
-        <div className="mb-2 flex items-center justify-between px-1">
-          <h2 className="text-lg font-bold text-foreground">🎒 What to Bring Checklist</h2>
-          <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
-            {packedCount} of {packingTotal} packed
+        <button
+          onClick={() => {
+            setShowPacking((v) => !v);
+            playSound("pick");
+          }}
+          aria-expanded={showPacking}
+          className="flex w-full items-center justify-between gap-2 rounded-2xl px-1 text-left"
+        >
+          <span className="text-lg font-bold text-foreground">
+            🎒 What to Bring Checklist {showPacking ? "" : "— tap to open"}
           </span>
-        </div>
-        <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-          {PACKING_LIST.map((item) => {
-            const done = packed.has(item.id);
-            return (
-              <li key={item.id}>
-                <button
-                  onClick={() => togglePacked(item.id)}
-                  aria-pressed={done}
-                  className={`flex w-full items-center gap-2 rounded-2xl px-3 py-2 text-left transition-colors active:scale-[0.99] ${
-                    done ? "bg-mint" : "bg-muted"
-                  }`}
-                >
-                  <span
-                    aria-hidden
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-extrabold transition-colors ${
-                      done ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
+          <span className="flex items-center gap-2">
+            <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
+              {packedCount} of {packingTotal} packed
+            </span>
+            <span aria-hidden className="text-xl">{showPacking ? "▴" : "▾"}</span>
+          </span>
+        </button>
+        {showPacking && (
+          <ul className="animate-pop-in mt-2 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+            {PACKING_LIST.map((item) => {
+              const done = packed.has(item.id);
+              return (
+                <li key={item.id}>
+                  <div
+                    className={`flex items-center gap-2 rounded-2xl px-3 py-2 transition-colors ${
+                      done ? "bg-mint" : "bg-muted"
                     }`}
                   >
-                    {done ? "✓" : "○"}
-                  </span>
-                  <span
-                    className={`text-sm font-bold ${
-                      done ? "text-foreground line-through opacity-70" : "text-foreground/80"
-                    }`}
-                  >
-                    {item.label}
-                  </span>
-                </button>
-                {item.children && (
-                  <ul className="mt-1 ml-8 flex flex-col gap-1">
-                    {item.children.map((child) => {
-                      const childDone = packed.has(child.id);
-                      return (
-                        <li key={child.id}>
-                          <button
-                            onClick={() => togglePacked(child.id)}
-                            aria-pressed={childDone}
-                            className={`flex w-full items-center gap-2 rounded-2xl px-3 py-1.5 text-left transition-colors active:scale-[0.99] ${
-                              childDone ? "bg-mint" : "bg-background"
-                            }`}
-                          >
-                            <span
-                              aria-hidden
-                              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
-                                childDone ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                    <button
+                      onClick={() => togglePacked(item.id)}
+                      aria-pressed={done}
+                      aria-label={`Mark ${item.label} as packed`}
+                      className="flex min-w-0 flex-1 items-center gap-2 text-left active:scale-[0.99]"
+                    >
+                      <span
+                        aria-hidden
+                        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-extrabold transition-colors ${
+                          done ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
+                        }`}
+                      >
+                        {done ? "✓" : "○"}
+                      </span>
+                      <span
+                        className={`text-sm font-bold ${
+                          done ? "text-foreground line-through opacity-70" : "text-foreground/80"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </button>
+                    {item.children && (
+                      <button
+                        onClick={() => {
+                          setOpenEquipment((v) => !v);
+                          playSound("pick");
+                        }}
+                        aria-expanded={openEquipment}
+                        aria-label={openEquipment ? "Hide equipment list" : "Show equipment list"}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-background text-sm font-extrabold text-muted-foreground transition-transform active:scale-90"
+                      >
+                        <span aria-hidden>{openEquipment ? "▴" : "▾"}</span>
+                      </button>
+                    )}
+                  </div>
+                  {item.children && openEquipment && (
+                    <ul className="animate-pop-in mt-1 ml-8 flex flex-col gap-1">
+                      {item.children.map((child) => {
+                        const childDone = packed.has(child.id);
+                        return (
+                          <li key={child.id}>
+                            <button
+                              onClick={() => togglePacked(child.id)}
+                              aria-pressed={childDone}
+                              className={`flex w-full items-center gap-2 rounded-2xl px-3 py-1.5 text-left transition-colors active:scale-[0.99] ${
+                                childDone ? "bg-mint" : "bg-background"
                               }`}
                             >
-                              {childDone ? "✓" : "○"}
-                            </span>
-                            <span
-                              className={`text-xs font-semibold ${
-                                childDone ? "text-foreground line-through opacity-70" : "text-foreground/70"
-                              }`}
-                            >
-                              {child.label}
-                            </span>
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-        {packedCount === packingTotal && (
+                              <span
+                                aria-hidden
+                                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
+                                  childDone ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                                }`}
+                              >
+                                {childDone ? "✓" : "○"}
+                              </span>
+                              <span
+                                className={`text-xs font-semibold ${
+                                  childDone ? "text-foreground line-through opacity-70" : "text-foreground/70"
+                                }`}
+                              >
+                                {child.label}
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {showPacking && packedCount === packingTotal && (
           <p className="animate-pop-in mt-2 text-center text-sm font-extrabold text-primary">
             🎉 All packed and ready for the sleep study — sweet dreams!
           </p>
