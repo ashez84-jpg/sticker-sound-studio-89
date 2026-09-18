@@ -196,20 +196,20 @@ const buildSlots = (t: Tune): Slot[] => [
   { id: "teddy", stickerId: "teddy", x: fx(37.5), y: 57, size: 78, hint: "On the arm" },
   { id: "puppy", stickerId: "puppy", x: fx(62.5), y: 57, size: 78, hint: "On the arm" },
   { id: "unicorn", stickerId: "unicorn", x: fx(38.5), y: 68, size: 72, hint: "On the arm" },
-  // Broad gauze cap: crown and sides covered while the face stays open
-  { id: "gauze-hat", stickerId: "gauze", x: 50, y: t.hatY, band: t.hatW, bandH: t.hatH, hint: "Fitted over the crown and sides of the head" },
+  // Wide, shallow gauze cap fitted over the crown without covering the face
+  { id: "gauze-hat", stickerId: "gauze", x: 50, y: t.hatY, band: t.hatW, bandH: t.hatH, stretch: true, hint: "Fitted over the crown and sides of the head" },
 ];
 
 const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
   boy: {
-    stars: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 17, hatW: 43, hatH: 126 }),
-    dino: buildSlots({ dy: 0, cannulaY: 30.2, chestY: 50, chestW: 31, bellyY: 59, bellyW: 29, hatY: 17, hatW: 43, hatH: 126 }),
-    hearts: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 17, hatW: 43, hatH: 126 }),
+    stars: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 13, hatW: 43, hatH: 80 }),
+    dino: buildSlots({ dy: 0, cannulaY: 30.2, chestY: 50, chestW: 31, bellyY: 59, bellyW: 29, hatY: 13, hatW: 43, hatH: 80 }),
+    hearts: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 13, hatW: 43, hatH: 80 }),
   },
   girl: {
-    stars: buildSlots({ dy: -0.8, cannulaY: 30.3, chestY: 52.5, chestW: 32, bellyY: 62.5, bellyW: 29, hatY: 15.5, hatW: 58, hatH: 170 }),
-    dino: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 32, bellyY: 62, bellyW: 30, hatY: 15.5, hatW: 58, hatH: 170 }),
-    hearts: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 31, bellyY: 61.5, bellyW: 29, hatY: 15.5, hatW: 58, hatH: 170 }),
+    stars: buildSlots({ dy: -0.8, cannulaY: 30.3, chestY: 52.5, chestW: 32, bellyY: 62.5, bellyW: 29, hatY: 10.5, hatW: 58, hatH: 105 }),
+    dino: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 32, bellyY: 62, bellyW: 30, hatY: 10.5, hatW: 58, hatH: 105 }),
+    hearts: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 31, bellyY: 61.5, bellyW: 29, hatY: 10.5, hatW: 58, hatH: 105 }),
   },
 };
 
