@@ -360,6 +360,11 @@ function StickerDoctor() {
     setPlaced([]);
   };
 
+  const scrollTray = (dir: number) => {
+    playSound("pick");
+    trayRef.current?.scrollBy({ left: dir * 240, behavior: "smooth" });
+  };
+
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 px-4 py-6">
@@ -696,7 +701,7 @@ function StickerDoctor() {
             </button>
           </div>
         </div>
-        <div className="sticker-tray flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2 sm:gap-3">
+        <div ref={trayRef} className="sticker-tray flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2 sm:gap-3">
           {STICKERS.map((kind, i) => (
             <button
               key={kind.id}
