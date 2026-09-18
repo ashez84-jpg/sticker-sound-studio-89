@@ -1,5 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+import {
+  PACKING_LIST,
+  PACKING_STORAGE_KEY,
+  countDone,
+  countTotal,
+  useStoredChecklist,
+} from "@/lib/checklists";
 
 import boyStars from "@/assets/boy-stars.png";
 import boyDino from "@/assets/boy-dino.png";
@@ -235,27 +243,6 @@ const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
 
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
-/** Parent's packing list for the night of the sleep study. */
-type PackingItem = { id: string; label: string; children?: { id: string; label: string }[] };
-
-const PACKING_LIST: PackingItem[] = [
-  { id: "meds", label: "Your child's medication" },
-  { id: "pajamas", label: "Pajamas or two-piece clothing, such as a T-shirt and shorts" },
-  { id: "snacks", label: "Snacks for before and after the sleep study" },
-  { id: "diapers", label: "Diapers and wipes" },
-  { id: "bottles", label: "Bottles and formula, including formula for G-tube feedings" },
-  {
-    id: "equipment",
-    label: "Any medical equipment your child uses at night, such as:",
-    children: [
-      { id: "cpap", label: "A CPAP or BiPAP machine" },
-      { id: "vent", label: "A ventilator, suction supplies, or feeding pumps" },
-    ],
-  },
-  { id: "comfort", label: "Any comfort stuffed animal, toy, sound machine, or blanket" },
-];
-
-
 function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const keyRef = useRef(0);
@@ -265,25 +252,17 @@ function StickerDoctor() {
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
   const [showReference, setShowReference] = useState(false);
-  const [packed, setPacked] = useState<Set<string>>(new Set());
+  const { checked: packed, toggle: togglePackedStored } = useStoredChecklist(PACKING_STORAGE_KEY);
   const [showPacking, setShowPacking] = useState(false);
   const [openEquipment, setOpenEquipment] = useState(false);
 
   const slots = SLOTS[gender][pajama];
-  const packedCount = PACKING_LIST.reduce(
-    (n, item) => n + (packed.has(item.id) ? 1 : 0) + (item.children?.some((c) => packed.has(c.id)) ? 1 : 0),
-    0,
-  );
-  const packingTotal = PACKING_LIST.reduce((n, item) => n + 1 + (item.children?.length ?? 0), 0);
+  const packedCount = countDone(PACKING_LIST, packed);
+  const packingTotal = countTotal(PACKING_LIST);
 
   const togglePacked = (id: string) => {
     playSound("pick");
-    setPacked((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+    togglePackedStored(id);
   };
 
   /** Nearest valid slot for this sticker, in avatar-relative % space. */
@@ -391,6 +370,12 @@ function StickerDoctor() {
           Build your friend, then drag stickers on to make {NAMES[gender]} feel better. Tap a
           sticker to take it off.
         </p>
+        <Link
+          to="/parents"
+          className="mt-3 inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-foreground/80 transition-transform active:scale-95"
+        >
+          🌙 Parent's view
+        </Link>
       </header>
 
       <section aria-label="Choose your character" className="toy-card p-3 sm:p-4">
