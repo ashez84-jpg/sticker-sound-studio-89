@@ -679,13 +679,13 @@ function StickerDoctor() {
             Start over
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3 lg:grid-cols-9">
+        <div className="sticker-tray flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2 sm:gap-3">
           {STICKERS.map((kind, i) => (
             <button
               key={kind.id}
               onPointerDown={(e) => startDrag(kind, e)}
               aria-label={`Drag ${kind.label} sticker`}
-              className={`${kind.bg} flex touch-none flex-col items-center gap-0.5 rounded-2xl px-2 py-3 text-center shadow-[var(--shadow-sticker)] transition-transform hover:-translate-y-1 active:scale-95`}
+              className={`${kind.bg} flex w-28 shrink-0 snap-start touch-none flex-col items-center gap-0.5 rounded-2xl px-2 py-3 text-center shadow-[var(--shadow-sticker)] transition-transform hover:-translate-y-1 active:scale-95 sm:w-32`}
             >
               <img
                 src={kind.img}
