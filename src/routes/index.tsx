@@ -540,7 +540,7 @@ function StickerDoctor() {
             );
           })}
         </ul>
-        {packedCount === PACKING_LIST.length && (
+        {packedCount === packingTotal && (
           <p className="animate-pop-in mt-2 text-center text-sm font-extrabold text-primary">
             🎉 All packed and ready for the sleep study — sweet dreams!
           </p>
