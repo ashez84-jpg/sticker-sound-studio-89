@@ -252,25 +252,17 @@ function StickerDoctor() {
   const [drag, setDrag] = useState<DragState | null>(null);
   const [praise, setPraise] = useState<{ id: number; text: string } | null>(null);
   const [showReference, setShowReference] = useState(false);
-  const [packed, setPacked] = useState<Set<string>>(new Set());
+  const { checked: packed, toggle: togglePackedStored } = useStoredChecklist(PACKING_STORAGE_KEY);
   const [showPacking, setShowPacking] = useState(false);
   const [openEquipment, setOpenEquipment] = useState(false);
 
   const slots = SLOTS[gender][pajama];
-  const packedCount = PACKING_LIST.reduce(
-    (n, item) => n + (packed.has(item.id) ? 1 : 0) + (item.children?.some((c) => packed.has(c.id)) ? 1 : 0),
-    0,
-  );
-  const packingTotal = PACKING_LIST.reduce((n, item) => n + 1 + (item.children?.length ?? 0), 0);
+  const packedCount = countDone(PACKING_LIST, packed);
+  const packingTotal = countTotal(PACKING_LIST);
 
   const togglePacked = (id: string) => {
     playSound("pick");
-    setPacked((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+    togglePackedStored(id);
   };
 
   /** Nearest valid slot for this sticker, in avatar-relative % space. */
@@ -378,6 +370,12 @@ function StickerDoctor() {
           Build your friend, then drag stickers on to make {NAMES[gender]} feel better. Tap a
           sticker to take it off.
         </p>
+        <Link
+          to="/parents"
+          className="mt-3 inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-foreground/80 transition-transform active:scale-95"
+        >
+          🌙 Parent's view
+        </Link>
       </header>
 
       <section aria-label="Choose your character" className="toy-card p-3 sm:p-4">
