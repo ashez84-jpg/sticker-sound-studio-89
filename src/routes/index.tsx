@@ -272,6 +272,7 @@ function StickerDoctor() {
     (n, item) => n + (packed.has(item.id) ? 1 : 0) + (item.children?.some((c) => packed.has(c.id)) ? 1 : 0),
     0,
   );
+  const packingTotal = PACKING_LIST.reduce((n, item) => n + 1 + (item.children?.length ?? 0), 0);
 
   const togglePacked = (id: string) => {
     playSound("pick");
