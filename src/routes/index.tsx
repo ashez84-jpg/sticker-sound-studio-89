@@ -202,14 +202,14 @@ const buildSlots = (t: Tune): Slot[] => [
 
 const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
   boy: {
-    stars: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 19, hatW: 40, hatH: 132 }),
-    dino: buildSlots({ dy: 0, cannulaY: 30.2, chestY: 50, chestW: 31, bellyY: 59, bellyW: 29, hatY: 19, hatW: 40, hatH: 132 }),
-    hearts: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 19, hatW: 40, hatH: 132 }),
+    stars: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 17, hatW: 43, hatH: 126 }),
+    dino: buildSlots({ dy: 0, cannulaY: 30.2, chestY: 50, chestW: 31, bellyY: 59, bellyW: 29, hatY: 17, hatW: 43, hatH: 126 }),
+    hearts: buildSlots({ dy: 0, cannulaY: 30.4, chestY: 51, chestW: 30, bellyY: 60, bellyW: 27, hatY: 17, hatW: 43, hatH: 126 }),
   },
   girl: {
-    stars: buildSlots({ dy: -0.8, cannulaY: 30.3, chestY: 52.5, chestW: 32, bellyY: 62.5, bellyW: 29, hatY: 18.5, hatW: 46, hatH: 142 }),
-    dino: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 32, bellyY: 62, bellyW: 30, hatY: 18.5, hatW: 46, hatH: 142 }),
-    hearts: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 31, bellyY: 61.5, bellyW: 29, hatY: 18.5, hatW: 46, hatH: 142 }),
+    stars: buildSlots({ dy: -0.8, cannulaY: 30.3, chestY: 52.5, chestW: 32, bellyY: 62.5, bellyW: 29, hatY: 15.5, hatW: 58, hatH: 170 }),
+    dino: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 32, bellyY: 62, bellyW: 30, hatY: 15.5, hatW: 58, hatH: 170 }),
+    hearts: buildSlots({ dy: -0.8, cannulaY: 28.7, chestY: 52, chestW: 31, bellyY: 61.5, bellyW: 29, hatY: 15.5, hatW: 58, hatH: 170 }),
   },
 };
 
