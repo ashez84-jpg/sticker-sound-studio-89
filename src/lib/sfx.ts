@@ -68,7 +68,8 @@ export type SoundName =
   | "shot"
   | "stethoscope"
   | "cheer"
-  | "clear";
+  | "clear"
+  | "bouncy";
 
 export function playSound(name: SoundName) {
   switch (name) {
@@ -121,6 +122,14 @@ export function playSound(name: SoundName) {
       break;
     case "clear":
       playTones([{ freq: 700, dur: 0.22, type: "sine", slideTo: 260, gain: 0.1 }]);
+      break;
+    case "bouncy":
+      playTones([
+        { freq: 523, dur: 0.09, type: "triangle", gain: 0.14 },
+        { freq: 659, dur: 0.09, type: "triangle", delay: 0.07, gain: 0.14 },
+        { freq: 784, dur: 0.09, type: "triangle", delay: 0.14, gain: 0.14 },
+        { freq: 1046, dur: 0.22, type: "triangle", delay: 0.21, gain: 0.16 },
+      ]);
       break;
   }
 }
