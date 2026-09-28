@@ -82,7 +82,7 @@ const STICKERS: StickerKind[] = [
     label: "EEG & EOG Electrodes",
     sub: "Head & face stickers",
     img: stickerEeg,
-    sound: "bandage",
+    sound: "bouncy",
     bg: "bg-mint",
   },
   {
@@ -130,7 +130,7 @@ const STICKERS: StickerKind[] = [
     label: "Gauze Hat",
     sub: "Soft net cap for the head",
     img: stickerGauze,
-    sound: "bandage",
+    sound: "bouncy",
     bg: "bg-sky",
   },
 ];
