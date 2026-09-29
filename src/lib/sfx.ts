@@ -69,7 +69,10 @@ export type SoundName =
   | "stethoscope"
   | "cheer"
   | "clear"
-  | "bouncy";
+  | "bouncy"
+  | "dog"
+  | "bear"
+  | "horse";
 
 export function playSound(name: SoundName) {
   switch (name) {
