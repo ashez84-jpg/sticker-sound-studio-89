@@ -352,6 +352,8 @@ function StickerDoctor() {
   // Slot positions shift between boy and girl, so start fresh on a swap.
   useEffect(() => {
     setPlaced([]);
+    setStory(null);
+    setStoryError(null);
   }, [gender, pajama]);
 
   const removeSticker = (key: number) => {
@@ -367,6 +369,29 @@ function StickerDoctor() {
   const scrollTray = (dir: number) => {
     playSound("pick");
     trayRef.current?.scrollBy({ left: dir * 240, behavior: "smooth" });
+  };
+
+  const tellStory = async () => {
+    if (storyLoading) return;
+    playSound("star");
+    setStoryLoading(true);
+    setStoryError(null);
+    setStory(null);
+    try {
+      const items = Array.from(
+        new Set(placed.map((p) => `${p.kind.label} on the ${p.slot.hint.toLowerCase()}`)),
+      );
+      const pajamaLabel = PAJAMAS.find((p) => p.id === pajama)?.label ?? pajama;
+      const res = await createStory({
+        data: { name: NAMES[gender], gender, pajama: pajamaLabel, items },
+      });
+      setStory(res.story);
+      playSound("cheer");
+    } catch {
+      setStoryError("The storyteller is having a little nap. Please try again in a moment.");
+    } finally {
+      setStoryLoading(false);
+    }
   };
 
 
