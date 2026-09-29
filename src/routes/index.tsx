@@ -28,7 +28,6 @@ import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
 import { playSound, type SoundName } from "@/lib/sfx";
-import { createStory } from "@/lib/story.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -257,9 +256,6 @@ function StickerDoctor() {
   const { checked: packed, toggle: togglePackedStored } = useStoredChecklist(PACKING_STORAGE_KEY);
   const [showPacking, setShowPacking] = useState(false);
   const [openEquipment, setOpenEquipment] = useState(false);
-  const [story, setStory] = useState<string | null>(null);
-  const [storyLoading, setStoryLoading] = useState(false);
-  const [storyError, setStoryError] = useState<string | null>(null);
 
   const slots = SLOTS[gender][pajama];
   const packedCount = countDone(PACKING_LIST, packed);
@@ -352,8 +348,6 @@ function StickerDoctor() {
   // Slot positions shift between boy and girl, so start fresh on a swap.
   useEffect(() => {
     setPlaced([]);
-    setStory(null);
-    setStoryError(null);
   }, [gender, pajama]);
 
   const removeSticker = (key: number) => {
@@ -371,28 +365,6 @@ function StickerDoctor() {
     trayRef.current?.scrollBy({ left: dir * 240, behavior: "smooth" });
   };
 
-  const tellStory = async () => {
-    if (storyLoading) return;
-    playSound("star");
-    setStoryLoading(true);
-    setStoryError(null);
-    setStory(null);
-    try {
-      const items = Array.from(
-        new Set(placed.map((p) => `${p.kind.label} on the ${p.slot.hint.toLowerCase()}`)),
-      );
-      const pajamaLabel = PAJAMAS.find((p) => p.id === pajama)?.label ?? pajama;
-      const res = await createStory({
-        data: { name: NAMES[gender], gender, pajama: pajamaLabel, items },
-      });
-      setStory(res.story);
-      playSound("cheer");
-    } catch {
-      setStoryError("The storyteller is having a little nap. Please try again in a moment.");
-    } finally {
-      setStoryLoading(false);
-    }
-  };
 
 
   return (
@@ -406,12 +378,20 @@ function StickerDoctor() {
           Build your friend, then drag stickers on to make {NAMES[gender]} feel better. Tap a
           sticker to take it off.
         </p>
-        <Link
-          to="/parents"
-          className="mt-3 inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-foreground/80 transition-transform active:scale-95"
-        >
-          🌙 Parent's view
-        </Link>
+        <div className="mt-3 flex flex-wrap justify-center gap-2">
+          <Link
+            to="/i-spy"
+            className="inline-flex items-center justify-center rounded-full bg-sunshine px-4 py-2 text-sm font-bold text-foreground transition-transform active:scale-95"
+          >
+            🔍 I Spy game
+          </Link>
+          <Link
+            to="/parents"
+            className="inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-foreground/80 transition-transform active:scale-95"
+          >
+            🌙 Parent's view
+          </Link>
+        </div>
       </header>
 
       <section aria-label="Choose your character" className="toy-card p-3 sm:p-4">
@@ -755,47 +735,6 @@ function StickerDoctor() {
         </div>
       </section>
 
-      <section aria-label="Bedtime story" className="toy-card p-3 sm:p-4">
-        <div className="flex flex-wrap items-center justify-between gap-2 px-1">
-          <div>
-            <h2 className="text-lg font-bold text-foreground">📖 {NAMES[gender]}'s Story</h2>
-            <p className="text-xs font-semibold text-muted-foreground">
-              {placed.length === 0
-                ? "Put some stickers on first, then get a story about them!"
-                : `A story about ${NAMES[gender]} and the ${placed.length} sticker${placed.length === 1 ? "" : "s"} you placed.`}
-            </p>
-          </div>
-          <button
-            onClick={tellStory}
-            disabled={placed.length === 0 || storyLoading}
-            className="rounded-full bg-primary px-5 py-2 text-sm font-extrabold text-primary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95 disabled:opacity-40"
-          >
-            {storyLoading ? "Writing…" : story ? "Another story" : "Tell my story ✨"}
-          </button>
-        </div>
-
-        {storyLoading && (
-          <p className="mt-3 rounded-2xl bg-muted px-4 py-6 text-center text-sm font-bold text-muted-foreground">
-            ✨ Sprinkling some dream dust…
-          </p>
-        )}
-
-        {storyError && (
-          <p className="animate-pop-in mt-3 rounded-2xl bg-muted px-4 py-3 text-center text-sm font-bold text-foreground/70">
-            {storyError}
-          </p>
-        )}
-
-        {story && !storyLoading && (
-          <article className="animate-pop-in mt-3 flex flex-col gap-2 rounded-2xl bg-sky px-4 py-4">
-            {story.split(/\n+/).map((para, i) => (
-              <p key={i} className="text-base font-semibold leading-relaxed text-foreground/85">
-                {para}
-              </p>
-            ))}
-          </article>
-        )}
-      </section>
 
       <p className="pb-4 text-center text-sm font-semibold text-muted-foreground">
         Stickers placed: {placed.length}
