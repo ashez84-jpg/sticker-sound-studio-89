@@ -28,6 +28,7 @@ import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
 import { playSound, type SoundName } from "@/lib/sfx";
+import { createStory } from "@/lib/story.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -256,6 +257,9 @@ function StickerDoctor() {
   const { checked: packed, toggle: togglePackedStored } = useStoredChecklist(PACKING_STORAGE_KEY);
   const [showPacking, setShowPacking] = useState(false);
   const [openEquipment, setOpenEquipment] = useState(false);
+  const [story, setStory] = useState<string | null>(null);
+  const [storyLoading, setStoryLoading] = useState(false);
+  const [storyError, setStoryError] = useState<string | null>(null);
 
   const slots = SLOTS[gender][pajama];
   const packedCount = countDone(PACKING_LIST, packed);
