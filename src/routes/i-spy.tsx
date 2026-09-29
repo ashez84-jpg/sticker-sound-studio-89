@@ -18,23 +18,35 @@ export const Route = createFileRoute("/i-spy")({
   component: ISpyPage,
 });
 
-type Hidden = { id: string; emoji: string; name: string; x: number; y: number; size: number; rotate: number };
+type Hidden = { id: string; emoji: string; name: string; x: number; y: number; size: number; rotate: number; opacity?: number };
 
-// Positions are percentages across the room picture.
+// Positions are percentages across the room picture. Several items hide in more than one spot.
 const ITEMS: Hidden[] = [
-  { id: "star", emoji: "⭐", name: "Star", x: 12, y: 14, size: 5, rotate: -12 },
-  { id: "moon", emoji: "🌙", name: "Moon", x: 86, y: 9, size: 5, rotate: 10 },
-  { id: "sock", emoji: "🧦", name: "Sock", x: 20, y: 88, size: 5, rotate: 25 },
+  { id: "star-1", emoji: "⭐", name: "Star", x: 12, y: 14, size: 5, rotate: -12 },
+  { id: "star-2", emoji: "⭐", name: "Star", x: 58, y: 9, size: 5, rotate: 15 },
+  { id: "moon", emoji: "🌙", name: "Moon", x: 87, y: 9, size: 7, rotate: 10, opacity: 0.85 },
+  { id: "sock-1", emoji: "🧦", name: "Sock", x: 20, y: 88, size: 5, rotate: 25 },
+  { id: "sock-2", emoji: "🧦", name: "Sock", x: 34, y: 94, size: 5, rotate: -40 },
   { id: "book", emoji: "📕", name: "Book", x: 72, y: 78, size: 4.5, rotate: -8 },
   { id: "duck", emoji: "🦆", name: "Rubber duck", x: 91, y: 62, size: 4.5, rotate: 0 },
   { id: "key", emoji: "🔑", name: "Key", x: 40, y: 94, size: 4, rotate: 40 },
-  { id: "toothbrush", emoji: "🪥", name: "Toothbrush", x: 6, y: 52, size: 4.5, rotate: -30 },
+  { id: "toothbrush", emoji: "🪥", name: "Toothbrush", x: 6, y: 52, size: 6.5, rotate: -30, opacity: 0.85 },
   { id: "cookie", emoji: "🍪", name: "Cookie", x: 55, y: 30, size: 4, rotate: 0 },
   { id: "balloon", emoji: "🎈", name: "Balloon", x: 32, y: 22, size: 5, rotate: 8 },
   { id: "butterfly", emoji: "🦋", name: "Butterfly", x: 63, y: 55, size: 4, rotate: -15 },
   { id: "flashlight", emoji: "🔦", name: "Flashlight", x: 83, y: 90, size: 4.5, rotate: 20 },
   { id: "ball", emoji: "⚽", name: "Ball", x: 47, y: 70, size: 4, rotate: 0 },
+  { id: "pillow", emoji: "🛏️", name: "Pillow", x: 16, y: 68, size: 5, rotate: -6 },
+  { id: "sheep-1", emoji: "🐑", name: "Counting sheep", x: 27, y: 36, size: 4.5, rotate: 10 },
+  { id: "sheep-2", emoji: "🐑", name: "Counting sheep", x: 68, y: 24, size: 4.5, rotate: -12 },
+  { id: "milk", emoji: "🥛", name: "Glass of milk", x: 45, y: 55, size: 4, rotate: 0 },
+  { id: "clock", emoji: "🕰️", name: "Bedtime clock", x: 95, y: 18, size: 4.5, rotate: 6 },
+  { id: "teddy", emoji: "🧸", name: "Teddy bear", x: 8, y: 80, size: 4.5, rotate: -8 },
+  { id: "sleepy", emoji: "😴", name: "Sleepy face", x: 78, y: 44, size: 4.5, rotate: 0 },
 ];
+
+// Unique item types, in first-seen order, for the "Can you find…" list.
+const TYPE_NAMES = [...new Set(ITEMS.map((item) => item.name))];
 
 function ISpyPage() {
   const [found, setFound] = useState<string[]>([]);
@@ -90,7 +102,7 @@ function ISpyPage() {
                   aspectRatio: "1",
                   transform: `translate(-50%,-50%) rotate(${item.rotate}deg)`,
                   fontSize: `clamp(14px, ${item.size * 0.7}vw, 40px)`,
-                  opacity: isFound ? 1 : 0.55,
+                  opacity: isFound ? 1 : (item.opacity ?? 0.55),
                   boxShadow: isFound ? "0 0 0 3px var(--sunshine)" : "none",
                   background: isFound ? "color-mix(in oklch, var(--card) 70%, transparent)" : "transparent",
                 }}
