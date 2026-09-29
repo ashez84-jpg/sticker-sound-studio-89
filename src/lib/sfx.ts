@@ -74,7 +74,20 @@ export type SoundName =
   | "bear"
   | "horse";
 
+const CLIPS: Partial<Record<SoundName, string>> = {
+  dog: "/sounds/dog.mp3",
+  bear: "/sounds/bear.mp3",
+  horse: "/sounds/horse.mp3",
+};
+
 export function playSound(name: SoundName) {
+  const clip = CLIPS[name];
+  if (clip && typeof window !== "undefined") {
+    const a = new Audio(clip);
+    a.volume = 0.8;
+    void a.play().catch(() => {});
+    return;
+  }
   switch (name) {
     case "pick":
       playTones([{ freq: 660, dur: 0.08, type: "triangle", gain: 0.1 }]);
