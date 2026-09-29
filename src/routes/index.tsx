@@ -755,6 +755,48 @@ function StickerDoctor() {
         </div>
       </section>
 
+      <section aria-label="Bedtime story" className="toy-card p-3 sm:p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+          <div>
+            <h2 className="text-lg font-bold text-foreground">📖 {NAMES[gender]}'s Story</h2>
+            <p className="text-xs font-semibold text-muted-foreground">
+              {placed.length === 0
+                ? "Put some stickers on first, then get a story about them!"
+                : `A story about ${NAMES[gender]} and the ${placed.length} sticker${placed.length === 1 ? "" : "s"} you placed.`}
+            </p>
+          </div>
+          <button
+            onClick={tellStory}
+            disabled={placed.length === 0 || storyLoading}
+            className="rounded-full bg-primary px-5 py-2 text-sm font-extrabold text-primary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95 disabled:opacity-40"
+          >
+            {storyLoading ? "Writing…" : story ? "Another story" : "Tell my story ✨"}
+          </button>
+        </div>
+
+        {storyLoading && (
+          <p className="mt-3 rounded-2xl bg-muted px-4 py-6 text-center text-sm font-bold text-muted-foreground">
+            ✨ Sprinkling some dream dust…
+          </p>
+        )}
+
+        {storyError && (
+          <p className="animate-pop-in mt-3 rounded-2xl bg-muted px-4 py-3 text-center text-sm font-bold text-foreground/70">
+            {storyError}
+          </p>
+        )}
+
+        {story && !storyLoading && (
+          <article className="animate-pop-in mt-3 flex flex-col gap-2 rounded-2xl bg-sky px-4 py-4">
+            {story.split(/\n+/).map((para, i) => (
+              <p key={i} className="text-base font-semibold leading-relaxed text-foreground/85">
+                {para}
+              </p>
+            ))}
+          </article>
+        )}
+      </section>
+
       <p className="pb-4 text-center text-sm font-semibold text-muted-foreground">
         Stickers placed: {placed.length}
       </p>
