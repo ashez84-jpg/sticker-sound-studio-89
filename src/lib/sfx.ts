@@ -84,8 +84,27 @@ export function playSound(name: SoundName) {
   const clip = CLIPS[name];
   if (clip && typeof window !== "undefined") {
     const a = new Audio(clip);
-    a.volume = 0.8;
+    a.volume = 0.68;
     void a.play().catch(() => {});
+
+    // Bright musical accents keep the recognizable animal calls playful.
+    if (name === "dog") {
+      playTones([
+        { freq: 740, dur: 0.1, type: "triangle", delay: 0.08, gain: 0.07 },
+        { freq: 988, dur: 0.14, type: "triangle", delay: 0.22, gain: 0.08 },
+      ]);
+    } else if (name === "bear") {
+      playTones([
+        { freq: 260, dur: 0.12, type: "sine", slideTo: 180, delay: 0.06, gain: 0.08 },
+        { freq: 180, dur: 0.2, type: "sine", slideTo: 360, delay: 0.2, gain: 0.09 },
+      ]);
+    } else if (name === "horse") {
+      playTones([
+        { freq: 659, dur: 0.1, type: "triangle", delay: 0.08, gain: 0.06 },
+        { freq: 880, dur: 0.1, type: "triangle", delay: 0.18, gain: 0.07 },
+        { freq: 1175, dur: 0.18, type: "triangle", delay: 0.28, gain: 0.08 },
+      ]);
+    }
     return;
   }
   switch (name) {
