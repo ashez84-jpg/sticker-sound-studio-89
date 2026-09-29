@@ -122,7 +122,7 @@ const STICKERS: StickerKind[] = [
     label: "Unicorn",
     sub: "A magical stuffed animal",
     img: stickerUnicorn,
-    sound: "star",
+    sound: "horse",
     bg: "bg-bubblegum",
   },
   {
