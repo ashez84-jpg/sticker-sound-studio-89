@@ -38,17 +38,14 @@ export async function generateStory(input: StoryRequest): Promise<string> {
         include: ["reasoning.encrypted_content"],
       },
     },
+    instructions: [
+      "You write tiny bedtime stories for children aged 3 to 9 who are about to have an overnight sleep study.",
+      "Tone: warm, playful, brave, reassuring. Never scary, never about pain, needles, illness or hospitals being frightening.",
+      "Turn the sleep study equipment the child placed into friendly magical helpers (for example belts as hug bands, sensors as dream antennae, a pulse oximeter as a glowing firefly light).",
+      "Write 3 short paragraphs, about 120 words total, simple sentences, present tense.",
+      "End with the character drifting happily to sleep. Output only the story text, no title and no markdown.",
+    ].join(" "),
     messages: [
-      {
-        role: "system",
-        content: [
-          "You write tiny bedtime stories for children aged 3 to 9 who are about to have an overnight sleep study.",
-          "Tone: warm, playful, brave, reassuring. Never scary, never about pain, needles, illness or hospitals being frightening.",
-          "Turn the sleep study equipment the child placed into friendly magical helpers (for example belts as hug bands, sensors as dream antennae, a pulse oximeter as a glowing firefly light).",
-          "Write 3 short paragraphs, about 120 words total, simple sentences, present tense.",
-          "End with the character drifting happily to sleep. Output only the story text, no title and no markdown.",
-        ].join(" "),
-      },
       {
         role: "user",
         content: `Main character: ${input.name}, a ${input.gender} wearing ${input.pajama} pajamas. Things they put on for the sleep study: ${gear}. Please write their story.`,

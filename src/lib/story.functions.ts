@@ -9,7 +9,7 @@ const storyInput = z.object({
 });
 
 export const createStory = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => storyInput.parse(data))
+  .validator((data: unknown) => storyInput.parse(data))
   .handler(async ({ data }) => {
     const { generateStory } = await import("./story.server");
     return { story: await generateStory(data) };
