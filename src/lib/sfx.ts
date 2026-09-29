@@ -69,7 +69,10 @@ export type SoundName =
   | "stethoscope"
   | "cheer"
   | "clear"
-  | "bouncy";
+  | "bouncy"
+  | "dog"
+  | "bear"
+  | "horse";
 
 export function playSound(name: SoundName) {
   switch (name) {
@@ -129,6 +132,28 @@ export function playSound(name: SoundName) {
         { freq: 659, dur: 0.09, type: "triangle", delay: 0.07, gain: 0.14 },
         { freq: 784, dur: 0.09, type: "triangle", delay: 0.14, gain: 0.14 },
         { freq: 1046, dur: 0.22, type: "triangle", delay: 0.21, gain: 0.16 },
+      ]);
+      break;
+    case "dog":
+      // Two happy "woof" barks
+      playTones([
+        { freq: 420, dur: 0.12, type: "sawtooth", slideTo: 200, gain: 0.2 },
+        { freq: 420, dur: 0.14, type: "sawtooth", slideTo: 190, gain: 0.2, delay: 0.18 },
+      ]);
+      noise(0.1, 0.06);
+      break;
+    case "bear":
+      // Low friendly growl with a wobble
+      playTones([{ freq: 110, dur: 0.5, type: "sawtooth", slideTo: 80, gain: 0.22 }]);
+      noise(0.45, 0.05);
+      break;
+    case "horse":
+      // Whinny: high warbling slide down
+      playTones([{ freq: 900, dur: 0.55, type: "sawtooth", slideTo: 380, gain: 0.16 }]);
+      playTones([
+        { freq: 700, dur: 0.08, type: "square", gain: 0.07 },
+        { freq: 620, dur: 0.08, type: "square", gain: 0.07, delay: 0.09 },
+        { freq: 540, dur: 0.08, type: "square", gain: 0.07, delay: 0.18 },
       ]);
       break;
   }

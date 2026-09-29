@@ -106,7 +106,7 @@ const STICKERS: StickerKind[] = [
     label: "Ready Bear",
     sub: "A brave buddy for the bed",
     img: stickerTeddy,
-    sound: "star",
+    sound: "bear",
     bg: "bg-sunshine",
   },
   {
@@ -114,7 +114,7 @@ const STICKERS: StickerKind[] = [
     label: "Puppy Dog",
     sub: "A cuddly sleep friend",
     img: stickerPuppy,
-    sound: "heart",
+    sound: "dog",
     bg: "bg-mint",
   },
   {
@@ -122,7 +122,7 @@ const STICKERS: StickerKind[] = [
     label: "Unicorn",
     sub: "A magical stuffed animal",
     img: stickerUnicorn,
-    sound: "star",
+    sound: "horse",
     bg: "bg-bubblegum",
   },
   {
