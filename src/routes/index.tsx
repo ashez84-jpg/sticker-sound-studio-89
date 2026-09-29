@@ -106,7 +106,7 @@ const STICKERS: StickerKind[] = [
     label: "Ready Bear",
     sub: "A brave buddy for the bed",
     img: stickerTeddy,
-    sound: "star",
+    sound: "bear",
     bg: "bg-sunshine",
   },
   {
