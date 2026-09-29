@@ -146,6 +146,8 @@ function ISpyPage() {
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-6">
           {TYPE_NAMES.map((name) => {
             const spots = ITEMS.filter((item) => item.name === name);
+            const first = spots[0];
+            if (!first) return null;
             const foundCount = spots.filter((item) => found.includes(item.id)).length;
             const complete = foundCount === spots.length;
             return (
@@ -153,9 +155,9 @@ function ISpyPage() {
                 key={name}
                 className={`flex flex-col items-center rounded-2xl px-2 py-2 text-center ${complete ? "bg-mint" : "bg-muted"}`}
               >
-                <span className={`text-2xl ${complete ? "" : "grayscale opacity-60"}`}>{spots[0].emoji}</span>
+                <span className={`text-2xl ${complete ? "" : "grayscale opacity-60"}`}>{first.emoji}</span>
                 <span className={`text-xs font-bold ${complete ? "line-through text-foreground/60" : "text-foreground"}`}>
-                  {spots[0].name}
+                  {first.name}
                 </span>
                 {spots.length > 1 && (
                   <span className={`text-[10px] font-bold ${complete ? "text-foreground/50" : "text-muted-foreground"}`}>
