@@ -144,17 +144,24 @@ function ISpyPage() {
           </span>
         </div>
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-          {ITEMS.map((item) => {
-            const isFound = found.includes(item.id);
+          {TYPE_NAMES.map((name) => {
+            const spots = ITEMS.filter((item) => item.name === name);
+            const foundCount = spots.filter((item) => found.includes(item.id)).length;
+            const complete = foundCount === spots.length;
             return (
               <li
-                key={item.id}
-                className={`flex flex-col items-center rounded-2xl px-2 py-2 text-center ${isFound ? "bg-mint" : "bg-muted"}`}
+                key={name}
+                className={`flex flex-col items-center rounded-2xl px-2 py-2 text-center ${complete ? "bg-mint" : "bg-muted"}`}
               >
-                <span className={`text-2xl ${isFound ? "" : "grayscale opacity-60"}`}>{item.emoji}</span>
-                <span className={`text-xs font-bold ${isFound ? "line-through text-foreground/60" : "text-foreground"}`}>
-                  {item.name}
+                <span className={`text-2xl ${complete ? "" : "grayscale opacity-60"}`}>{spots[0].emoji}</span>
+                <span className={`text-xs font-bold ${complete ? "line-through text-foreground/60" : "text-foreground"}`}>
+                  {spots[0].name}
                 </span>
+                {spots.length > 1 && (
+                  <span className={`text-[10px] font-bold ${complete ? "text-foreground/50" : "text-muted-foreground"}`}>
+                    {foundCount} of {spots.length}
+                  </span>
+                )}
               </li>
             );
           })}
