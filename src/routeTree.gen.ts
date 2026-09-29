@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ISpyRouteImport } from './routes/i-spy'
 import { Route as ParentsRouteImport } from './routes/parents'
 import { Route as ParentsIndexRouteImport } from './routes/parents.index'
 import { Route as ParentsHabitsRouteImport } from './routes/parents.habits'
@@ -17,6 +18,11 @@ import { Route as ParentsHabitsRouteImport } from './routes/parents.habits'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ISpyRoute = ISpyRouteImport.update({
+  id: '/i-spy',
+  path: '/i-spy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParentsRoute = ParentsRouteImport.update({
@@ -37,32 +43,36 @@ const ParentsHabitsRoute = ParentsHabitsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/i-spy': typeof ISpyRoute
   '/parents': typeof ParentsRouteWithChildren
   '/parents/habits': typeof ParentsHabitsRoute
   '/parents/': typeof ParentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/i-spy': typeof ISpyRoute
   '/parents/habits': typeof ParentsHabitsRoute
   '/parents': typeof ParentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/i-spy': typeof ISpyRoute
   '/parents': typeof ParentsRouteWithChildren
   '/parents/habits': typeof ParentsHabitsRoute
   '/parents/': typeof ParentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/parents' | '/parents/habits' | '/parents/'
+  fullPaths: '/' | '/i-spy' | '/parents' | '/parents/habits' | '/parents/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/parents/habits' | '/parents'
-  id: '__root__' | '/' | '/parents' | '/parents/habits' | '/parents/'
+  to: '/' | '/i-spy' | '/parents/habits' | '/parents'
+  id: '__root__' | '/' | '/i-spy' | '/parents' | '/parents/habits' | '/parents/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ISpyRoute: typeof ISpyRoute
   ParentsRoute: typeof ParentsRouteWithChildren
 }
 
@@ -73,6 +83,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/i-spy': {
+      id: '/i-spy'
+      path: '/i-spy'
+      fullPath: '/i-spy'
+      preLoaderRoute: typeof ISpyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/parents': {
@@ -114,6 +131,7 @@ const ParentsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ISpyRoute: ISpyRoute,
   ParentsRoute: ParentsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
