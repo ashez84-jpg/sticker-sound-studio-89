@@ -2,15 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
+import sleepStudyFriendsAsset from "@/assets/sleep-study-friends.png.asset.json";
 import { playSound } from "@/lib/sfx";
 
 export const Route = createFileRoute("/i-spy")({
   head: () => ({
     meta: [
-      { title: "I Spy Sleep Study Room — Get Ready with Me Sleep Study" },
-      { name: "description", content: "Find the little hidden objects around the cozy sleep study room." },
-      { property: "og:title", content: "I Spy Sleep Study Room — Get Ready with Me Sleep Study" },
-      { property: "og:description", content: "A playful hide-and-find game in a cozy sleep study room." },
+      { title: "I Spy Sleep Study Games — Get Ready with Me Sleep Study" },
+      { name: "description", content: "Two hide-and-find games: the cozy sleep study room and the sleepover friends picture." },
+      { property: "og:title", content: "I Spy Sleep Study Games — Get Ready with Me Sleep Study" },
+      { property: "og:description", content: "Find the little hidden objects in two playful sleep study scenes." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -20,8 +21,8 @@ export const Route = createFileRoute("/i-spy")({
 
 type Hidden = { id: string; emoji: string; name: string; x: number; y: number; size: number; rotate: number; opacity?: number };
 
-// Positions are percentages across the room picture. Several items hide in more than one spot.
-const ITEMS: Hidden[] = [
+// Scene 1 — the cozy sleep study room. Several items hide in more than one spot.
+const ROOM_ITEMS: Hidden[] = [
   { id: "star-1", emoji: "⭐", name: "Star", x: 12, y: 14, size: 5, rotate: -12 },
   { id: "star-2", emoji: "⭐", name: "Star", x: 58, y: 9, size: 5, rotate: 15 },
   { id: "moon", emoji: "🌙", name: "Moon", x: 87, y: 9, size: 7, rotate: 10, opacity: 0.85 },
@@ -45,26 +46,51 @@ const ITEMS: Hidden[] = [
   { id: "sleepy", emoji: "😴", name: "Sleepy face", x: 78, y: 44, size: 4.5, rotate: 0 },
 ];
 
-// Unique item types, in first-seen order, for the "Can you find…" list.
-const TYPE_NAMES = [...new Set(ITEMS.map((item) => item.name))];
+// Scene 2 — the sleepover friends picture. Positions are percentages across it.
+const FRIENDS_ITEMS: Hidden[] = [
+  { id: "f-moon-1", emoji: "🌙", name: "Moon", x: 55.9, y: 12.7, size: 4.5, rotate: -8 },
+  { id: "f-moon-2", emoji: "🌙", name: "Moon", x: 15, y: 20, size: 4, rotate: 8, opacity: 0.8 },
+  { id: "f-star-1", emoji: "⭐", name: "Star", x: 69.3, y: 4.4, size: 4, rotate: -10 },
+  { id: "f-star-2", emoji: "⭐", name: "Star", x: 75.5, y: 4.4, size: 4, rotate: 12 },
+  { id: "f-star-3", emoji: "⭐", name: "Star", x: 79.1, y: 7.3, size: 3.5, rotate: 0, opacity: 0.8 },
+  { id: "f-teddy", emoji: "🧸", name: "Teddy bear", x: 50.8, y: 87, size: 4.5, rotate: 0 },
+  { id: "f-unicorn", emoji: "🦄", name: "Unicorn", x: 27, y: 78, size: 4.5, rotate: -6 },
+  { id: "f-bunny", emoji: "🐰", name: "Bunny", x: 85.3, y: 88, size: 4.5, rotate: 6 },
+  { id: "f-bow", emoji: "🎀", name: "Hair bow", x: 20.5, y: 28.8, size: 3.5, rotate: -8 },
+  { id: "f-lamp", emoji: "💡", name: "Lamp", x: 4.2, y: 44, size: 4.5, rotate: 0 },
+  { id: "f-cloud", emoji: "☁️", name: "Cloud light", x: 3.9, y: 55.7, size: 4, rotate: 0 },
+  { id: "f-monitor", emoji: "🖥️", name: "Sleep monitor", x: 90.5, y: 16, size: 4.5, rotate: 4 },
+  { id: "f-sock", emoji: "🧦", name: "Sock", x: 55.7, y: 95, size: 3.5, rotate: 15 },
+  { id: "f-wheelchair", emoji: "♿", name: "Wheelchair", x: 7.2, y: 84, size: 4.5, rotate: -6 },
+];
+
+type Scene = { id: string; name: string; emoji: string; image: string; alt: string; items: Hidden[] };
+
+const SCENES: Scene[] = [
+  { id: "room", name: "Sleep Room", emoji: "🛏️", image: sleepStudyRoom, alt: "Cozy sleep study room", items: ROOM_ITEMS },
+  { id: "friends", name: "Sleepover Friends", emoji: "🧸", image: sleepStudyFriendsAsset.url, alt: "Five friends ready for their sleep study", items: FRIENDS_ITEMS },
+];
 
 function ISpyPage() {
-  const [found, setFound] = useState<string[]>([]);
-  const [pop, setPop] = useState<{ x: number; y: number; key: number } | null>(null);
-  const done = found.length === ITEMS.length;
+  const [sceneId, setSceneId] = useState(SCENES[0]!.id);
+  const [foundMap, setFoundMap] = useState<Record<string, string[]>>({});
+  const scene = SCENES.find((s) => s.id === sceneId) ?? SCENES[0]!;
+  const found = foundMap[scene.id] ?? [];
+  const done = found.length === scene.items.length;
+
+  // Unique item types, in first-seen order, for the "Can you find…" list.
+  const TYPE_NAMES = [...new Set(scene.items.map((item) => item.name))];
 
   const find = (item: Hidden) => {
     if (found.includes(item.id)) return;
     const next = [...found, item.id];
-    setFound(next);
-    setPop({ x: item.x, y: item.y, key: Date.now() });
-    playSound(next.length === ITEMS.length ? "cheer" : "star");
+    setFoundMap({ ...foundMap, [scene.id]: next });
+    playSound(next.length === scene.items.length ? "cheer" : "star");
   };
 
   const reset = () => {
     playSound("clear");
-    setFound([]);
-    setPop(null);
+    setFoundMap({ ...foundMap, [scene.id]: [] });
   };
 
   return (
@@ -74,8 +100,21 @@ function ISpyPage() {
           I Spy the Sleep Room <span className="inline-block animate-wiggle">🔍</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          Little things are hiding all over the room. Tap each one when you spot it!
+          Little things are hiding all over. Tap each one when you spot it!
         </p>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+          {SCENES.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setSceneId(s.id)}
+              className={`rounded-full px-4 py-2 text-sm font-extrabold transition-transform active:scale-95 ${
+                s.id === scene.id ? "bg-primary text-primary-foreground shadow-md" : "bg-muted text-foreground/80"
+              }`}
+            >
+              {s.emoji} {s.name}
+            </button>
+          ))}
+        </div>
         <Link
           to="/"
           className="mt-3 inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-foreground/80 transition-transform active:scale-95"
@@ -86,8 +125,8 @@ function ISpyPage() {
 
       <section className="toy-card p-2 sm:p-3">
         <div className="relative w-full overflow-hidden rounded-2xl">
-          <img src={sleepStudyRoom} alt="Cozy sleep study room" className="block w-full" draggable={false} />
-          {ITEMS.map((item) => {
+          <img src={scene.image} alt={scene.alt} className="block w-full" draggable={false} />
+          {scene.items.map((item) => {
             const isFound = found.includes(item.id);
             return (
               <button
@@ -111,15 +150,6 @@ function ISpyPage() {
               </button>
             );
           })}
-          {pop && (
-            <span
-              key={pop.key}
-              className="pointer-events-none absolute animate-float-up text-2xl font-extrabold"
-              style={{ left: `${pop.x}%`, top: `${pop.y}%` }}
-            >
-              ✨
-            </span>
-          )}
           {done && (
             <div className="absolute inset-0 flex items-center justify-center bg-background/60">
               <div className="toy-card animate-pop-in px-6 py-5 text-center">
@@ -140,12 +170,12 @@ function ISpyPage() {
         <div className="mb-2 flex items-center justify-between px-1">
           <h2 className="text-lg font-bold text-foreground">Can you find…</h2>
           <span className="text-sm font-bold text-muted-foreground">
-            {found.length} of {ITEMS.length}
+            {found.length} of {scene.items.length}
           </span>
         </div>
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-6">
           {TYPE_NAMES.map((name) => {
-            const spots = ITEMS.filter((item) => item.name === name);
+            const spots = scene.items.filter((item) => item.name === name);
             const first = spots[0];
             if (!first) return null;
             const foundCount = spots.filter((item) => found.includes(item.id)).length;
