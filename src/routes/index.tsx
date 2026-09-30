@@ -616,8 +616,8 @@ function StickerDoctor() {
                   aria-hidden
                   className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed transition-all ${
                     drag.slotId === s.id
-                      ? "border-primary bg-primary/20 scale-110"
-                      : "border-primary/50 bg-primary/5"
+                      ? "border-foreground bg-foreground/25 scale-110"
+                      : "border-foreground/80 bg-foreground/10"
                   }`}
                   style={{
                     left: `${s.x}%`,
