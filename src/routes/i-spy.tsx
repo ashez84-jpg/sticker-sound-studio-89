@@ -76,7 +76,6 @@ function ISpyPage() {
   const [foundMap, setFoundMap] = useState<Record<string, string[]>>({});
   const scene = SCENES.find((s) => s.id === sceneId) ?? SCENES[0]!;
   const found = foundMap[scene.id] ?? [];
-  const pop = null as null | { x: number; y: number; key: number };
   const done = found.length === scene.items.length;
 
   // Unique item types, in first-seen order, for the "Can you find…" list.
