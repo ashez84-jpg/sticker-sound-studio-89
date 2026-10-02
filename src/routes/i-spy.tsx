@@ -159,25 +159,36 @@ function ISpyPage() {
           <img src={scene.image} alt={scene.alt} className="block w-full" draggable={false} />
           {scene.items.map((item) => {
             const isFound = found.includes(item.id);
+            const flatten = item.flatten ?? 1;
+            const skew = item.skew ?? 0;
             return (
               <button
                 key={item.id}
                 onClick={() => find(item)}
                 aria-label={isFound ? `${item.name} found` : "Hidden object"}
-                className="absolute flex items-center justify-center rounded-full leading-none transition-all"
+                className={`absolute flex items-center justify-center rounded-full leading-none transition-all ${isFound ? "bg-card/75 ring-3 ring-sunshine" : "bg-transparent"}`}
                 style={{
                   left: `${item.x}%`,
                   top: `${item.y}%`,
                   width: `${item.size * 2}%`,
                   aspectRatio: "1",
-                  transform: `translate(-50%,-50%) rotate(${item.rotate}deg)`,
+                  transform: `translate(-50%,-50%) rotate(${item.rotate}deg) skewX(${skew}deg) scaleY(${flatten})`,
                   fontSize: `clamp(14px, ${item.size * 0.7}vw, 40px)`,
-                  opacity: isFound ? 1 : (item.opacity ?? 0.55),
-                  boxShadow: isFound ? "0 0 0 3px var(--sunshine)" : "none",
-                  background: isFound ? "color-mix(in oklch, var(--card) 70%, transparent)" : "transparent",
+                  opacity: isFound ? 1 : (item.opacity ?? (item.art ? 0.68 : 0.55)),
                 }}
               >
-                <span className={isFound ? "animate-pop-in" : ""}>{item.emoji}</span>
+                {item.art ? (
+                  <img
+                    src={item.art}
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
+                    loading="lazy"
+                    className={`h-full w-full object-contain ${isFound ? "animate-pop-in" : `i-spy-camouflage i-spy-camouflage--${item.tone ?? "bed"}`}`}
+                  />
+                ) : (
+                  <span className={isFound ? "animate-pop-in" : ""}>{item.emoji}</span>
+                )}
               </button>
             );
           })}
