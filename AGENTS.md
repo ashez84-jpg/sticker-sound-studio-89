@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep Sleep Room hidden-object artwork as reusable transparent assets, with placement-specific perspective and camouflage handled by the I Spy scene data and global semantic styling, so the second I Spy scene remains unchanged.
