@@ -216,6 +216,21 @@
     drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 12%, transparent));
 }
 
+.i-spy-camouflage--fabric {
+  filter: saturate(0.56) contrast(0.78) brightness(1.04)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 14%, transparent));
+}
+
+.i-spy-camouflage--floor {
+  filter: saturate(0.5) contrast(0.74) brightness(1.06)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 13%, transparent));
+}
+
+.i-spy-camouflage--equipment {
+  filter: saturate(0.5) contrast(0.8) brightness(0.98)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 17%, transparent));
+}
+
 @keyframes pop-in {
   0% {
     scale: 0.2;
