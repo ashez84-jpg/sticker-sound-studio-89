@@ -188,6 +188,34 @@
   filter: drop-shadow(var(--shadow-sticker));
 }
 
+/* Hidden-object art is softened into the scene until the child finds it. */
+.i-spy-camouflage {
+  filter: saturate(0.7) contrast(0.84) brightness(1.02)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 18%, transparent));
+  mix-blend-mode: multiply;
+  transition: filter 180ms ease, opacity 180ms ease;
+}
+
+.i-spy-camouflage--wall {
+  filter: saturate(0.58) contrast(0.78) brightness(1.08)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 12%, transparent));
+}
+
+.i-spy-camouflage--bed {
+  filter: saturate(0.58) contrast(0.8) brightness(1.08)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 13%, transparent));
+}
+
+.i-spy-camouflage--wood {
+  filter: sepia(0.15) saturate(0.62) contrast(0.82) brightness(0.98)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 18%, transparent));
+}
+
+.i-spy-camouflage--rug {
+  filter: saturate(0.48) contrast(0.76) brightness(1.1)
+    drop-shadow(0 1px 1px color-mix(in oklch, var(--foreground) 12%, transparent));
+}
+
 @keyframes pop-in {
   0% {
     scale: 0.2;
