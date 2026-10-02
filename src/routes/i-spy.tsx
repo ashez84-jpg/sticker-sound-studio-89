@@ -3,6 +3,24 @@ import { useState } from "react";
 
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 import sleepStudyFriendsAsset from "@/assets/sleep-study-friends.png.asset.json";
+import ballArt from "@/assets/i-spy-objects/ball.png";
+import balloonArt from "@/assets/i-spy-objects/balloon.png";
+import bookArt from "@/assets/i-spy-objects/book.png";
+import butterflyArt from "@/assets/i-spy-objects/butterfly.png";
+import clockArt from "@/assets/i-spy-objects/clock.png";
+import cookieArt from "@/assets/i-spy-objects/cookie.png";
+import duckArt from "@/assets/i-spy-objects/duck.png";
+import flashlightArt from "@/assets/i-spy-objects/flashlight.png";
+import keyArt from "@/assets/i-spy-objects/key.png";
+import milkArt from "@/assets/i-spy-objects/milk.png";
+import moonArt from "@/assets/i-spy-objects/moon.png";
+import pillowArt from "@/assets/i-spy-objects/pillow.png";
+import sheepArt from "@/assets/i-spy-objects/sheep.png";
+import sleepyArt from "@/assets/i-spy-objects/sleepy.png";
+import sockArt from "@/assets/i-spy-objects/sock.png";
+import starArt from "@/assets/i-spy-objects/star.png";
+import teddyArt from "@/assets/i-spy-objects/teddy.png";
+import toothbrushArt from "@/assets/i-spy-objects/toothbrush.png";
 import { playSound } from "@/lib/sfx";
 
 export const Route = createFileRoute("/i-spy")({
@@ -19,31 +37,44 @@ export const Route = createFileRoute("/i-spy")({
   component: ISpyPage,
 });
 
-type Hidden = { id: string; emoji: string; name: string; x: number; y: number; size: number; rotate: number; opacity?: number };
+type Hidden = {
+  id: string;
+  emoji: string;
+  name: string;
+  x: number;
+  y: number;
+  size: number;
+  rotate: number;
+  opacity?: number;
+  art?: string;
+  flatten?: number;
+  skew?: number;
+  tone?: "wall" | "bed" | "wood" | "rug";
+};
 
 // Scene 1 — the cozy sleep study room. Several items hide in more than one spot.
 const ROOM_ITEMS: Hidden[] = [
-  { id: "star-1", emoji: "⭐", name: "Star", x: 12, y: 14, size: 5, rotate: -12 },
-  { id: "star-2", emoji: "⭐", name: "Star", x: 58, y: 9, size: 5, rotate: 15 },
-  { id: "moon", emoji: "🌙", name: "Moon", x: 87, y: 9, size: 7, rotate: 10, opacity: 0.85 },
-  { id: "sock-1", emoji: "🧦", name: "Sock", x: 20, y: 88, size: 5, rotate: 25 },
-  { id: "sock-2", emoji: "🧦", name: "Sock", x: 34, y: 94, size: 5, rotate: -40 },
-  { id: "book", emoji: "📕", name: "Book", x: 72, y: 78, size: 4.5, rotate: -8 },
-  { id: "duck", emoji: "🦆", name: "Rubber duck", x: 91, y: 62, size: 4.5, rotate: 0 },
-  { id: "key", emoji: "🔑", name: "Key", x: 40, y: 94, size: 4, rotate: 40 },
-  { id: "toothbrush", emoji: "🪥", name: "Toothbrush", x: 6, y: 52, size: 6.5, rotate: -30, opacity: 0.85 },
-  { id: "cookie", emoji: "🍪", name: "Cookie", x: 55, y: 30, size: 4, rotate: 0 },
-  { id: "balloon", emoji: "🎈", name: "Balloon", x: 32, y: 22, size: 5, rotate: 8 },
-  { id: "butterfly", emoji: "🦋", name: "Butterfly", x: 63, y: 55, size: 4, rotate: -15 },
-  { id: "flashlight", emoji: "🔦", name: "Flashlight", x: 83, y: 90, size: 4.5, rotate: 20 },
-  { id: "ball", emoji: "⚽", name: "Ball", x: 47, y: 70, size: 4, rotate: 0 },
-  { id: "pillow", emoji: "🛏️", name: "Pillow", x: 16, y: 68, size: 5, rotate: -6 },
-  { id: "sheep-1", emoji: "🐑", name: "Counting sheep", x: 27, y: 36, size: 4.5, rotate: 10 },
-  { id: "sheep-2", emoji: "🐑", name: "Counting sheep", x: 68, y: 24, size: 4.5, rotate: -12 },
-  { id: "milk", emoji: "🥛", name: "Glass of milk", x: 45, y: 55, size: 4, rotate: 0 },
-  { id: "clock", emoji: "🕰️", name: "Bedtime clock", x: 95, y: 18, size: 4.5, rotate: 6 },
-  { id: "teddy", emoji: "🧸", name: "Teddy bear", x: 8, y: 80, size: 4.5, rotate: -8 },
-  { id: "sleepy", emoji: "😴", name: "Sleepy face", x: 78, y: 44, size: 4.5, rotate: 0 },
+  { id: "star-1", emoji: "⭐", name: "Star", x: 12, y: 14, size: 5, rotate: -12, art: starArt, flatten: 0.9, tone: "wall" },
+  { id: "star-2", emoji: "⭐", name: "Star", x: 58, y: 9, size: 5, rotate: 15, art: starArt, flatten: 0.9, tone: "wall" },
+  { id: "moon", emoji: "🌙", name: "Moon", x: 87, y: 9, size: 7, rotate: 10, opacity: 0.78, art: moonArt, flatten: 0.9, tone: "wall" },
+  { id: "sock-1", emoji: "🧦", name: "Sock", x: 20, y: 88, size: 5, rotate: 25, art: sockArt, flatten: 0.66, skew: -8, tone: "rug" },
+  { id: "sock-2", emoji: "🧦", name: "Sock", x: 34, y: 94, size: 5, rotate: -40, art: sockArt, flatten: 0.62, skew: 8, tone: "rug" },
+  { id: "book", emoji: "📕", name: "Book", x: 72, y: 78, size: 4.5, rotate: -8, art: bookArt, flatten: 0.58, skew: -7, tone: "bed" },
+  { id: "duck", emoji: "🦆", name: "Rubber duck", x: 91, y: 62, size: 4.5, rotate: 0, art: duckArt, tone: "wood" },
+  { id: "key", emoji: "🔑", name: "Key", x: 40, y: 94, size: 4, rotate: 40, art: keyArt, flatten: 0.55, skew: 8, tone: "rug" },
+  { id: "toothbrush", emoji: "🪥", name: "Toothbrush", x: 6, y: 52, size: 6.5, rotate: -30, opacity: 0.78, art: toothbrushArt, flatten: 0.75, tone: "wood" },
+  { id: "cookie", emoji: "🍪", name: "Cookie", x: 55, y: 30, size: 4, rotate: 0, art: cookieArt, flatten: 0.58, skew: -5, tone: "bed" },
+  { id: "balloon", emoji: "🎈", name: "Balloon", x: 32, y: 22, size: 5, rotate: 8, art: balloonArt, tone: "wall" },
+  { id: "butterfly", emoji: "🦋", name: "Butterfly", x: 63, y: 55, size: 4, rotate: -15, art: butterflyArt, flatten: 0.7, tone: "bed" },
+  { id: "flashlight", emoji: "🔦", name: "Flashlight", x: 83, y: 90, size: 4.5, rotate: 20, art: flashlightArt, flatten: 0.58, skew: -8, tone: "rug" },
+  { id: "ball", emoji: "⚽", name: "Ball", x: 47, y: 70, size: 4, rotate: 0, art: ballArt, flatten: 0.72, tone: "bed" },
+  { id: "pillow", emoji: "🛏️", name: "Pillow", x: 16, y: 68, size: 5, rotate: -6, art: pillowArt, flatten: 0.7, skew: 6, tone: "bed" },
+  { id: "sheep-1", emoji: "🐑", name: "Counting sheep", x: 27, y: 36, size: 4.5, rotate: 10, art: sheepArt, tone: "bed" },
+  { id: "sheep-2", emoji: "🐑", name: "Counting sheep", x: 68, y: 24, size: 4.5, rotate: -12, art: sheepArt, flatten: 0.9, tone: "wall" },
+  { id: "milk", emoji: "🥛", name: "Glass of milk", x: 45, y: 55, size: 4, rotate: 0, art: milkArt, tone: "bed" },
+  { id: "clock", emoji: "🕰️", name: "Bedtime clock", x: 95, y: 18, size: 4.5, rotate: 6, art: clockArt, flatten: 0.86, tone: "wall" },
+  { id: "teddy", emoji: "🧸", name: "Teddy bear", x: 8, y: 80, size: 4.5, rotate: -8, art: teddyArt, tone: "rug" },
+  { id: "sleepy", emoji: "😴", name: "Sleepy face", x: 78, y: 44, size: 4.5, rotate: 0, art: sleepyArt, flatten: 0.68, tone: "bed" },
 ];
 
 // Scene 2 — the sleepover friends picture. Positions are percentages across it.
