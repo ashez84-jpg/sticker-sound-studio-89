@@ -6,13 +6,18 @@ import sleepStudyFriendsAsset from "@/assets/sleep-study-friends.png.asset.json"
 import ballArt from "@/assets/i-spy-objects/ball.png";
 import balloonArt from "@/assets/i-spy-objects/balloon.png";
 import bookArt from "@/assets/i-spy-objects/book.png";
+import bowArt from "@/assets/i-spy-objects/bow.png";
+import bunnyArt from "@/assets/i-spy-objects/bunny.png";
 import butterflyArt from "@/assets/i-spy-objects/butterfly.png";
 import clockArt from "@/assets/i-spy-objects/clock.png";
+import cloudArt from "@/assets/i-spy-objects/cloud.png";
 import cookieArt from "@/assets/i-spy-objects/cookie.png";
 import duckArt from "@/assets/i-spy-objects/duck.png";
 import flashlightArt from "@/assets/i-spy-objects/flashlight.png";
 import keyArt from "@/assets/i-spy-objects/key.png";
+import lampArt from "@/assets/i-spy-objects/lamp.png";
 import milkArt from "@/assets/i-spy-objects/milk.png";
+import monitorArt from "@/assets/i-spy-objects/monitor.png";
 import moonArt from "@/assets/i-spy-objects/moon.png";
 import pillowArt from "@/assets/i-spy-objects/pillow.png";
 import sheepArt from "@/assets/i-spy-objects/sheep.png";
@@ -21,6 +26,8 @@ import sockArt from "@/assets/i-spy-objects/sock.png";
 import starArt from "@/assets/i-spy-objects/star.png";
 import teddyArt from "@/assets/i-spy-objects/teddy.png";
 import toothbrushArt from "@/assets/i-spy-objects/toothbrush.png";
+import wheelchairArt from "@/assets/i-spy-objects/wheelchair.png";
+import unicornArt from "@/assets/sticker-unicorn.png";
 import { playSound } from "@/lib/sfx";
 
 export const Route = createFileRoute("/i-spy")({
@@ -49,7 +56,7 @@ type Hidden = {
   art?: string;
   flatten?: number;
   skew?: number;
-  tone?: "wall" | "bed" | "wood" | "rug";
+  tone?: "wall" | "bed" | "wood" | "rug" | "fabric" | "floor" | "equipment";
 };
 
 // Scene 1 — the cozy sleep study room. Several items hide in more than one spot.
@@ -79,20 +86,20 @@ const ROOM_ITEMS: Hidden[] = [
 
 // Scene 2 — the sleepover friends picture. Positions are percentages across it.
 const FRIENDS_ITEMS: Hidden[] = [
-  { id: "f-moon-1", emoji: "🌙", name: "Moon", x: 55.9, y: 12.7, size: 4.5, rotate: -8 },
-  { id: "f-moon-2", emoji: "🌙", name: "Moon", x: 15, y: 20, size: 4, rotate: 8, opacity: 0.8 },
-  { id: "f-star-1", emoji: "⭐", name: "Star", x: 69.3, y: 4.4, size: 4, rotate: -10 },
-  { id: "f-star-2", emoji: "⭐", name: "Star", x: 75.5, y: 4.4, size: 4, rotate: 12 },
-  { id: "f-star-3", emoji: "⭐", name: "Star", x: 79.1, y: 7.3, size: 3.5, rotate: 0, opacity: 0.8 },
-  { id: "f-teddy", emoji: "🧸", name: "Teddy bear", x: 50.8, y: 87, size: 4.5, rotate: 0 },
-  { id: "f-unicorn", emoji: "🦄", name: "Unicorn", x: 27, y: 78, size: 4.5, rotate: -6 },
-  { id: "f-bunny", emoji: "🐰", name: "Bunny", x: 85.3, y: 88, size: 4.5, rotate: 6 },
-  { id: "f-bow", emoji: "🎀", name: "Hair bow", x: 20.5, y: 28.8, size: 3.5, rotate: -8 },
-  { id: "f-lamp", emoji: "💡", name: "Lamp", x: 4.2, y: 44, size: 4.5, rotate: 0 },
-  { id: "f-cloud", emoji: "☁️", name: "Cloud light", x: 3.9, y: 55.7, size: 4, rotate: 0 },
-  { id: "f-monitor", emoji: "🖥️", name: "Sleep monitor", x: 90.5, y: 16, size: 4.5, rotate: 4 },
-  { id: "f-sock", emoji: "🧦", name: "Sock", x: 55.7, y: 95, size: 3.5, rotate: 15 },
-  { id: "f-wheelchair", emoji: "♿", name: "Wheelchair", x: 7.2, y: 84, size: 4.5, rotate: -6 },
+  { id: "f-moon-1", emoji: "🌙", name: "Moon", x: 55.9, y: 12.7, size: 4.5, rotate: -8, art: moonArt, flatten: 0.82, skew: -5, tone: "wall", opacity: 0.67 },
+  { id: "f-moon-2", emoji: "🌙", name: "Moon", x: 15, y: 20, size: 4, rotate: 8, art: moonArt, flatten: 0.88, skew: 4, tone: "wall", opacity: 0.7 },
+  { id: "f-star-1", emoji: "⭐", name: "Star", x: 69.3, y: 4.4, size: 4, rotate: -10, art: starArt, flatten: 0.78, tone: "wall", opacity: 0.66 },
+  { id: "f-star-2", emoji: "⭐", name: "Star", x: 75.5, y: 4.4, size: 4, rotate: 12, art: starArt, flatten: 0.8, tone: "wall", opacity: 0.66 },
+  { id: "f-star-3", emoji: "⭐", name: "Star", x: 79.1, y: 7.3, size: 3.5, rotate: 0, art: starArt, flatten: 0.82, tone: "wall", opacity: 0.62 },
+  { id: "f-teddy", emoji: "🧸", name: "Teddy bear", x: 50.8, y: 87, size: 4.5, rotate: 0, art: teddyArt, flatten: 0.78, tone: "fabric", opacity: 0.72 },
+  { id: "f-unicorn", emoji: "🦄", name: "Unicorn", x: 27, y: 78, size: 4.5, rotate: -6, art: unicornArt, flatten: 0.76, skew: -5, tone: "fabric", opacity: 0.7 },
+  { id: "f-bunny", emoji: "🐰", name: "Bunny", x: 85.3, y: 88, size: 4.5, rotate: 6, art: bunnyArt, flatten: 0.76, skew: 4, tone: "fabric", opacity: 0.7 },
+  { id: "f-bow", emoji: "🎀", name: "Hair bow", x: 20.5, y: 28.8, size: 3.5, rotate: -8, art: bowArt, flatten: 0.7, skew: -7, tone: "fabric", opacity: 0.68 },
+  { id: "f-lamp", emoji: "💡", name: "Lamp", x: 4.2, y: 44, size: 4.5, rotate: 0, art: lampArt, flatten: 0.86, skew: 3, tone: "wood", opacity: 0.68 },
+  { id: "f-cloud", emoji: "☁️", name: "Cloud light", x: 3.9, y: 55.7, size: 4, rotate: 0, art: cloudArt, flatten: 0.72, skew: 3, tone: "wall", opacity: 0.65 },
+  { id: "f-monitor", emoji: "🖥️", name: "Sleep monitor", x: 90.5, y: 16, size: 4.5, rotate: 4, art: monitorArt, flatten: 0.82, skew: -4, tone: "equipment", opacity: 0.7 },
+  { id: "f-sock", emoji: "🧦", name: "Sock", x: 55.7, y: 95, size: 3.5, rotate: 15, art: sockArt, flatten: 0.55, skew: 9, tone: "floor", opacity: 0.64 },
+  { id: "f-wheelchair", emoji: "♿", name: "Wheelchair", x: 7.2, y: 84, size: 4.5, rotate: -6, art: wheelchairArt, flatten: 0.74, skew: -5, tone: "equipment", opacity: 0.68 },
 ];
 
 type Scene = { id: string; name: string; emoji: string; image: string; alt: string; items: Hidden[] };
@@ -184,6 +191,8 @@ function ISpyPage() {
                     aria-hidden="true"
                     draggable={false}
                     loading="lazy"
+                     width={768}
+                     height={768}
                     className={`h-full w-full object-contain ${isFound ? "animate-pop-in" : `i-spy-camouflage i-spy-camouflage--${item.tone ?? "bed"}`}`}
                   />
                 ) : (
