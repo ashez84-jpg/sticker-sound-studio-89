@@ -50,12 +50,12 @@ export function limbMotion(part: BodyPart, state: Bedtime, reduced: boolean): Ta
 
 export function blanketMotion(state: Bedtime, reduced: boolean): TargetAndTransition {
   if (reduced || state === "sleeping") return {
-    opacity: 1, y: "0%", clipPath: "inset(40% 0 0 0)", scaleY: reduced ? 1 : [1, 1.003, 1],
+    opacity: 1, y: "0%", clipPath: "inset(36% 0 0 0)", scaleY: reduced ? 1 : [1, 1.003, 1],
     transition: reduced ? { duration: 0 } : { ...loop, duration: 5 },
   };
   return {
     opacity: [0, 0, 1, 1], y: ["10%", "10%", "5%", "0%"],
-    clipPath: ["inset(75% 0 0 0)", "inset(75% 0 0 0)", "inset(53% 0 0 0)", "inset(40% 0 0 0)"],
+    clipPath: ["inset(75% 0 0 0)", "inset(75% 0 0 0)", "inset(53% 0 0 0)", "inset(36% 0 0 0)"],
     transition: { ...settle, times: [0, 0.69, 0.88, 1] },
   };
 }

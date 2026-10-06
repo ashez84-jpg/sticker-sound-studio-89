@@ -333,7 +333,7 @@
 .bedtime-limb--leg-right { transform-origin: 57% 65%; }
 .bedtime-limb--leg-left .bedtime-limb-art { clip-path: polygon(36% 65%, 50% 65%, 50% 100%, 0 100%, 0 70%, 36% 70%); }
 .bedtime-limb--leg-right .bedtime-limb-art { clip-path: polygon(50% 65%, 64% 65%, 64% 70%, 100% 70%, 100% 100%, 50% 100%); }
-.bedtime-blanket { clip-path: inset(40% 0 0 0); transform-origin: 50% 41%; }
+.bedtime-blanket { clip-path: inset(36% 0 0 0); transform-origin: 50% 41%; }
 .bedtime-night {
   background: color-mix(in oklch, var(--foreground) 36%, transparent);
   opacity: 0;
