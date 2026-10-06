@@ -6,9 +6,10 @@ export type BodyPart = "body" | "arm-left" | "arm-right" | "leg-left" | "leg-rig
 const loop = { duration: 4, repeat: Infinity, ease: "easeInOut" as const };
 const settle = { duration: 8, repeat: 0, ease: "easeInOut" as const };
 
-// Shared with the end of the climb: head on the pillow, shoulders at the
-// blanket's 41% ridge, and feet beneath its 64% toe-shaped rise.
-const bedPose = { x: "0%", y: "6%", scale: 0.43, rotate: 0, rotateY: 0 };
+// Shared with the end of the climb: the head is centred over the blanket's
+// body mold (which sits ~2.6% left of the scene centre) with the chin tucked
+// just behind the blanket's top edge so the head reads as attached to it.
+const bedPose = { x: "-2.6%", y: "8.6%", scale: 0.43, rotate: 0, rotateY: 0 };
 
 export function characterMotion(state: Bedtime, reduced: boolean, dragging: boolean): TargetAndTransition {
   const home = { x: "0%", y: "0%", scale: 1, rotate: 0, rotateY: 0 };
