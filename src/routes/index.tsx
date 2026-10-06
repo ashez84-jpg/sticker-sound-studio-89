@@ -262,6 +262,15 @@ const SLEEPING_AVATARS: Record<Gender, Record<PajamaId, string>> = {
   girl: { stars: girlMoonStarsSleeping, dino: girlFlowersSleeping, hearts: girlHeartsSleeping },
 };
 type Bedtime = "ready" | "dancing" | "settling" | "sleeping";
+type BodyPart = "body" | "arm-left" | "arm-right" | "leg-left" | "leg-right";
+const BODY_PARTS: BodyPart[] = ["body", "arm-left", "arm-right", "leg-left", "leg-right"];
+// Use the same calibrated coordinates for both artwork and attached sensors.
+function stickerBodyPart(slot: Slot): BodyPart {
+  if (slot.y >= 72) return slot.x < 50 ? "leg-left" : "leg-right";
+  if (slot.y >= 43 && slot.x < 34) return "arm-left";
+  if (slot.y >= 43 && slot.x > 66) return "arm-right";
+  return "body";
+}
 
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
@@ -382,7 +391,7 @@ function StickerDoctor() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(
       () => setBedtime(bedtime === "dancing" ? "settling" : "sleeping"),
-      reducedMotion ? 100 : bedtime === "dancing" ? 2400 : 1800,
+      reducedMotion ? 100 : bedtime === "dancing" ? 5000 : 4800,
     );
     return () => window.clearTimeout(timer);
   }, [bedtime]);
@@ -646,18 +655,20 @@ function StickerDoctor() {
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           />
           <div className={`bedtime-character bedtime-character--${bedtime}`} data-bedtime={bedtime}>
+          {BODY_PARTS.map((part) => (
+          <div key={part} className={`bedtime-limb bedtime-limb--${part}`}>
           <img
             key={`${gender}-${pajama}`}
             src={bedtime === "sleeping" ? SLEEPING_AVATARS[gender][pajama] : AVATARS[gender][pajama]}
             alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${PAJAMAS[gender].find((p) => p.id === pajama)?.label ?? "chosen"} pajamas`}
             width={1264}
             height={848}
-            className="pointer-events-none relative block h-full w-full object-cover drop-shadow-lg"
+            className="bedtime-limb-art pointer-events-none absolute inset-0 block h-full w-full object-cover"
           />
 
 
           {/* Target outlines for the sticker being dragged */}
-          {drag &&
+          {part === "body" && drag &&
             slots
               .filter((s) => s.stickerId === drag.kind.id)
               .map((s) => (
@@ -679,7 +690,7 @@ function StickerDoctor() {
                 />
               ))}
 
-          {placed.map((s) =>
+          {placed.filter((s) => stickerBodyPart(s.slot) === part).map((s) =>
             s.slot.band ? (
               <button
                 key={s.key}
@@ -717,12 +728,16 @@ function StickerDoctor() {
             ),
           )}
           </div>
+          ))}
+          </div>
           {(bedtime === "settling" || bedtime === "sleeping") && (
             <img src={sleepStudyRoom} alt="" aria-hidden className="bedtime-blanket pointer-events-none absolute inset-0 h-full w-full object-cover" />
           )}
           <div className={`bedtime-night bedtime-night--${bedtime} pointer-events-none absolute inset-0`} aria-hidden />
           {bedtime === "sleeping" && (
-            <span aria-hidden className="bedtime-zzz pointer-events-none absolute right-[25%] top-[17%] font-display text-2xl font-extrabold text-primary-foreground">Z z z</span>
+            <span aria-hidden className="bedtime-dreams pointer-events-none absolute right-[25%] top-[21%] font-display font-extrabold text-primary-foreground">
+              <span className="bedtime-zzz">z</span><span className="bedtime-zzz">z</span><span className="bedtime-zzz">Z</span>
+            </span>
           )}
         </div>
 
