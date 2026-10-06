@@ -9,11 +9,11 @@ import {
   useStoredChecklist,
 } from "@/lib/checklists";
 
-import boyStars from "@/assets/boy-stars.png";
+import boySports from "@/assets/boy-sports.png";
 import boyDino from "@/assets/boy-dino.png";
-import boyHearts from "@/assets/boy-hearts.png";
-import girlStars from "@/assets/girl-stars.png";
-import girlDino from "@/assets/girl-dino.png";
+import boyTrucks from "@/assets/boy-trucks.png";
+import girlMoonStars from "@/assets/girl-moon-stars.png";
+import girlFlowers from "@/assets/girl-flowers.png";
 import girlHearts from "@/assets/girl-hearts.png";
 import stickerBelt from "@/assets/sticker-belt.png";
 import stickerEkg from "@/assets/sticker-ekg.png";
@@ -228,15 +228,23 @@ const SLOTS: Record<Gender, Record<PajamaId, Slot[]>> = {
 type Placed = { key: number; kind: StickerKind; slot: Slot };
 type DragState = { kind: StickerKind; x: number; y: number; over: boolean; slotId: string | null };
 
-const PAJAMAS: { id: PajamaId; label: string; emoji: string; bg: string }[] = [
-  { id: "stars", label: "Starry", emoji: "⭐", bg: "bg-sky" },
-  { id: "dino", label: "Dino", emoji: "🦕", bg: "bg-mint" },
-  { id: "hearts", label: "Hearts", emoji: "💗", bg: "bg-bubblegum" },
-];
+// Preset keys retain each artwork's calibrated medical-sticker positions.
+const PAJAMAS: Record<Gender, { id: PajamaId; label: string; emoji: string; bg: string }[]> = {
+  boy: [
+    { id: "stars", label: "Sports", emoji: "⚽", bg: "bg-sky" },
+    { id: "dino", label: "Dino", emoji: "🦕", bg: "bg-mint" },
+    { id: "hearts", label: "Trucks", emoji: "🚚", bg: "bg-bubblegum" },
+  ],
+  girl: [
+    { id: "hearts", label: "Hearts", emoji: "💗", bg: "bg-bubblegum" },
+    { id: "stars", label: "Moon and stars", emoji: "🌙", bg: "bg-sky" },
+    { id: "dino", label: "Flowers", emoji: "🌼", bg: "bg-mint" },
+  ],
+};
 
 const AVATARS: Record<Gender, Record<PajamaId, string>> = {
-  boy: { stars: boyStars, dino: boyDino, hearts: boyHearts },
-  girl: { stars: girlStars, dino: girlDino, hearts: girlHearts },
+  boy: { stars: boySports, dino: boyDino, hearts: boyTrucks },
+  girl: { stars: girlMoonStars, dino: girlFlowers, hearts: girlHearts },
 };
 
 const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
@@ -417,9 +425,9 @@ function StickerDoctor() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="text-sm font-bold text-muted-foreground">Pajamas</span>
-            {PAJAMAS.map((p) => (
+            {PAJAMAS[gender].map((p) => (
               <button
                 key={p.id}
                 onClick={() => {
@@ -599,7 +607,7 @@ function StickerDoctor() {
           <img
             key={`${gender}-${pajama}`}
             src={AVATARS[gender][pajama]}
-            alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${pajama} pajamas`}
+            alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${PAJAMAS[gender].find((p) => p.id === pajama)?.label ?? "chosen"} pajamas`}
             width={1264}
             height={848}
             className="animate-pop-in pointer-events-none relative block h-full w-full object-cover drop-shadow-lg"
