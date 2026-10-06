@@ -15,5 +15,5 @@
 - [x] Verify looping, second-tap bedtime, restart cancellation, Spanish and reduced motion.
 
 # Movement and bed alignment
-- [ ] Remove flat-card spin distortion and smooth the dimensional dance and climb.
-- [ ] Align the sleeping head and torso with the blanket body shape; verify both characters, retained stickers, restart and reduced motion.
+- [x] Remove flat-card spin distortion and smooth the dimensional dance and climb.
+- [x] Align the sleeping head and torso with the blanket body shape; verify both characters, retained stickers, restart and reduced motion.
