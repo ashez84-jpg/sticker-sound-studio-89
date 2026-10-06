@@ -10,6 +10,7 @@ import {
   countTotal,
   useStoredChecklist,
 } from "@/lib/checklists";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/parents/")({
   head: () => ({
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/parents/")({
 });
 
 function ParentsView() {
+  const { t } = useLang();
   const packed = useStoredChecklist(PACKING_STORAGE_KEY);
   const routine = useStoredChecklist(ROUTINE_STORAGE_KEY);
   const [openEquipment, setOpenEquipment] = useState(false);
@@ -44,34 +46,34 @@ function ParentsView() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col gap-5 px-4 py-6">
       <header className="text-center">
-        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">For grown-ups</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{t("For grown-ups")}</p>
         <h1 className="mt-1 text-3xl font-extrabold text-foreground sm:text-4xl">
-          Parent's View <span aria-hidden>🌙</span>
+          {t("Parent's View")} <span aria-hidden>🌙</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Track the packing list and the bedtime routine right from your phone. Checks are saved on this device.
+          {t("Track the packing list and the bedtime routine right from your phone. Checks are saved on this device.")}
         </p>
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95"
           >
-            🧸 Back to the game
+            {t("🧸 Back to the game")}
           </Link>
           <Link
             to="/parents/habits"
             className="inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-muted-foreground transition-transform active:scale-95"
           >
-            🌟 Good sleep habits
+            {t("🌟 Good sleep habits")}
           </Link>
         </div>
       </header>
 
       <section aria-label="Packing list" className="toy-card p-3 sm:p-4">
         <div className="flex items-center justify-between gap-2 px-1">
-          <h2 className="text-lg font-bold text-foreground">🎒 Packing list</h2>
+          <h2 className="text-lg font-bold text-foreground">{t("🎒 Packing list")}</h2>
           <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
-            {packedCount} of {packingTotal} packed
+            {t("{a} of {b} packed", { a: packedCount, b: packingTotal })}
           </span>
         </div>
         <progress
@@ -109,7 +111,7 @@ function ParentsView() {
                         done ? "text-foreground line-through opacity-70" : "text-foreground/80"
                       }`}
                     >
-                      {item.label}
+                      {t(item.label)}
                     </span>
                   </button>
                   {item.children && (
@@ -149,7 +151,7 @@ function ParentsView() {
                                 childDone ? "text-foreground line-through opacity-70" : "text-foreground/70"
                               }`}
                             >
-                              {child.label}
+                              {t(child.label)}
                             </span>
                           </button>
                         </li>
@@ -163,16 +165,16 @@ function ParentsView() {
         </ul>
         {packedCount === packingTotal && (
           <p className="animate-pop-in mt-2 text-center text-sm font-extrabold text-primary">
-            🎉 All packed and ready — sweet dreams!
+            {t("🎉 All packed and ready — sweet dreams!")}
           </p>
         )}
       </section>
 
       <section aria-label="Sleep routine" className="toy-card p-3 sm:p-4">
         <div className="flex items-center justify-between gap-2 px-1">
-          <h2 className="text-lg font-bold text-foreground">😴 Sleep study night routine</h2>
+          <h2 className="text-lg font-bold text-foreground">{t("😴 Sleep study night routine")}</h2>
           <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
-            {routineCount} of {SLEEP_ROUTINE.length} done
+            {t("{a} of {b} done", { a: routineCount, b: SLEEP_ROUTINE.length })}
           </span>
         </div>
         <progress
@@ -207,10 +209,10 @@ function ParentsView() {
                         done ? "text-foreground line-through opacity-70" : "text-foreground/80"
                       }`}
                     >
-                      {step.label}
+                      {t(step.label)}
                     </span>
                     {step.hint && (
-                      <span className="mt-0.5 block text-xs font-semibold text-muted-foreground">{step.hint}</span>
+                      <span className="mt-0.5 block text-xs font-semibold text-muted-foreground">{t(step.hint)}</span>
                     )}
                   </span>
                 </button>
@@ -220,7 +222,7 @@ function ParentsView() {
         </ol>
         {routineCount === SLEEP_ROUTINE.length && (
           <p className="animate-pop-in mt-2 text-center text-sm font-extrabold text-primary">
-            🌟 Routine complete — time for the sleep study!
+            {t("🌟 Routine complete — time for the sleep study!")}
           </p>
         )}
         <button
@@ -230,7 +232,7 @@ function ParentsView() {
           }}
           className="mt-3 w-full rounded-full bg-muted px-4 py-2 text-sm font-bold text-muted-foreground transition-transform active:scale-95"
         >
-          Reset both lists
+          {t("Reset both lists")}
         </button>
       </section>
     </main>
