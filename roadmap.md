@@ -7,5 +7,5 @@
 - [x] Verify cover timing, sleeping depth, and restart with retained sticker placement.
 
 # Plush character update
-- [ ] Restyle all six character choices with soft 3D materials and warm lighting while preserving calibration.
-- [ ] Create matching closed-eye bedtime artwork and verify stickers, dancing, sleeping, and restart.
+- [x] Restyle all six character choices with soft 3D materials and warm lighting while preserving calibration.
+- [x] Create matching closed-eye bedtime artwork and verify stickers, dancing, sleeping, and restart.
