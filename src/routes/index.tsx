@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { characterMotion, limbMotion, blanketMotion, type Bedtime, type BodyPart } from "@/lib/bedtime-motion";
 
 import {
   PACKING_LIST,
@@ -263,14 +265,12 @@ const SLEEPING_AVATARS: Record<Gender, Record<PajamaId, string>> = {
   boy: { stars: boySportsSleeping, dino: boyDinoSleeping, hearts: boyTrucksSleeping },
   girl: { stars: girlMoonStarsSleeping, dino: girlFlowersSleeping, hearts: girlHeartsSleeping },
 };
-type Bedtime = "ready" | "dancing" | "settling" | "sleeping";
-type BodyPart = "body" | "arm-left" | "arm-right" | "leg-left" | "leg-right";
 const BODY_PARTS: BodyPart[] = ["body", "arm-left", "arm-right", "leg-left", "leg-right"];
 // Use the same calibrated coordinates for both artwork and attached sensors.
 function stickerBodyPart(slot: Slot): BodyPart {
-  if (slot.y >= 72) return slot.x < 50 ? "leg-left" : "leg-right";
-  if (slot.y >= 43 && slot.x < 34) return "arm-left";
-  if (slot.y >= 43 && slot.x > 66) return "arm-right";
+  if (slot.y >= 70 || (slot.y >= 65 && slot.x >= 36 && slot.x <= 64)) return slot.x < 50 ? "leg-left" : "leg-right";
+  if (slot.y >= 53 && slot.x < 36) return "arm-left";
+  if (slot.y >= 53 && slot.x > 64) return "arm-right";
   return "body";
 }
 
@@ -291,6 +291,7 @@ function StickerDoctor() {
   const [showPacking, setShowPacking] = useState(false);
   const [openEquipment, setOpenEquipment] = useState(false);
   const [bedtime, setBedtime] = useState<Bedtime>("ready");
+  const reducedMotion = useReducedMotion() === true;
 
   const slots = SLOTS[gender][pajama];
   const packedCount = countDone(PACKING_LIST, packed);
@@ -389,16 +390,19 @@ function StickerDoctor() {
   }, [gender, pajama]);
 
   useEffect(() => {
-    if (bedtime !== "dancing" && bedtime !== "settling") return;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (bedtime !== "settling") return;
     const timer = window.setTimeout(
-      () => setBedtime(bedtime === "dancing" ? "settling" : "sleeping"),
-      reducedMotion ? 100 : bedtime === "dancing" ? 5000 : 8000,
+      () => setBedtime("sleeping"),
+      reducedMotion ? 100 : 8000,
     );
     return () => window.clearTimeout(timer);
-  }, [bedtime]);
+  }, [bedtime, reducedMotion]);
 
   const finish = () => {
+    if (bedtime === "dancing") {
+      setBedtime("settling");
+      return;
+    }
     if (bedtime !== "ready") return;
     setDrag(null);
     setPraise(null);
@@ -660,9 +664,9 @@ function StickerDoctor() {
             <img src={bedCoversOpen} alt="" aria-hidden className="bedtime-open-covers pointer-events-none absolute inset-0 h-full w-full object-cover" />
           )}
           <span className="bedtime-ground-shadow" aria-hidden />
-          <div className={`bedtime-character bedtime-character--${bedtime}`} data-bedtime={bedtime}>
+          <motion.div className={`bedtime-character bedtime-character--${bedtime}`} data-bedtime={bedtime} initial={{ x: "0%", y: "0%", scale: 1, rotate: 0, rotateY: 0 }} animate={characterMotion(bedtime, reducedMotion, !!drag)}>
           {BODY_PARTS.map((part) => (
-          <div key={part} className={`bedtime-limb bedtime-limb--${part}`}>
+          <motion.div key={part} className={`bedtime-limb bedtime-limb--${part}`} initial={false} animate={limbMotion(part, bedtime, reducedMotion)}>
           {["far", "near"].map((depth) => (
             <img key={depth} src={bedtime === "sleeping" ? SLEEPING_AVATARS[gender][pajama] : AVATARS[gender][pajama]} alt="" aria-hidden width={1264} height={848} className={`bedtime-limb-art bedtime-depth bedtime-depth--${depth} pointer-events-none absolute inset-0 h-full w-full object-cover`} />
           ))}
@@ -737,16 +741,16 @@ function StickerDoctor() {
               </button>
             ),
           )}
-          </div>
+          </motion.div>
           ))}
-          </div>
+          </motion.div>
           {(bedtime === "settling" || bedtime === "sleeping") && (
-            <img src={bedCoversTucked} alt="" aria-hidden className="bedtime-blanket pointer-events-none absolute inset-0 h-full w-full object-cover" />
+            <motion.img src={bedCoversTucked} alt="" aria-hidden initial={{ opacity: 0, y: "10%", clipPath: "inset(75% 0 0 0)" }} animate={blanketMotion(bedtime, reducedMotion)} className="bedtime-blanket pointer-events-none absolute inset-0 h-full w-full object-cover" />
           )}
           <div className={`bedtime-night bedtime-night--${bedtime} pointer-events-none absolute inset-0`} aria-hidden />
           {bedtime === "sleeping" && (
             <span aria-hidden className="bedtime-dreams pointer-events-none absolute right-[25%] top-[21%] font-display font-extrabold text-primary-foreground">
-              <span className="bedtime-zzz">z</span><span className="bedtime-zzz">z</span><span className="bedtime-zzz">Z</span>
+              {[0, 1, 2].map((i) => <motion.span key={i} className="bedtime-zzz" initial={{ opacity: 0 }} animate={reducedMotion ? { opacity: 0.7, x: i * 12, y: -i * 20 } : { opacity: [0, 0.85, 0], x: [0, 22], y: [0, -58], scale: [0.8, 1.15] }} transition={reducedMotion ? { duration: 0 } : { duration: 4.5, delay: i * 1.5, repeat: Infinity, ease: "easeOut" }}>{i === 2 ? "Z" : "z"}</motion.span>)}
             </span>
           )}
         </div>
@@ -774,7 +778,7 @@ function StickerDoctor() {
         {bedtime === "sleeping" ? (
           <Button variant="secondary" size="lg" onClick={clearAll} className="rounded-full font-bold"><RotateCcw />{t("Play again")}</Button>
         ) : (
-          <Button size="lg" onClick={finish} disabled={bedtime !== "ready"} className="rounded-full font-bold"><Moon />{t("I'm finished")}</Button>
+          <Button size="lg" onClick={finish} disabled={bedtime === "settling"} className="rounded-full font-bold"><Moon />{t("I'm finished")}</Button>
         )}
       </div>
 
