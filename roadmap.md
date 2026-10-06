@@ -3,3 +3,5 @@
 - [x] Translate new controls and verify finishing and restarting.
 - [x] Extend the gentle dance with arm waves, hip wiggles and a spin, then walk, climb and tuck in.
 - [x] Verify stickers stay attached, sleeping and cancellation work, and reduced motion is respected.
+- [ ] Add storybook depth, side-of-bed approach, pull-back and pull-up covers, and a body-shaped blanket.
+- [ ] Verify cover timing, sleeping depth, and restart with retained sticker placement.
