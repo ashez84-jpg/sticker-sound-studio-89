@@ -821,6 +821,16 @@ function StickerDoctor() {
         </div>
       </section>
 
+      <div className="flex flex-col items-center gap-2">
+        <p role="status" aria-live="polite" className="min-h-6 text-center font-display text-lg font-bold text-foreground">
+          {bedtime === "dancing" ? t("A little happy dance!") : bedtime === "settling" ? t("Time to get cozy!") : bedtime === "sleeping" ? t("Sweet dreams, {name}!", { name: NAMES[gender] }) : ""}
+        </p>
+        {bedtime === "sleeping" ? (
+          <Button variant="secondary" size="lg" onClick={clearAll} className="rounded-full font-bold"><RotateCcw />{t("Play again")}</Button>
+        ) : (
+          <Button size="lg" onClick={finish} disabled={bedtime === "settling"} className="rounded-full font-bold"><Moon />{t("I'm finished")}</Button>
+        )}
+      </div>
 
       <p className="pb-4 text-center text-sm font-semibold text-muted-foreground">
         {t("Stickers placed: {n}", { n: placed.length })}
