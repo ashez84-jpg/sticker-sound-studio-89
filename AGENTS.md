@@ -13,4 +13,4 @@
 - Keep pajama choices gender-specific while preserving preset calibration keys and avatar geometry, so changing clothing patterns does not shift medical-sticker placement.
 - Translate UI text through useLang().t() with Spanish strings keyed by the English original in src/lib/i18n.tsx; why: one place to add or fix translations, English fallback when missing.
 - Animate bedtime as a cancellable ready/dancing/settling/sleeping sequence with clipped bitmap limbs and their calibrated stickers inside one moving parent layer; why: arm waves and steps retain sensor placement while restart cancels the ending cleanly.
-- Use perspective-separated storybook silhouette layers and matching open/tucked cover artwork for bedtime depth; why: preserve illustrated avatars and sticker calibration while giving turns and blankets dimensional volume.
+- Use matched transparent awake/sleeping avatar assets with the same canvas geometry, perspective-separated silhouette layers, and open/tucked cover artwork; why: material-style updates retain calibrated sensor placement and dimensional bedtime motion.

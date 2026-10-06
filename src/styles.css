@@ -297,9 +297,9 @@
   display: none;
 }
 
-/* Storybook depth uses illustrated layers, not replacement 3D characters. */
+/* Lit plush artwork retains calibrated bitmap limbs and dimensional turns. */
 .bedtime-scene { perspective: 900px; }
-.bedtime-depth { filter: brightness(0.78) saturate(0.85); }
+.bedtime-depth { filter: brightness(0.9) saturate(0.95); }
 .bedtime-depth--far { transform: translateZ(-7px) translateX(2px); }
 .bedtime-depth--near { transform: translateZ(-3px) translateX(1px); }
 .bedtime-scene--ready .bedtime-depth, .bedtime-scene--sleeping .bedtime-depth { visibility: hidden; }

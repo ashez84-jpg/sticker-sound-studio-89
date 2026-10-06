@@ -9,12 +9,12 @@ import {
   useStoredChecklist,
 } from "@/lib/checklists";
 
-import boySports from "@/assets/boy-sports.png";
-import boyDino from "@/assets/boy-dino.png";
-import boyTrucks from "@/assets/boy-trucks.png";
-import girlMoonStars from "@/assets/girl-moon-stars.png";
-import girlFlowers from "@/assets/girl-flowers.png";
-import girlHearts from "@/assets/girl-hearts.png";
+import boySports from "@/assets/boy-sports-plush.png";
+import boyDino from "@/assets/boy-dino-plush.png";
+import boyTrucks from "@/assets/boy-trucks-plush.png";
+import girlMoonStars from "@/assets/girl-moon-stars-plush.png";
+import girlFlowers from "@/assets/girl-flowers-plush.png";
+import girlHearts from "@/assets/girl-hearts-plush.png";
 import stickerBelt from "@/assets/sticker-belt.png";
 import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
@@ -33,12 +33,12 @@ import { playSound, type SoundName } from "@/lib/sfx";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Moon, RotateCcw } from "lucide-react";
-import boySportsSleeping from "@/assets/boy-sports-sleeping.png";
-import boyDinoSleeping from "@/assets/boy-dino-sleeping.png";
-import boyTrucksSleeping from "@/assets/boy-trucks-sleeping.png";
-import girlMoonStarsSleeping from "@/assets/girl-moon-stars-sleeping.png";
-import girlFlowersSleeping from "@/assets/girl-flowers-sleeping.png";
-import girlHeartsSleeping from "@/assets/girl-hearts-sleeping.png";
+import boySportsSleeping from "@/assets/boy-sports-plush-sleeping.png";
+import boyDinoSleeping from "@/assets/boy-dino-plush-sleeping.png";
+import boyTrucksSleeping from "@/assets/boy-trucks-plush-sleeping.png";
+import girlMoonStarsSleeping from "@/assets/girl-moon-stars-plush-sleeping.png";
+import girlFlowersSleeping from "@/assets/girl-flowers-plush-sleeping.png";
+import girlHeartsSleeping from "@/assets/girl-hearts-plush-sleeping.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
