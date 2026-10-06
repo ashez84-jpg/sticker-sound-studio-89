@@ -13,4 +13,4 @@
 - Keep pajama choices gender-specific while preserving preset calibration keys and avatar geometry, so changing clothing patterns does not shift medical-sticker placement.
 - Translate UI text through useLang().t() with Spanish strings keyed by the English original in src/lib/i18n.tsx; why: one place to add or fix translations, English fallback when missing.
 - Use Framer Motion for the cancellable ready/dancing/settling/sleeping sequence, keeping clipped bitmap limbs and calibrated stickers in one moving parent; why: state changes stop prior motion and preserve sensor alignment.
-- Use matched transparent awake/sleeping avatar assets with the same canvas geometry, perspective-separated silhouette layers, and open/tucked cover artwork; why: material-style updates retain calibrated sensor placement and dimensional bedtime motion.
+- Use matched transparent awake/sleeping avatar assets with the same canvas geometry, shallow front-facing turns without duplicate silhouette layers, and a shared end-of-climb/sleep pose calibrated to the tucked cover ridge; why: bitmap artwork cannot show a true back surface, and one bed pose prevents head/body misalignment.

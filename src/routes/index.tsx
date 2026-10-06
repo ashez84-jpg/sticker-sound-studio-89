@@ -667,9 +667,6 @@ function StickerDoctor() {
           <motion.div className={`bedtime-character bedtime-character--${bedtime}`} data-bedtime={bedtime} initial={{ x: "0%", y: "0%", scale: 1, rotate: 0, rotateY: 0 }} animate={characterMotion(bedtime, reducedMotion, !!drag)}>
           {BODY_PARTS.map((part) => (
           <motion.div key={part} className={`bedtime-limb bedtime-limb--${part}`} initial={false} animate={limbMotion(part, bedtime, reducedMotion)}>
-          {["far", "near"].map((depth) => (
-            <img key={depth} src={bedtime === "sleeping" ? SLEEPING_AVATARS[gender][pajama] : AVATARS[gender][pajama]} alt="" aria-hidden width={1264} height={848} className={`bedtime-limb-art bedtime-depth bedtime-depth--${depth} pointer-events-none absolute inset-0 h-full w-full object-cover`} />
-          ))}
           <img
             key={`${gender}-${pajama}`}
             src={bedtime === "sleeping" ? SLEEPING_AVATARS[gender][pajama] : AVATARS[gender][pajama]}
