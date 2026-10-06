@@ -28,6 +28,7 @@ import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
 import { playSound, type SoundName } from "@/lib/sfx";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -255,6 +256,7 @@ function StickerDoctor() {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const trayRef = useRef<HTMLDivElement | null>(null);
   const keyRef = useRef(0);
+  const { t } = useLang();
   const [gender, setGender] = useState<Gender>("boy");
   const [pajama, setPajama] = useState<PajamaId>("stars");
   const [placed, setPlaced] = useState<Placed[]>([]);
@@ -379,25 +381,24 @@ function StickerDoctor() {
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 px-4 py-6">
       <header className="text-center">
         <h1 className="text-3xl font-extrabold text-foreground sm:text-5xl">
-          Get Ready with Me Sleep Study{" "}
+          {t("Get Ready with Me Sleep Study")}{" "}
           <span className="inline-block animate-wiggle">🧸</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          Build your friend, then drag stickers on to make {NAMES[gender]} feel better. Tap a
-          sticker to take it off.
+          {t("Build your friend, then drag stickers on to make {name} feel better. Tap a sticker to take it off.", { name: NAMES[gender] })}
         </p>
         <div className="mt-3 flex flex-wrap justify-center gap-2">
           <Link
             to="/i-spy"
             className="inline-flex items-center justify-center rounded-full bg-sunshine px-4 py-2 text-sm font-bold text-foreground transition-transform active:scale-95"
           >
-            🔍 I Spy game
+            {t("🔍 I Spy game")}
           </Link>
           <Link
             to="/parents"
             className="inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-foreground/80 transition-transform active:scale-95"
           >
-            🌙 Parent's view
+            {t("🌙 Parent's view")}
           </Link>
         </div>
       </header>
@@ -405,7 +406,7 @@ function StickerDoctor() {
       <section aria-label="Choose your character" className="toy-card p-3 sm:p-4">
         <div className="flex flex-wrap items-center justify-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-muted-foreground">Who?</span>
+            <span className="text-sm font-bold text-muted-foreground">{t("Who?")}</span>
             {(["boy", "girl"] as Gender[]).map((g) => (
               <button
                 key={g}
@@ -426,7 +427,7 @@ function StickerDoctor() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="text-sm font-bold text-muted-foreground">Pajamas</span>
+            <span className="text-sm font-bold text-muted-foreground">{t("Pajamas")}</span>
             {PAJAMAS[gender].map((p) => (
               <button
                 key={p.id}
@@ -440,7 +441,7 @@ function StickerDoctor() {
                 }`}
               >
                 <span aria-hidden>{p.emoji}</span>
-                {p.label}
+                {t(p.label)}
               </button>
             ))}
           </div>
@@ -457,7 +458,7 @@ function StickerDoctor() {
           className="flex w-full items-center justify-between gap-2 rounded-2xl px-1 text-left"
         >
           <span className="text-lg font-bold text-foreground">
-            📋 Real sleep study map {showReference ? "" : "— peek inside"}
+            {t("📋 Real sleep study map")} {showReference ? "" : t("— peek inside")}
           </span>
           <span aria-hidden className="text-xl">{showReference ? "▴" : "▾"}</span>
         </button>
@@ -472,7 +473,7 @@ function StickerDoctor() {
               className="mx-auto w-full max-w-sm rounded-2xl"
             />
             <figcaption className="mt-2 text-center text-xs font-semibold text-muted-foreground">
-              Every glowing spot in the game matches these real sensor positions.
+              {t("Every glowing spot in the game matches these real sensor positions.")}
             </figcaption>
           </figure>
         )}
@@ -488,11 +489,11 @@ function StickerDoctor() {
           className="flex w-full items-center justify-between gap-2 rounded-2xl px-1 text-left"
         >
           <span className="text-lg font-bold text-foreground">
-            🎒 What to Bring Checklist {showPacking ? "" : "— tap to open"}
+            {t("🎒 What to Bring Checklist")} {showPacking ? "" : t("— tap to open")}
           </span>
           <span className="flex items-center gap-2">
             <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
-              {packedCount} of {packingTotal} packed
+              {t("{a} of {b} packed", { a: packedCount, b: packingTotal })}
             </span>
             <span aria-hidden className="text-xl">{showPacking ? "▴" : "▾"}</span>
           </span>
@@ -527,7 +528,7 @@ function StickerDoctor() {
                           done ? "text-foreground line-through opacity-70" : "text-foreground/80"
                         }`}
                       >
-                        {item.label}
+                        {t(item.label)}
                       </span>
                     </button>
                     {item.children && (
@@ -570,7 +571,7 @@ function StickerDoctor() {
                                   childDone ? "text-foreground line-through opacity-70" : "text-foreground/70"
                                 }`}
                               >
-                                {child.label}
+                                {t(child.label)}
                               </span>
                             </button>
                           </li>
@@ -585,7 +586,7 @@ function StickerDoctor() {
         )}
         {showPacking && packedCount === packingTotal && (
           <p className="animate-pop-in mt-2 text-center text-sm font-extrabold text-primary">
-            🎉 All packed and ready for the sleep study — sweet dreams!
+            {t("🎉 All packed and ready for the sleep study — sweet dreams!")}
           </p>
         )}
       </section>
@@ -679,13 +680,13 @@ function StickerDoctor() {
             key={praise.id}
             className="animate-float-up pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1.5 font-display text-lg font-bold text-primary-foreground"
           >
-            {praise.text}
+            {t(praise.text)}
           </span>
         )}
 
         {placed.length === 0 && !drag && (
           <p className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-sm font-semibold text-muted-foreground">
-            Pick a sticker — the right spots light up!
+            {t("Pick a sticker — the right spots light up!")}
           </p>
         )}
       </section>
@@ -693,7 +694,7 @@ function StickerDoctor() {
 
       <section aria-label="Sticker tray" className="toy-card p-3 sm:p-4">
         <div className="mb-2 flex items-center justify-between gap-2 px-1">
-          <h2 className="text-lg font-bold text-foreground">Sticker Tray</h2>
+          <h2 className="text-lg font-bold text-foreground">{t("Sticker Tray")}</h2>
           <div className="flex items-center gap-2">
             <button
               onClick={() => scrollTray(-1)}
@@ -714,7 +715,7 @@ function StickerDoctor() {
               disabled={placed.length === 0}
               className="rounded-full bg-secondary px-4 py-1.5 text-sm font-bold text-secondary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95 disabled:opacity-40"
             >
-              Start over
+              {t("Start over")}
             </button>
           </div>
         </div>
@@ -734,9 +735,9 @@ function StickerDoctor() {
                 className="pointer-events-none h-12 w-12 object-contain drop-shadow"
               />
               <span className="text-xs font-extrabold leading-tight text-foreground/80">
-                {i + 1}. {kind.label}
+                {i + 1}. {t(kind.label)}
               </span>
-              <span className="text-[10px] font-bold text-foreground/60">{kind.sub}</span>
+              <span className="text-[10px] font-bold text-foreground/60">{t(kind.sub)}</span>
             </button>
 
           ))}
@@ -745,7 +746,7 @@ function StickerDoctor() {
 
 
       <p className="pb-4 text-center text-sm font-semibold text-muted-foreground">
-        Stickers placed: {placed.length}
+        {t("Stickers placed: {n}", { n: placed.length })}
       </p>
 
       {drag && (

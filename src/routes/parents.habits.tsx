@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { useLang } from "@/lib/i18n";
+
 export const Route = createFileRoute("/parents/habits")({
   head: () => ({
     meta: [
@@ -89,87 +91,85 @@ const SLEEP_NEEDS = [
 ];
 
 function SleepHabits() {
+  const { t } = useLang();
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col gap-5 px-4 py-6">
       <header className="text-center">
-        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">For grown-ups</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{t("For grown-ups")}</p>
         <h1 className="mt-1 text-3xl font-extrabold text-foreground sm:text-4xl">
-          Good Sleep Habits <span aria-hidden>🌟</span>
+          {t("Good Sleep Habits")} <span aria-hidden>🌟</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Simple habits that help children and teens get the rest they need to grow.
+          {t("Simple habits that help children and teens get the rest they need to grow.")}
         </p>
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
           <Link
             to="/parents"
             className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95"
           >
-            ← Parent's view
+            {t("← Parent's view")}
           </Link>
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-muted-foreground transition-transform active:scale-95"
           >
-            🧸 Back to the game
+            {t("🧸 Back to the game")}
           </Link>
         </div>
       </header>
 
       <section aria-label="Why sleep matters" className="toy-card p-4 sm:p-5">
-        <h2 className="text-lg font-bold text-foreground">💙 Why sleep matters</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("💙 Why sleep matters")}</h2>
         <div className="mt-2 flex flex-col gap-2 text-sm font-semibold text-foreground/80">
           <p>
-            Sleep is just as important as food and water for a child to have the energy it takes to grow up strong
-            and healthy.
+            {t("Sleep is just as important as food and water for a child to have the energy it takes to grow up strong and healthy.")}
           </p>
           <p>
-            Not enough sleep increases hormones that make us crave food high in fat, sugar, and salt — which can
-            lead to a greater risk of obesity. Kids who don't get enough sleep also have trouble paying attention,
-            learning, and coping with stress.
+            {t("Not enough sleep increases hormones that make us crave food high in fat, sugar, and salt — which can lead to a greater risk of obesity. Kids who don't get enough sleep also have trouble paying attention, learning, and coping with stress.")}
           </p>
         </div>
       </section>
 
       <section aria-label="Habits your child should have" className="toy-card p-4 sm:p-5">
-        <h2 className="text-lg font-bold text-foreground">✅ Good habits to build</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("✅ Good habits to build")}</h2>
         <ul className="mt-3 flex flex-col gap-2">
           {SHOULD.map((habit) => (
             <li key={habit.id} className="rounded-2xl bg-mint px-3 py-2.5">
               <p className="text-sm font-bold text-foreground">
                 <span aria-hidden className="mr-1.5">{habit.emoji}</span>
-                {habit.title}
+                {t(habit.title)}
               </p>
-              <p className="mt-0.5 text-xs font-semibold text-muted-foreground">{habit.body}</p>
+              <p className="mt-0.5 text-xs font-semibold text-muted-foreground">{t(habit.body)}</p>
             </li>
           ))}
         </ul>
       </section>
 
       <section aria-label="Habits to avoid" className="toy-card p-4 sm:p-5">
-        <h2 className="text-lg font-bold text-foreground">🚫 Habits to avoid</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("🚫 Habits to avoid")}</h2>
         <ul className="mt-3 flex flex-col gap-2">
           {SHOULD_NOT.map((habit) => (
             <li key={habit.id} className="rounded-2xl bg-muted px-3 py-2.5">
               <p className="text-sm font-bold text-foreground">
                 <span aria-hidden className="mr-1.5">{habit.emoji}</span>
-                {habit.title}
+                {t(habit.title)}
               </p>
-              <p className="mt-0.5 text-xs font-semibold text-muted-foreground">{habit.body}</p>
+              <p className="mt-0.5 text-xs font-semibold text-muted-foreground">{t(habit.body)}</p>
             </li>
           ))}
         </ul>
       </section>
 
       <section aria-label="How much sleep does a child need" className="toy-card p-4 sm:p-5">
-        <h2 className="text-lg font-bold text-foreground">⏳ How much sleep does a child need?</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("⏳ How much sleep does a child need?")}</h2>
         <ul className="mt-3 flex flex-col gap-2">
           {SLEEP_NEEDS.map((need) => (
             <li
               key={need.id}
               className="flex items-center justify-between gap-3 rounded-2xl bg-muted px-3 py-2.5"
             >
-              <span className="text-sm font-bold text-foreground">{need.label}</span>
-              <span className="text-right text-xs font-extrabold text-primary">{need.hours}</span>
+              <span className="text-sm font-bold text-foreground">{t(need.label)}</span>
+              <span className="text-right text-xs font-extrabold text-primary">{t(need.hours)}</span>
             </li>
           ))}
         </ul>

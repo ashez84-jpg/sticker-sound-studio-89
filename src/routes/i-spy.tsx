@@ -29,6 +29,7 @@ import toothbrushArt from "@/assets/i-spy-objects/toothbrush.png";
 import wheelchairArt from "@/assets/i-spy-objects/wheelchair.png";
 import unicornArt from "@/assets/sticker-unicorn.png";
 import { playSound } from "@/lib/sfx";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/i-spy")({
   head: () => ({
@@ -110,6 +111,7 @@ const SCENES: Scene[] = [
 ];
 
 function ISpyPage() {
+  const { t } = useLang();
   const [sceneId, setSceneId] = useState(SCENES[0]!.id);
   const [foundMap, setFoundMap] = useState<Record<string, string[]>>({});
   const scene = SCENES.find((s) => s.id === sceneId) ?? SCENES[0]!;
@@ -135,10 +137,10 @@ function ISpyPage() {
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-4 px-4 py-6">
       <header className="text-center">
         <h1 className="text-3xl font-extrabold text-foreground sm:text-5xl">
-          I Spy the Sleep Room <span className="inline-block animate-wiggle">🔍</span>
+          {t("I Spy the Sleep Room")} <span className="inline-block animate-wiggle">🔍</span>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          Little things are hiding all over. Tap each one when you spot it!
+          {t("Little things are hiding all over. Tap each one when you spot it!")}
         </p>
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
           {SCENES.map((s) => (
@@ -149,7 +151,7 @@ function ISpyPage() {
                 s.id === scene.id ? "bg-primary text-primary-foreground shadow-md" : "bg-muted text-foreground/80"
               }`}
             >
-              {s.emoji} {s.name}
+              {s.emoji} {t(s.name)}
             </button>
           ))}
         </div>
@@ -157,7 +159,7 @@ function ISpyPage() {
           to="/"
           className="mt-3 inline-flex items-center justify-center rounded-full bg-muted px-4 py-2 text-sm font-bold text-foreground/80 transition-transform active:scale-95"
         >
-          ← Back to sticker game
+          {t("← Back to sticker game")}
         </Link>
       </header>
 
@@ -204,12 +206,12 @@ function ISpyPage() {
           {done && (
             <div className="absolute inset-0 flex items-center justify-center bg-background/60">
               <div className="toy-card animate-pop-in px-6 py-5 text-center">
-                <p className="text-3xl font-extrabold text-foreground">🎉 You found them all!</p>
+                <p className="text-3xl font-extrabold text-foreground">{t("🎉 You found them all!")}</p>
                 <button
                   onClick={reset}
                   className="mt-3 rounded-full bg-primary px-5 py-2 font-extrabold text-primary-foreground active:scale-95"
                 >
-                  Play again
+                  {t("Play again")}
                 </button>
               </div>
             </div>
@@ -219,9 +221,9 @@ function ISpyPage() {
 
       <section className="toy-card p-3 sm:p-4">
         <div className="mb-2 flex items-center justify-between px-1">
-          <h2 className="text-lg font-bold text-foreground">Can you find…</h2>
+          <h2 className="text-lg font-bold text-foreground">{t("Can you find…")}</h2>
           <span className="text-sm font-bold text-muted-foreground">
-            {found.length} of {scene.items.length}
+            {t("{a} of {b}", { a: found.length, b: scene.items.length })}
           </span>
         </div>
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-6">
@@ -238,11 +240,11 @@ function ISpyPage() {
               >
                 <span className={`text-2xl ${complete ? "" : "grayscale opacity-60"}`}>{first.emoji}</span>
                 <span className={`text-xs font-bold ${complete ? "line-through text-foreground/60" : "text-foreground"}`}>
-                  {first.name}
+                  {t(first.name)}
                 </span>
                 {spots.length > 1 && (
                   <span className={`text-[10px] font-bold ${complete ? "text-foreground/50" : "text-muted-foreground"}`}>
-                    {foundCount} of {spots.length}
+                    {t("{a} of {b}", { a: foundCount, b: spots.length })}
                   </span>
                 )}
               </li>
@@ -251,7 +253,7 @@ function ISpyPage() {
         </ul>
         {found.length > 0 && !done && (
           <button onClick={reset} className="mt-3 w-full text-sm font-bold text-muted-foreground">
-            Start over
+            {t("Start over")}
           </button>
         )}
       </section>
