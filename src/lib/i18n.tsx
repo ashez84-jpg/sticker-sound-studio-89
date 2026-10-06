@@ -244,7 +244,7 @@ export function LanguageToggle() {
     <div
       role="group"
       aria-label="Language / Idioma"
-      className="fixed right-3 top-3 z-40 flex rounded-full bg-card p-1 text-xs font-extrabold shadow-[var(--shadow-sticker)]"
+      className="relative z-40 mr-3 mt-3 ml-auto flex w-fit rounded-full bg-card p-1 text-xs font-extrabold shadow-[var(--shadow-sticker)]"
     >
       {(["en", "es"] as Lang[]).map((l) => (
         <button
