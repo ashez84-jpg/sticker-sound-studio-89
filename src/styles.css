@@ -316,16 +316,16 @@
 }
 .bedtime-limb { position: absolute; inset: 0; }
 .bedtime-limb--body .bedtime-limb-art {
-  clip-path: polygon(0 0, 100% 0, 100% 53%, 66% 53%, 70% 65%, 30% 65%, 34% 53%, 0 53%);
+  clip-path: polygon(0 0, 100% 0, 100% 53%, 64% 53%, 64% 65%, 36% 65%, 36% 53%, 0 53%);
 }
-.bedtime-limb--arm-left { transform-origin: 34% 53%; }
-.bedtime-limb--arm-right { transform-origin: 66% 53%; }
-.bedtime-limb--arm-left .bedtime-limb-art { clip-path: polygon(0 53%, 34% 53%, 30% 65%, 30% 100%, 0 100%); }
-.bedtime-limb--arm-right .bedtime-limb-art { clip-path: polygon(66% 53%, 100% 53%, 100% 100%, 70% 100%, 70% 65%); }
+.bedtime-limb--arm-left { transform-origin: 36% 53%; }
+.bedtime-limb--arm-right { transform-origin: 64% 53%; }
+.bedtime-limb--arm-left .bedtime-limb-art { clip-path: polygon(0 53%, 36% 53%, 36% 70%, 0 70%); }
+.bedtime-limb--arm-right .bedtime-limb-art { clip-path: polygon(64% 53%, 100% 53%, 100% 70%, 64% 70%); }
 .bedtime-limb--leg-left { transform-origin: 43% 65%; }
 .bedtime-limb--leg-right { transform-origin: 57% 65%; }
-.bedtime-limb--leg-left .bedtime-limb-art { clip-path: polygon(30% 65%, 50% 65%, 50% 100%, 30% 100%); }
-.bedtime-limb--leg-right .bedtime-limb-art { clip-path: polygon(50% 65%, 70% 65%, 70% 100%, 50% 100%); }
+.bedtime-limb--leg-left .bedtime-limb-art { clip-path: polygon(36% 65%, 50% 65%, 50% 100%, 0 100%, 0 70%, 36% 70%); }
+.bedtime-limb--leg-right .bedtime-limb-art { clip-path: polygon(50% 65%, 64% 65%, 64% 70%, 100% 70%, 100% 100%, 50% 100%); }
 .bedtime-character--dancing .bedtime-limb--arm-left { animation: bedtime-wave-left 1250ms ease-in-out 4; }
 .bedtime-character--dancing .bedtime-limb--arm-right { animation: bedtime-wave-right 1250ms ease-in-out 4; }
 .bedtime-character--dancing .bedtime-limb--leg-left { animation: bedtime-step 1250ms ease-in-out 4; }
