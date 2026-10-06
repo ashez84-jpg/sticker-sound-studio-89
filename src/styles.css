@@ -376,11 +376,13 @@
   20% { transform: translate(1%, 0) rotate(3deg) rotateY(0); }
   30% { transform: translate(-1%, -2%) rotate(-3deg) rotateY(0); }
   40% { transform: translate(0, 0) rotate(0) rotateY(0); }
-  60% { transform: translate(0, -1%) rotate(0) rotateY(360deg); }
-  70% { transform: translate(1%, 0) rotate(3deg) rotateY(360deg); }
-  80% { transform: translate(-1%, -2%) rotate(-3deg) rotateY(360deg); }
-  90% { transform: translate(1%, 0) rotate(2deg) rotateY(360deg); }
-  100% { transform: translate(0, 0) rotate(0) rotateY(360deg); }
+  48% { transform: translate(-2%, -1%) rotate(-4deg) rotateY(-48deg); }
+  56% { transform: translate(2%, -2%) rotate(4deg) rotateY(48deg); }
+  64% { transform: translate(0, -1%) rotate(0) rotateY(0); }
+  70% { transform: translate(1%, 0) rotate(3deg) rotateY(12deg); }
+  80% { transform: translate(-1%, -2%) rotate(-3deg) rotateY(-12deg); }
+  90% { transform: translate(1%, 0) rotate(2deg) rotateY(8deg); }
+  100% { transform: translate(0, 0) rotate(0) rotateY(0); }
 }
 @keyframes bedtime-wave-left { 0%, 100% { transform: rotate(0); } 35% { transform: rotate(14deg); } 70% { transform: rotate(5deg); } }
 @keyframes bedtime-wave-right { 0%, 100% { transform: rotate(0); } 35% { transform: rotate(-5deg); } 70% { transform: rotate(-14deg); } }
