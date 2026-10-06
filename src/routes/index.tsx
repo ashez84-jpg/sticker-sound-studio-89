@@ -29,6 +29,14 @@ import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
 
 import { playSound, type SoundName } from "@/lib/sfx";
 import { useLang } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
+import { Moon, RotateCcw } from "lucide-react";
+import boySportsSleeping from "@/assets/boy-sports-sleeping.png";
+import boyDinoSleeping from "@/assets/boy-dino-sleeping.png";
+import boyTrucksSleeping from "@/assets/boy-trucks-sleeping.png";
+import girlMoonStarsSleeping from "@/assets/girl-moon-stars-sleeping.png";
+import girlFlowersSleeping from "@/assets/girl-flowers-sleeping.png";
+import girlHeartsSleeping from "@/assets/girl-hearts-sleeping.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -249,6 +257,11 @@ const AVATARS: Record<Gender, Record<PajamaId, string>> = {
 };
 
 const NAMES: Record<Gender, string> = { boy: "Sam", girl: "Mia" };
+const SLEEPING_AVATARS: Record<Gender, Record<PajamaId, string>> = {
+  boy: { stars: boySportsSleeping, dino: boyDinoSleeping, hearts: boyTrucksSleeping },
+  girl: { stars: girlMoonStarsSleeping, dino: girlFlowersSleeping, hearts: girlHeartsSleeping },
+};
+type Bedtime = "ready" | "dancing" | "settling" | "sleeping";
 
 const PRAISE = ["Great job!", "So brave!", "All better!", "Nice fix!", "Woohoo!", "Super doctor!"];
 
@@ -266,6 +279,7 @@ function StickerDoctor() {
   const { checked: packed, toggle: togglePackedStored } = useStoredChecklist(PACKING_STORAGE_KEY);
   const [showPacking, setShowPacking] = useState(false);
   const [openEquipment, setOpenEquipment] = useState(false);
+  const [bedtime, setBedtime] = useState<Bedtime>("ready");
 
   const slots = SLOTS[gender][pajama];
   const packedCount = countDone(PACKING_LIST, packed);
@@ -300,6 +314,7 @@ function StickerDoctor() {
   );
 
   const startDrag = (kind: StickerKind, e: React.PointerEvent) => {
+    if (bedtime !== "ready") return;
     e.preventDefault();
     playSound("pick");
     setDrag({ kind, x: e.clientX, y: e.clientY, over: false, slotId: null });
@@ -358,9 +373,31 @@ function StickerDoctor() {
   // Slot positions shift between boy and girl, so start fresh on a swap.
   useEffect(() => {
     setPlaced([]);
+    setBedtime("ready");
+    setDrag(null);
   }, [gender, pajama]);
 
+  useEffect(() => {
+    if (bedtime !== "dancing" && bedtime !== "settling") return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = window.setTimeout(
+      () => setBedtime(bedtime === "dancing" ? "settling" : "sleeping"),
+      reducedMotion ? 100 : bedtime === "dancing" ? 2400 : 1800,
+    );
+    return () => window.clearTimeout(timer);
+  }, [bedtime]);
+
+  const finish = () => {
+    if (bedtime !== "ready") return;
+    setDrag(null);
+    setPraise(null);
+    setBedtime("dancing");
+    playSound("bouncy");
+    boardRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "center" });
+  };
+
   const removeSticker = (key: number) => {
+    if (bedtime !== "ready") return;
     playSound("pick");
     setPlaced((p) => p.filter((s) => s.key !== key));
   };
@@ -368,6 +405,9 @@ function StickerDoctor() {
   const clearAll = () => {
     playSound("clear");
     setPlaced([]);
+    setBedtime("ready");
+    setDrag(null);
+    setPraise(null);
   };
 
   const scrollTray = (dir: number) => {
@@ -605,13 +645,14 @@ function StickerDoctor() {
             height={1408}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           />
+          <div className={`bedtime-character bedtime-character--${bedtime}`} data-bedtime={bedtime}>
           <img
             key={`${gender}-${pajama}`}
-            src={AVATARS[gender][pajama]}
+            src={bedtime === "sleeping" ? SLEEPING_AVATARS[gender][pajama] : AVATARS[gender][pajama]}
             alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${PAJAMAS[gender].find((p) => p.id === pajama)?.label ?? "chosen"} pajamas`}
             width={1264}
             height={848}
-            className="animate-pop-in pointer-events-none relative block h-full w-full object-cover drop-shadow-lg"
+            className="pointer-events-none relative block h-full w-full object-cover drop-shadow-lg"
           />
 
 
@@ -643,6 +684,7 @@ function StickerDoctor() {
               <button
                 key={s.key}
                 onClick={() => removeSticker(s.key)}
+                disabled={bedtime !== "ready"}
                 aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
                 className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center transition-transform hover:scale-105 active:scale-95"
                 style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: s.slot.bandH ?? 18 }}
@@ -660,6 +702,7 @@ function StickerDoctor() {
               <button
                 key={s.key}
                 onClick={() => removeSticker(s.key)}
+                disabled={bedtime !== "ready"}
                 aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
                 className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center sticker-shadow transition-transform hover:scale-110 active:scale-95"
                 style={{
@@ -673,6 +716,14 @@ function StickerDoctor() {
               </button>
             ),
           )}
+          </div>
+          {(bedtime === "settling" || bedtime === "sleeping") && (
+            <img src={sleepStudyRoom} alt="" aria-hidden className="bedtime-blanket pointer-events-none absolute inset-0 h-full w-full object-cover" />
+          )}
+          <div className={`bedtime-night bedtime-night--${bedtime} pointer-events-none absolute inset-0`} aria-hidden />
+          {bedtime === "sleeping" && (
+            <span aria-hidden className="bedtime-zzz pointer-events-none absolute right-[25%] top-[17%] font-display text-2xl font-extrabold text-primary-foreground">Z z z</span>
+          )}
         </div>
 
         {praise && (
@@ -684,12 +735,23 @@ function StickerDoctor() {
           </span>
         )}
 
-        {placed.length === 0 && !drag && (
+        {placed.length === 0 && !drag && bedtime === "ready" && (
           <p className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-sm font-semibold text-muted-foreground">
             {t("Pick a sticker — the right spots light up!")}
           </p>
         )}
       </section>
+
+      <div className="flex flex-col items-center gap-2">
+        <p role="status" aria-live="polite" className="min-h-6 text-center font-display text-lg font-bold text-foreground">
+          {bedtime === "dancing" ? t("A little happy dance!") : bedtime === "settling" ? t("Time to get cozy!") : bedtime === "sleeping" ? t("Sweet dreams, {name}!", { name: NAMES[gender] }) : ""}
+        </p>
+        {bedtime === "sleeping" ? (
+          <Button variant="secondary" size="lg" onClick={clearAll} className="rounded-full font-bold"><RotateCcw />{t("Play again")}</Button>
+        ) : (
+          <Button size="lg" onClick={finish} disabled={bedtime !== "ready"} className="rounded-full font-bold"><Moon />{t("I'm finished")}</Button>
+        )}
+      </div>
 
 
       <section aria-label="Sticker tray" className="toy-card p-3 sm:p-4">
@@ -712,7 +774,7 @@ function StickerDoctor() {
             </button>
             <button
               onClick={clearAll}
-              disabled={placed.length === 0}
+              disabled={placed.length === 0 && bedtime === "ready"}
               className="rounded-full bg-secondary px-4 py-1.5 text-sm font-bold text-secondary-foreground shadow-[var(--shadow-sticker)] transition-transform active:scale-95 disabled:opacity-40"
             >
               {t("Start over")}
@@ -724,6 +786,7 @@ function StickerDoctor() {
             <button
               key={kind.id}
               onPointerDown={(e) => startDrag(kind, e)}
+              disabled={bedtime !== "ready"}
               aria-label={`Drag ${kind.label} sticker`}
               className={`${kind.bg} flex w-28 shrink-0 snap-start touch-none flex-col items-center gap-0.5 rounded-2xl px-2 py-3 text-center shadow-[var(--shadow-sticker)] transition-transform hover:-translate-y-1 active:scale-95 sm:w-32`}
             >
