@@ -12,5 +12,5 @@
 - Keep hidden-object artwork for both I Spy scenes as reusable transparent assets, with placement-specific perspective and camouflage handled by scene data and global semantic styling.
 - Keep pajama choices gender-specific while preserving preset calibration keys and avatar geometry, so changing clothing patterns does not shift medical-sticker placement.
 - Translate UI text through useLang().t() with Spanish strings keyed by the English original in src/lib/i18n.tsx; why: one place to add or fix translations, English fallback when missing.
-- Animate bedtime as a cancellable ready/dancing/settling/sleeping sequence with clipped bitmap limbs and their calibrated stickers inside one moving parent layer; why: arm waves and steps retain sensor placement while restart cancels the ending cleanly.
+- Use Framer Motion for the cancellable ready/dancing/settling/sleeping sequence, keeping clipped bitmap limbs and calibrated stickers in one moving parent; why: state changes stop prior motion and preserve sensor alignment.
 - Use matched transparent awake/sleeping avatar assets with the same canvas geometry, perspective-separated silhouette layers, and open/tucked cover artwork; why: material-style updates retain calibrated sensor placement and dimensional bedtime motion.
