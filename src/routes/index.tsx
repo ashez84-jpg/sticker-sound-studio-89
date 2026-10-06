@@ -26,6 +26,8 @@ import stickerUnicorn from "@/assets/sticker-unicorn.png";
 import stickerGauze from "@/assets/sticker-gauze-wrap.png";
 import sleepStudyReference from "@/assets/sleep-study-reference.jpg";
 import sleepStudyRoom from "@/assets/sleep-study-room.jpg";
+import bedCoversOpen from "@/assets/bed-covers-open.png";
+import bedCoversTucked from "@/assets/bed-covers-tucked.png";
 
 import { playSound, type SoundName } from "@/lib/sfx";
 import { useLang } from "@/lib/i18n";
@@ -391,7 +393,7 @@ function StickerDoctor() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(
       () => setBedtime(bedtime === "dancing" ? "settling" : "sleeping"),
-      reducedMotion ? 100 : bedtime === "dancing" ? 5000 : 4800,
+      reducedMotion ? 100 : bedtime === "dancing" ? 5000 : 8000,
     );
     return () => window.clearTimeout(timer);
   }, [bedtime]);
@@ -646,7 +648,7 @@ function StickerDoctor() {
           drag?.over ? "ring-8 ring-primary/40" : "ring-0"
         }`}
       >
-        <div ref={boardRef} className="relative mx-auto aspect-[54/70] w-full max-w-[432px]">
+        <div ref={boardRef} className={`bedtime-scene bedtime-scene--${bedtime} relative mx-auto aspect-[54/70] w-full max-w-[432px]`}>
           <img
             src={sleepStudyRoom}
             alt="A cozy sleep study room with teddy bear, bunny, and dinosaur toys on the bed"
@@ -654,13 +656,21 @@ function StickerDoctor() {
             height={1408}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           />
+          {(bedtime === "settling" || bedtime === "sleeping") && (
+            <img src={bedCoversOpen} alt="" aria-hidden className="bedtime-open-covers pointer-events-none absolute inset-0 h-full w-full object-cover" />
+          )}
+          <span className="bedtime-ground-shadow" aria-hidden />
           <div className={`bedtime-character bedtime-character--${bedtime}`} data-bedtime={bedtime}>
           {BODY_PARTS.map((part) => (
           <div key={part} className={`bedtime-limb bedtime-limb--${part}`}>
+          {["far", "near"].map((depth) => (
+            <img key={depth} src={bedtime === "sleeping" ? SLEEPING_AVATARS[gender][pajama] : AVATARS[gender][pajama]} alt="" aria-hidden width={1264} height={848} className={`bedtime-limb-art bedtime-depth bedtime-depth--${depth} pointer-events-none absolute inset-0 h-full w-full object-cover`} />
+          ))}
           <img
             key={`${gender}-${pajama}`}
             src={bedtime === "sleeping" ? SLEEPING_AVATARS[gender][pajama] : AVATARS[gender][pajama]}
-            alt={`Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${PAJAMAS[gender].find((p) => p.id === pajama)?.label ?? "chosen"} pajamas`}
+            alt={part === "body" ? `Cartoon ${gender === "boy" ? "boy" : "girl"} named ${NAMES[gender]} wearing ${PAJAMAS[gender].find((p) => p.id === pajama)?.label ?? "chosen"} pajamas` : ""}
+            aria-hidden={part !== "body"}
             width={1264}
             height={848}
             className="bedtime-limb-art pointer-events-none absolute inset-0 block h-full w-full object-cover"
@@ -731,7 +741,7 @@ function StickerDoctor() {
           ))}
           </div>
           {(bedtime === "settling" || bedtime === "sleeping") && (
-            <img src={sleepStudyRoom} alt="" aria-hidden className="bedtime-blanket pointer-events-none absolute inset-0 h-full w-full object-cover" />
+            <img src={bedCoversTucked} alt="" aria-hidden className="bedtime-blanket pointer-events-none absolute inset-0 h-full w-full object-cover" />
           )}
           <div className={`bedtime-night bedtime-night--${bedtime} pointer-events-none absolute inset-0`} aria-hidden />
           {bedtime === "sleeping" && (
