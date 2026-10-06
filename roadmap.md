@@ -5,3 +5,7 @@
 - [x] Verify stickers stay attached, sleeping and cancellation work, and reduced motion is respected.
 - [x] Add storybook depth, side-of-bed approach, pull-back and pull-up covers, and a body-shaped blanket.
 - [x] Verify cover timing, sleeping depth, and restart with retained sticker placement.
+
+# Plush character update
+- [ ] Restyle all six character choices with soft 3D materials and warm lighting while preserving calibration.
+- [ ] Create matching closed-eye bedtime artwork and verify stickers, dancing, sleeping, and restart.
