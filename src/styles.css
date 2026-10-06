@@ -302,53 +302,104 @@
   position: absolute;
   inset: 0;
   transform-origin: 50% 30%;
+  perspective: 800px;
 }
 .bedtime-character--dancing {
-  animation: bedtime-dance 600ms ease-in-out 4;
+  animation: bedtime-dance 5000ms ease-in-out both;
 }
 .bedtime-character--settling {
-  animation: bedtime-settle 1800ms ease-in-out both;
+  animation: bedtime-settle 4800ms ease-in-out both;
 }
 .bedtime-character--sleeping {
-  transform: translateY(8%) scale(0.65);
-  animation: bedtime-breathe 4s ease-in-out infinite;
+  transform: translateY(4%) scale(0.65);
+  animation: bedtime-breathe 5s ease-in-out infinite;
+}
+.bedtime-limb { position: absolute; inset: 0; }
+.bedtime-limb--body .bedtime-limb-art {
+  clip-path: polygon(0 0, 100% 0, 100% 53%, 64% 53%, 64% 65%, 36% 65%, 36% 53%, 0 53%);
+}
+.bedtime-limb--arm-left { transform-origin: 36% 53%; }
+.bedtime-limb--arm-right { transform-origin: 64% 53%; }
+.bedtime-limb--arm-left .bedtime-limb-art { clip-path: polygon(0 53%, 36% 53%, 36% 70%, 0 70%); }
+.bedtime-limb--arm-right .bedtime-limb-art { clip-path: polygon(64% 53%, 100% 53%, 100% 70%, 64% 70%); }
+.bedtime-limb--leg-left { transform-origin: 43% 65%; }
+.bedtime-limb--leg-right { transform-origin: 57% 65%; }
+.bedtime-limb--leg-left .bedtime-limb-art { clip-path: polygon(36% 65%, 50% 65%, 50% 100%, 0 100%, 0 70%, 36% 70%); }
+.bedtime-limb--leg-right .bedtime-limb-art { clip-path: polygon(50% 65%, 64% 65%, 64% 70%, 100% 70%, 100% 100%, 50% 100%); }
+.bedtime-character--dancing .bedtime-limb--arm-left { animation: bedtime-wave-left 1250ms ease-in-out 4; }
+.bedtime-character--dancing .bedtime-limb--arm-right { animation: bedtime-wave-right 1250ms ease-in-out 4; }
+.bedtime-character--dancing .bedtime-limb--leg-left { animation: bedtime-step 1250ms ease-in-out 4; }
+.bedtime-character--dancing .bedtime-limb--leg-right { animation: bedtime-step 1250ms ease-in-out 4 reverse; }
+.bedtime-character--settling .bedtime-limb--leg-left { animation: bedtime-walk-left 4800ms ease-in-out both; }
+.bedtime-character--settling .bedtime-limb--leg-right { animation: bedtime-walk-right 4800ms ease-in-out both; }
+.bedtime-character--settling .bedtime-limb--arm-left { animation: bedtime-reach-left 4800ms ease-in-out both; }
+.bedtime-character--settling .bedtime-limb--arm-right { animation: bedtime-reach-right 4800ms ease-in-out both; }
+.bedtime-character--sleeping .bedtime-limb--arm-left { transform: rotate(-8deg); }
+.bedtime-character--sleeping .bedtime-limb--arm-right { transform: rotate(8deg); }
+.bedtime-character--settling ~ .bedtime-blanket {
+  animation: bedtime-tuck 4800ms ease-in-out both;
 }
 .bedtime-blanket {
   clip-path: inset(46% 0 0 0);
-  animation: bedtime-tuck 1800ms ease-in-out both;
 }
 .bedtime-night {
   background: color-mix(in oklch, var(--foreground) 36%, transparent);
   opacity: 0;
-  transition: opacity 1800ms ease-in-out;
+  transition: opacity 4800ms ease-in-out;
 }
 .bedtime-night--settling, .bedtime-night--sleeping { opacity: 1; }
-.bedtime-zzz { animation: bedtime-dream 3s ease-in-out infinite; }
+.bedtime-dreams { width: 48px; height: 64px; }
+.bedtime-zzz { position: absolute; bottom: 0; left: 0; opacity: 0; font-size: 18px; animation: bedtime-dream 4500ms ease-out infinite; }
+.bedtime-zzz:nth-child(2) { animation-delay: 1500ms; font-size: 22px; }
+.bedtime-zzz:nth-child(3) { animation-delay: 3000ms; font-size: 26px; }
 @keyframes bedtime-dance {
-  0%, 100% { transform: translate(0, 0) rotate(0); }
-  25% { transform: translate(-2%, -2%) rotate(-5deg); }
-  50% { transform: translate(0, -4%) rotate(0); }
-  75% { transform: translate(2%, -2%) rotate(5deg); }
+  0%, 100% { transform: translate(0, 0) rotate(0) rotateY(0); }
+  10% { transform: translate(-1%, -2%) rotate(-3deg) rotateY(0); }
+  20% { transform: translate(1%, 0) rotate(3deg) rotateY(0); }
+  30% { transform: translate(-1%, -2%) rotate(-3deg) rotateY(0); }
+  40% { transform: translate(0, 0) rotate(0) rotateY(0); }
+  60% { transform: translate(0, -1%) rotate(0) rotateY(360deg); }
+  70% { transform: translate(1%, 0) rotate(3deg) rotateY(360deg); }
+  80% { transform: translate(-1%, -2%) rotate(-3deg) rotateY(360deg); }
+  90% { transform: translate(1%, 0) rotate(2deg) rotateY(360deg); }
+  100% { transform: translate(0, 0) rotate(0) rotateY(360deg); }
 }
+@keyframes bedtime-wave-left { 0%, 100% { transform: rotate(0); } 35% { transform: rotate(14deg); } 70% { transform: rotate(5deg); } }
+@keyframes bedtime-wave-right { 0%, 100% { transform: rotate(0); } 35% { transform: rotate(-5deg); } 70% { transform: rotate(-14deg); } }
+@keyframes bedtime-step { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(4deg); } }
 @keyframes bedtime-settle {
   0% { transform: translateY(0) scale(1); }
-  45% { transform: translateY(3%) scale(0.8); }
-  100% { transform: translateY(8%) scale(0.65); }
+  12% { transform: translate(-5%, -1%) scale(0.95); }
+  24% { transform: translate(-10%, 0) scale(0.9); }
+  36% { transform: translate(-14%, -1%) scale(0.85); }
+  46% { transform: translate(-14%, 0) scale(0.82); }
+  58% { transform: translate(-8%, -7%) scale(0.76) rotate(6deg); }
+  70% { transform: translate(0, 2%) scale(0.65) rotate(0); }
+  82%, 100% { transform: translateY(4%) scale(0.65); }
 }
+@keyframes bedtime-walk-left { 0%, 24%, 46%, 70%, 100% { transform: rotate(0); } 12%, 36% { transform: rotate(9deg); } 58% { transform: rotate(-15deg); } }
+@keyframes bedtime-walk-right { 0%, 24%, 46%, 70%, 100% { transform: rotate(0); } 12%, 36% { transform: rotate(-9deg); } 58% { transform: rotate(18deg); } }
+@keyframes bedtime-reach-left { 0%, 46% { transform: rotate(0); } 60% { transform: rotate(18deg); } 78% { transform: rotate(25deg); } 100% { transform: rotate(-8deg); } }
+@keyframes bedtime-reach-right { 0%, 46% { transform: rotate(0); } 60% { transform: rotate(-18deg); } 78% { transform: rotate(-25deg); } 100% { transform: rotate(8deg); } }
 @keyframes bedtime-tuck {
-  0%, 35% { opacity: 0; }
-  100% { opacity: 1; }
+  0%, 66% { opacity: 0; clip-path: inset(70% 0 0 0); }
+  72% { opacity: 1; clip-path: inset(65% 0 0 0); }
+  100% { opacity: 1; clip-path: inset(46% 0 0 0); }
 }
 @keyframes bedtime-breathe {
-  0%, 100% { transform: translateY(8%) scale(0.65); }
-  50% { transform: translateY(8.1%) scale(0.654); }
+  0%, 100% { transform: translateY(4%) scale(0.65); }
+  50% { transform: translateY(3.9%) scale(0.655); }
 }
 @keyframes bedtime-dream {
-  0%, 100% { opacity: 0.5; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(-8px); }
+  0% { opacity: 0; transform: translate(0, 0) scale(0.8); }
+  20% { opacity: 0.85; }
+  100% { opacity: 0; transform: translate(22px, -58px) scale(1.15); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bedtime-character, .bedtime-blanket, .bedtime-zzz { animation: none; }
+  .bedtime-character, .bedtime-limb, .bedtime-character .bedtime-limb, .bedtime-blanket, .bedtime-character ~ .bedtime-blanket, .bedtime-zzz { animation: none; }
   .bedtime-night { transition: none; }
-  .bedtime-character--settling { transform: translateY(8%) scale(0.65); }
+  .bedtime-character--settling { transform: translateY(4%) scale(0.65); }
+  .bedtime-zzz { opacity: 0.7; }
+  .bedtime-zzz:nth-child(2) { transform: translate(12px, -20px); }
+  .bedtime-zzz:nth-child(3) { transform: translate(24px, -40px); }
 }
