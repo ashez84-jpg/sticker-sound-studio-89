@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep hidden-object artwork for both I Spy scenes as reusable transparent assets, with placement-specific perspective and camouflage handled by scene data and global semantic styling.
+- Keep pajama choices gender-specific while preserving preset calibration keys and avatar geometry, so changing clothing patterns does not shift medical-sticker placement.
