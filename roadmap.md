@@ -11,5 +11,5 @@
 - [x] Create matching closed-eye bedtime artwork and verify stickers, dancing, sleeping, and restart.
 
 # Four animation modes
-- [ ] Use Framer Motion for idle, tap-controlled dancing, bedtime and sleep, preserving sticker placement and gentle covers.
-- [ ] Verify looping, second-tap bedtime, restart cancellation, Spanish and reduced motion.
+- [x] Use Framer Motion for idle, tap-controlled dancing, bedtime and sleep, preserving sticker placement and gentle covers.
+- [x] Verify looping, second-tap bedtime, restart cancellation, Spanish and reduced motion.
