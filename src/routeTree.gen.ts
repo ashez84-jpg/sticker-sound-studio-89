@@ -10,14 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CpapStudyRouteImport } from './routes/cpap-study'
 import { Route as ISpyRouteImport } from './routes/i-spy'
 import { Route as ParentsRouteImport } from './routes/parents'
+import { Route as SleepStudyRouteImport } from './routes/sleep-study'
 import { Route as ParentsIndexRouteImport } from './routes/parents.index'
 import { Route as ParentsHabitsRouteImport } from './routes/parents.habits'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CpapStudyRoute = CpapStudyRouteImport.update({
+  id: '/cpap-study',
+  path: '/cpap-study',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ISpyRoute = ISpyRouteImport.update({
@@ -28,6 +35,11 @@ const ISpyRoute = ISpyRouteImport.update({
 const ParentsRoute = ParentsRouteImport.update({
   id: '/parents',
   path: '/parents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SleepStudyRoute = SleepStudyRouteImport.update({
+  id: '/sleep-study',
+  path: '/sleep-study',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParentsIndexRoute = ParentsIndexRouteImport.update({
@@ -43,37 +55,66 @@ const ParentsHabitsRoute = ParentsHabitsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cpap-study': typeof CpapStudyRoute
   '/i-spy': typeof ISpyRoute
   '/parents': typeof ParentsRouteWithChildren
+  '/sleep-study': typeof SleepStudyRoute
   '/parents/habits': typeof ParentsHabitsRoute
   '/parents/': typeof ParentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cpap-study': typeof CpapStudyRoute
   '/i-spy': typeof ISpyRoute
+  '/sleep-study': typeof SleepStudyRoute
   '/parents/habits': typeof ParentsHabitsRoute
   '/parents': typeof ParentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cpap-study': typeof CpapStudyRoute
   '/i-spy': typeof ISpyRoute
   '/parents': typeof ParentsRouteWithChildren
+  '/sleep-study': typeof SleepStudyRoute
   '/parents/habits': typeof ParentsHabitsRoute
   '/parents/': typeof ParentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/i-spy' | '/parents' | '/parents/habits' | '/parents/'
+  fullPaths:
+    | '/'
+    | '/cpap-study'
+    | '/i-spy'
+    | '/parents'
+    | '/sleep-study'
+    | '/parents/habits'
+    | '/parents/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/i-spy' | '/parents/habits' | '/parents'
-  id: '__root__' | '/' | '/i-spy' | '/parents' | '/parents/habits' | '/parents/'
+  to:
+    | '/'
+    | '/cpap-study'
+    | '/i-spy'
+    | '/sleep-study'
+    | '/parents/habits'
+    | '/parents'
+  id:
+    | '__root__'
+    | '/'
+    | '/cpap-study'
+    | '/i-spy'
+    | '/parents'
+    | '/sleep-study'
+    | '/parents/habits'
+    | '/parents/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CpapStudyRoute: typeof CpapStudyRoute
   ISpyRoute: typeof ISpyRoute
   ParentsRoute: typeof ParentsRouteWithChildren
+  SleepStudyRoute: typeof SleepStudyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -83,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cpap-study': {
+      id: '/cpap-study'
+      path: '/cpap-study'
+      fullPath: '/cpap-study'
+      preLoaderRoute: typeof CpapStudyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/i-spy': {
@@ -97,6 +145,13 @@ declare module '@tanstack/react-router' {
       path: '/parents'
       fullPath: '/parents'
       preLoaderRoute: typeof ParentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sleep-study': {
+      id: '/sleep-study'
+      path: '/sleep-study'
+      fullPath: '/sleep-study'
+      preLoaderRoute: typeof SleepStudyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/parents/': {
@@ -131,8 +186,10 @@ const ParentsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CpapStudyRoute: CpapStudyRoute,
   ISpyRoute: ISpyRoute,
   ParentsRoute: ParentsRouteWithChildren,
+  SleepStudyRoute: SleepStudyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
