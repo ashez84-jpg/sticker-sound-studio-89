@@ -30,7 +30,7 @@ function StartScreen() {
       </header>
       <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2">
         <Button asChild variant="ghost" className="group relative h-auto flex-col gap-0 overflow-hidden rounded-2xl border-2 border-border bg-card p-0 shadow-[var(--shadow-toy)] transition-transform hover:-translate-y-1 hover:bg-card focus-visible:ring-4">
-          <Link to="/sleep-study">
+          <Link to="/sleep-study" aria-label={t("Sleep Study")}>
             <div className="relative h-56 w-full overflow-hidden bg-sky sm:h-72">
               <img src={sam} alt="Sam in sports pajamas" width={1264} height={848} className="absolute inset-0 h-full w-full object-cover" />
               <img src={teddy} alt="" aria-hidden width={1024} height={1024} className="absolute bottom-4 right-4 size-20 object-contain" />
@@ -39,7 +39,7 @@ function StartScreen() {
           </Link>
         </Button>
         <Button asChild variant="ghost" className="group relative h-auto flex-col gap-0 overflow-hidden rounded-2xl border-2 border-border bg-card p-0 shadow-[var(--shadow-toy)] transition-transform hover:-translate-y-1 hover:bg-card focus-visible:ring-4">
-          <Link to="/cpap-study">
+          <Link to="/cpap-study" aria-label={t("CPAP Study")}>
             <div className="relative h-56 w-full overflow-hidden bg-bubblegum sm:h-72">
               <img src={mia} alt="Mia in heart pajamas" width={1264} height={848} className="absolute inset-0 h-full w-full object-cover" />
               <img src={mask} alt="" aria-hidden width={1024} height={1024} className="absolute bottom-4 right-4 size-24 object-contain" />
