@@ -16,13 +16,15 @@ export function characterMotion(state: Bedtime, reduced: boolean, dragging: bool
   const tucked = bedPose;
   if (reduced) return { ...(state === "settling" || state === "sleeping" ? tucked : home), transition: { duration: 0 } };
   if (state === "dancing") return {
-    x: ["0%", "-1.5%", "0%", "1.5%", "0%"],
-    y: ["0%", "-1%", "0%", "-1%", "0%"],
-    scale: [1, 1.006, 1, 1.006, 1], rotate: [0, -1.5, 0, 1.5, 0],
-    // A front-facing bitmap has no back surface. Shallow turns preserve its
-    // plush volume instead of flipping/mirroring it like a paper cutout.
-    rotateY: [0, -16, 0, 16, 0],
-    transition: { ...loop },
+    // Lively bouncy groove: hops with squash & stretch, hip sway, head-bop tilt.
+    x: ["0%", "-4%", "0%", "4%", "0%"],
+    y: ["0%", "-5%", "0%", "-5%", "0%"],
+    scaleX: [1.04, 0.97, 1.04, 0.97, 1.04],
+    scaleY: [0.96, 1.04, 0.96, 1.04, 0.96],
+    rotate: [0, -6, 0, 6, 0],
+    // A front-facing bitmap has no back surface; keep turns shallow.
+    rotateY: [0, -14, 0, 14, 0],
+    transition: { duration: 1.4, repeat: Infinity, ease: "easeInOut" },
   };
   if (state === "settling") return {
     x: ["0%", "-23%", "-23%", "-14%", tucked.x, tucked.x],
@@ -40,7 +42,8 @@ export function limbMotion(part: BodyPart, state: Bedtime, reduced: boolean): Ta
   const left = part.endsWith("left");
   const arm = part.startsWith("arm");
   const sign = left ? 1 : -1;
-  if (state === "dancing") return { rotate: arm ? [0, sign * 7, sign * 3, 0] : [0, sign * 2, 0], y: "0%", transition: { ...loop, duration: 4 } };
+  // Limbs stay joined to the body while dancing so no cut seams ever open.
+  if (state === "dancing") return { rotate: 0, y: "0%", transition: { duration: 0.3 } };
   if (state === "settling") return {
     rotate: arm ? [0, 0, sign * 10, sign * 6, sign * 8, 0] : [0, sign * 3, 0, -sign * 5, sign * 3, 0],
     y: "0%", transition: { ...settle, times: [0, 0.3, 0.44, 0.59, 0.69, 1] },
