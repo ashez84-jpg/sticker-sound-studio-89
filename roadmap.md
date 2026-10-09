@@ -1,6 +1,6 @@
 # Study choice
-- [ ] Add a bilingual start screen and separate Sleep Study and CPAP Study activities.
-- [ ] Add a CPAP mask to the shared character game and verify both choices and return navigation.
+- [x] Add a bilingual start screen and separate Sleep Study and CPAP Study activities.
+- [x] Add a CPAP mask to the shared character game and verify both choices and return navigation.
 
 # Bedtime finish
 - [x] Add a finish button, little dance, and settling into the existing bed with placed stickers retained.
