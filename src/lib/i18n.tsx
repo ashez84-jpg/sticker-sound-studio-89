@@ -35,6 +35,14 @@ export function setLang(lang: Lang) {
 
 /** Spanish text keyed by the English original. Missing keys fall back to English. */
 const ES: Record<string, string> = {
+  "Which study are you getting ready for?": "¿Para qué estudio te estás preparando?",
+  "Sleep Study": "Estudio del sueño",
+  "CPAP Study": "Estudio de CPAP",
+  "Get Ready with Me CPAP Study": "Prepárate conmigo: Estudio de CPAP",
+  "← Choose a study": "← Elegir un estudio",
+  "CPAP Mask": "Mascarilla de CPAP",
+  "A soft mask for the nose": "Una mascarilla suave para la nariz",
+  "Drag {label} sticker": "Arrastrar calcomanía de {label}",
   // Game
   "Get Ready with Me Sleep Study": "Prepárate conmigo: Estudio del sueño",
   "Build your friend, then drag stickers on to make {name} feel better. Tap a sticker to take it off.":
