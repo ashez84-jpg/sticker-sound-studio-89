@@ -9,10 +9,10 @@ const settle = { duration: 8, repeat: 0, ease: "easeInOut" as const };
 // Shared with the end of the climb: the head is centred over the blanket's
 // body mold (which sits slightly left of the scene centre) with the chin
 // tucked just behind the blanket's top edge so the head reads as attached.
-const bedPose = { x: "-1.4%", y: "7.3%", scale: 0.43, rotate: 0, rotateY: 0 };
+const bedPose = { x: "-1.4%", y: "7.3%", scale: 0.43, scaleX: 1, scaleY: 1, rotate: 0, rotateY: 0 };
 
 export function characterMotion(state: Bedtime, reduced: boolean, dragging: boolean): TargetAndTransition {
-  const home = { x: "0%", y: "0%", scale: 1, rotate: 0, rotateY: 0 };
+  const home = { x: "0%", y: "0%", scale: 1, scaleX: 1, scaleY: 1, rotate: 0, rotateY: 0 };
   const tucked = bedPose;
   if (reduced) return { ...(state === "settling" || state === "sleeping" ? tucked : home), transition: { duration: 0 } };
   if (state === "dancing") return {
