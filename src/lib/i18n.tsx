@@ -42,6 +42,8 @@ const ES: Record<string, string> = {
   "← Choose a study": "← Elegir un estudio",
   "CPAP Mask": "Mascarilla de CPAP",
   "A soft mask for the nose": "Una mascarilla suave para la nariz",
+  "Elephant CPAP Mask": "Mascarilla de CPAP de elefante",
+  "A trunk mask for the nose": "Una mascarilla con trompa para la nariz",
   "Drag {label} sticker": "Arrastrar calcomanía de {label}",
   // Game
   "Get Ready with Me Sleep Study": "Prepárate conmigo: Estudio del sueño",

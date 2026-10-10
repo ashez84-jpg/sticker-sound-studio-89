@@ -17,7 +17,7 @@ import boyTrucks from "@/assets/boy-trucks-plush.png";
 import girlMoonStars from "@/assets/girl-moon-stars-plush.png";
 import girlFlowers from "@/assets/girl-flowers-plush.png";
 import girlHearts from "@/assets/girl-hearts-plush.png";
-import stickerCpapMask from "@/assets/sticker-cpap-mask.png";
+import stickerCpapMask from "@/assets/sticker-cpap-elephant.png";
 import stickerBelt from "@/assets/sticker-belt.png";
 import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
@@ -127,7 +127,7 @@ const STICKERS: StickerKind[] = [
   },
 ];
 
-const CPAP_MASK: StickerKind = { id: "cpap", label: "CPAP Mask", sub: "A soft mask for the nose", img: stickerCpapMask, sound: "bouncy", bg: "bg-mint" };
+const CPAP_MASK: StickerKind = { id: "cpap", label: "Elephant CPAP Mask", sub: "A trunk mask for the nose", img: stickerCpapMask, sound: "bouncy", bg: "bg-mint" };
 
 type Gender = "boy" | "girl";
 type PajamaId = "stars" | "dino" | "hearts";
@@ -277,7 +277,7 @@ export function StickerDoctor({ study = "sleep" }: { study?: "sleep" | "cpap" })
   const reducedMotion = useReducedMotion() === true;
 
   const baseSlots = SLOTS[gender][pajama];
-  const slots = isCpap ? [...baseSlots.filter((slot) => slot.stickerId !== "cannula"), { id: "cpap-mask", stickerId: "cpap", x: 50, y: (baseSlots.find((slot) => slot.id === "cannula")?.y ?? 30.4) + 0.8, band: 46, hint: "Over the nose" }] : baseSlots;
+  const slots = isCpap ? [...baseSlots.filter((slot) => slot.stickerId !== "cannula"), { id: "cpap-mask", stickerId: "cpap", x: 50, y: (baseSlots.find((slot) => slot.id === "cannula")?.y ?? 30.4) + 2.5, band: 30, hint: "Over the nose" }] : baseSlots;
   const packedCount = countDone(PACKING_LIST, packed);
   const packingTotal = countTotal(PACKING_LIST);
 
