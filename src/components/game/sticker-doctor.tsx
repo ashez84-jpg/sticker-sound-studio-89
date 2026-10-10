@@ -17,7 +17,7 @@ import boyTrucks from "@/assets/boy-trucks-plush.png";
 import girlMoonStars from "@/assets/girl-moon-stars-plush.png";
 import girlFlowers from "@/assets/girl-flowers-plush.png";
 import girlHearts from "@/assets/girl-hearts-plush.png";
-import stickerCpapMask from "@/assets/sticker-cpap-elephant.png";
+import stickerCpapMask from "@/assets/sticker-cpap-elephant-eye-clear.png";
 import stickerBelt from "@/assets/sticker-belt.png";
 import stickerEkg from "@/assets/sticker-ekg.png";
 import stickerEeg from "@/assets/sticker-eeg.png";
@@ -277,7 +277,7 @@ export function StickerDoctor({ study = "sleep" }: { study?: "sleep" | "cpap" })
   const reducedMotion = useReducedMotion() === true;
 
   const baseSlots = SLOTS[gender][pajama];
-  const slots = isCpap ? [...baseSlots.filter((slot) => slot.stickerId !== "cannula"), { id: "cpap-mask", stickerId: "cpap", x: 50, y: (baseSlots.find((slot) => slot.id === "cannula")?.y ?? 30.4) + 2.5, band: 30, hint: "Over the nose" }] : baseSlots;
+  const slots = isCpap ? [...baseSlots.filter((slot) => slot.stickerId !== "cannula"), { id: "cpap-mask", stickerId: "cpap", x: 50, y: (baseSlots.find((slot) => slot.id === "cannula")?.y ?? 30.4) + 2.5, band: 43, hint: "Over the nose" }] : baseSlots;
   const packedCount = countDone(PACKING_LIST, packed);
   const packingTotal = countTotal(PACKING_LIST);
 
@@ -694,7 +694,7 @@ export function StickerDoctor({ study = "sleep" }: { study?: "sleep" | "cpap" })
                 disabled={bedtime !== "ready"}
                 aria-label={`Remove ${s.kind.label} from the ${s.slot.hint}`}
                 className="animate-pop-in absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center transition-transform hover:scale-105 active:scale-95"
-                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: s.kind.id === "cpap" ? "auto" : s.slot.bandH ?? 18, aspectRatio: s.kind.id === "cpap" ? "1" : undefined }}
+                style={{ left: `${s.slot.x}%`, top: `${s.slot.y}%`, width: `${s.slot.band}%`, height: s.kind.id === "cpap" ? "auto" : s.slot.bandH ?? 18, aspectRatio: s.kind.id === "cpap" ? "880 / 386" : undefined }}
               >
                 <img
                   src={s.kind.img}
